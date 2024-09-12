@@ -1,0 +1,12 @@
+#hexo_electric_clock {
+    background: linear-gradient(-45deg, #c0f2e3, #dbe1e9);
+    border-radius: 12px;
+    /* padding: 1px; */
+    margin-top: 15px;
+    box-shadow: 0px 4px 8px rgba(96, 91, 91, 0.5);
+        /* 水平偏移量 垂直偏移量 模糊半径 阴影颜色 */
+}
+
+[data-theme="dark"] #hexo_electric_clock {
+    background: #212121;
+}
