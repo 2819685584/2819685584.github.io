@@ -4,13 +4,27 @@
   
     
     <entry>
-      <title>Hello World</title>
-      <link href="/2024/09/12/hello-world/"/>
-      <url>/2024/09/12/hello-world/</url>
+      <title>Hexo崩溃记录</title>
+      <link href="/2024/09/13/Hexo%E5%B4%A9%E6%BA%83%E8%AE%B0%E5%BD%95/"/>
+      <url>/2024/09/13/Hexo%E5%B4%A9%E6%BA%83%E8%AE%B0%E5%BD%95/</url>
       
-        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>打开网站突然发现网站的样式乱了，加载不出原来的布局，也不知道哪里出问题了，还以为是之前修改butterfly的pug源代码添加东西出现的（其实不是），于是去github把原来的仓库删了，重新设置了github pages仓库，还在本地重装了一遍hexo（node.js和git可以用之前装的，这两个不用重新下载）</p><p>崩溃页面如下，可以看到js代码和api接口都能正常调用，除了背景图片看不到，其他图片都能正常显示，就是样式加载不出来</p><p><img src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/Hexo/image-20240913125421742.png" alt="崩溃页面1"></p><p><img src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/Hexo/image-20240913125507821.png" alt="崩溃页面2"></p><p><img src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/Hexo/image-20240913125915316.png" alt="崩溃页面3"></p><h2 id="崩溃原因"><a href="#崩溃原因" class="headerlink" title="崩溃原因"></a>崩溃原因</h2><p>跟设置网站卡片弹出动画用到的一个css有关，估计是名字冲突了，一开始设置卡片动画时能够正常使用，因为是从互联网获取的css资源，带有URL，所以没有什么冲突，但是后面我把用到的js和css下载到本地存储了（怕某一天链接404了），然后在主题配置文件<code>G:\hexo\_config.butterfly.yml</code>将互联网引用改为相对路径引用，样式文件名为<code>index.css</code>，<strong>index.css文件名可能和butterfly源代码中某个样式文件冲突了!!导致主题的样式加载不出来，就崩溃了</strong></p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">inject:</span></span><br><span class="line">  <span class="attr">head:</span></span><br><span class="line">    <span class="comment"># 原来的引用方法，通过URL引用不会引起本地冲突，能正常显示网站样式</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css&quot;&gt;</span> </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 下载到本地之后的引用为相对引用，可能和本地文件产生冲突导致样式崩溃</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;/css/index.css&quot;&gt;</span> </span><br></pre></td></tr></table></figure><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>两种方法</p><ul><li>1.使用原来的URL链接，不用将css文件下载到本地，直接引用互联网资源即可</li><li>2.将用到的js文件和css文件存储到本地，使用相对路径引用，但是要把<code>index.css</code>重命名，不能使用这个名字，我改为<code>dognhua.css</code>,随后相对引用也能恢复页面正常布局，<code>最好将index.js文件也重命名一下</code>，因为index的名字太敏感，不知道后面修改会不会发生冲突</li></ul>]]></content>
       
       
+      <categories>
+          
+          <category> 笔记 </category>
+          
+          <category> hexo笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> bug </tag>
+            
+        </tags>
       
     </entry>
     

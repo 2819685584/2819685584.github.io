@@ -3,7 +3,7 @@ document.addEventListener("copy", function () {
     data: function () {
       this.$notify({
         title: "复制成功",
-        message: "转载请遵守cc协议",
+        message: "转载请遵守CC协议",
         position: "top-left",
         offset: 50,
         showClose: true,
