@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>使用hexo d部署之后,github pages的自定义域名失效问题</title>
+      <link href="/posts/a2c7d491.html"/>
+      <url>/posts/a2c7d491.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>每次使用<code>hexo clean &amp; hexo g &amp; hexo d</code>之后，重新打开liuhengfeng.xyz访问页面就会出现404错误，必须重新去到仓库页面点击上面的<code>设置</code>，然后去到github pages重新添加自定义域名才能访问，但是下次hexo三连又会出现访问404的问题，<strong>反正就是每次部署完，自定域名都会消失</strong></p><p><img src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/Hexo/image-20240914223309500.png" alt="404页面"></p><p><img src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/Hexo/image-20240914223655716.png" alt="域名消失后重新手动添加"></p><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>这个问题是由于 Hexo 在执行 <code>hexo clean</code> 命令时会清空 <code>public</code> 文件夹，而 GitHub Pages 依赖于该文件夹中的 <code>CNAME</code> 文件来识别自定义域名。如果每次部署时没有将 <code>CNAME</code> 文件重新生成并保留在 <code>public</code> 文件夹中，那么 GitHub 就无法识别到自定义域，导致 404 错误，并且需要手动重新输入自定义域名。</p><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>在<code>G:\hexo\source</code>文件夹下新建文件<code>CNAME</code>,在里面填入自定义的域名，这样每次hexo deploy后，github page就不会出现域名重置了</p><p><img src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/Hexo/image-20240914224003159.png" alt="添加CNAME文件"></p><h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://blog.csdn.net/javemalloc/article/details/136669951">解决：使用hexo deploy部署之后,github page的custom domian自定义域名失效</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+          <category> hexo笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> bug </tag>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub Pages自定义域名</title>
       <link href="/posts/1025a0fc.html"/>
       <url>/posts/1025a0fc.html</url>
