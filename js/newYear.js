@@ -74,9 +74,9 @@ var newYear = () => {
   jQuery(document).ready(function ($) {
     $("#newYear").wpSuperSnow({
       flakes: [
-        "https://tuchuang.voooe.cn/images/2023/01/02/yb1.webp",
-        "https://tuchuang.voooe.cn/images/2023/01/02/yb2.webp",
-        "https://tuchuang.voooe.cn/images/2023/01/02/yb3.webp",
+        "https://statics.liuhengfeng.xyz/Hexo/yuanbao1.webp",
+        "https://statics.liuhengfeng.xyz/Hexo/yuanbao2.webp",
+        "https://statics.liuhengfeng.xyz/Hexo/yuanbao3.webp",
       ],
       totalFlakes: "100",
       zIndex: "999999",
