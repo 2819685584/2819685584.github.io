@@ -193,7 +193,7 @@
 <blockquote>
 <p>阈值为0.9时的实验结果如下</p>
 </blockquote>
-<p>可以看到各项评估指标都好了一点，但是很明显假阳性的样本多了不少，阈值为0.5时假阳性在300<del>1200范围内浮动，但是阈值设为0.9时一下子变成5700了，虽然假阴性样本从10000多变成了1200多(因为概率低于0.9的都算正常样本，可见有很多正常样本的最终预测概率在0.5</del>0.9之间)，因为假阳性样本数量下降大于假阴性样本数量上升，所以各项指标都变好了，但<code>实际并不代表模型效果变好了</code></p>
+<p>可以看到各项评估指标都好了一点，但是很明显假阳性的样本多了不少，阈值为0.5时假阳性在300~1200范围内浮动，但是阈值设为0.9时一下子变成5700了，虽然假阴性样本从10000多变成了1200多(因为概率低于0.9的都算正常样本，可见有很多正常样本的最终预测概率在0.5~0.9之间)，因为假阳性样本数量下降大于假阴性样本数量上升，所以各项指标都变好了，但<code>实际并不代表模型效果变好了</code></p>
 <p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20240928161923176.png" alt="CNN二分类 阈值0.9(一)"></p>
 <p><strong>阈值为0.9时第二次测试</strong></p>
 <p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20240928162834791.png" alt="CNN二分类 阈值0.9(二)"></p>
