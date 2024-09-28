@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>证件照制作工具:HivisionIDPhotos</title>
+      <link href="/posts/9a66c4a8.html"/>
+      <url>/posts/9a66c4a8.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个容器本来已经装过了，但是今天在github上看见项目更新了挺多功能，于是我就想重装一遍，装最新版的，主要是因为不会在openwrt中升级容器到最新版，于是只能卸载了重装，基本步骤如下：</p><p><code>关闭容器</code> —&gt; <code>移除容器 </code> —&gt; <code>移除镜像</code> —&gt; <code>拉取最新版镜像</code> —&gt; <code>通过CLT命令行重新安装容器</code></p><h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>Web版制作证件照工具，使用openwrt的docker容器部署，只能本地使用，可解决证件照应急制作问题</p><ul><li>轻量级抠图（纯离线，仅需 <strong>CPU</strong> 即可快速推理）</li><li>根据不同尺寸规格生成<strong>不同尺寸</strong>标准证件照、六寸排版照</li><li>支持 纯离线 或 端云 推理</li><li>美颜(新版本功能)</li><li>智能换正装、换背景</li></ul><h2 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h2><p>github地址：<a href="https://github.com/Zeyi-Lin/HivisionIDPhotos">https://github.com/Zeyi-Lin/HivisionIDPhotos</a></p><p>github项目中有项目的详细说明，有不懂的地方可以查看项目详情页面</p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote><p><strong>拉取镜像</strong></p></blockquote><p>在openwrt页面的<code>Docker</code> –&gt; <code>镜像</code> –&gt; <code>拉取</code>，输入如下内容，拉取镜像</p><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linzeyi/hivision_idphotos</span><br></pre></td></tr></table></figure><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20240928215531388.png" alt="拉取镜像"></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20240928215641090.png" alt="镜像拉取完成"></p><blockquote><p>安装容器</p></blockquote><p>使用如下命令安装(需要先删除旧版的容器)，直接复制命令到<code>CLI命令行</code>，然后<code>提交</code>，最后<code>启动</code>容器即可</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 7860:7860 linzeyi/hivision_idphotos</span><br></pre></td></tr></table></figure><blockquote><p>访问</p></blockquote><p>通过 <a href="http://192.168.1.1:7860/%E8%AE%BF%E9%97%AEWeb%E9%A1%B5%E9%9D%A2">http://192.168.1.1:7860/访问Web页面</a></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20240928220634620.png" alt="操作页面"></p><h2 id="模型性能对比"><a href="#模型性能对比" class="headerlink" title="模型性能对比"></a>模型性能对比</h2><p>openwrt路由器的配置为8G RAM + 64G ROM，性能并不强，以后还是用<code>MODNet</code>  + <code>mtcnn</code>模型吧</p><table><thead><tr><th>模型组合</th><th>内存占用</th><th>推理时长1</th><th>推理时长2</th></tr></thead><tbody><tr><td>MODNet + mtcnn</td><td>410MB</td><td>0.207s</td><td>0.246s</td></tr><tr><td>MODNet + retinaface</td><td>405MB</td><td>0.571s</td><td>0.971s</td></tr><tr><td>birefnet-v1-lite + retinaface</td><td>6.20GB</td><td>7.063s</td><td>7.128s</td></tr></tbody></table><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于抠图的功能还没用过，不知道在哪里使用，好像github项目页面有说明，但是要配置模型下载后放到项目指定位置，没弄，以后有需要在搞。</p><p>项目有一个缺点就是不能实时预览图片，例如调整了底色或者其他高级设置的参数，无法实时预览图片，只能点击<code>生成图片</code>后才能看到预览样式，不知道这样会不会占用存储空间，预览之后还提供了下载功能，即使存储了估计也是略缩图，占不了多少空间，我还有23GB的存储空间</p><p>还有一点是使用AI来生成图片的，所以图片看起来会有一种虚假感(太完美了，有点像美颜磨皮拉满了)，用来应下急可以，但是太深究的话看起来还是有一点异样，而且图片清晰度挺一般，凑合能用就行。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> 实用软件/工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>UNSW-NB15使用CNN进行分类</title>
       <link href="/posts/91578d31.html"/>
       <url>/posts/91578d31.html</url>
