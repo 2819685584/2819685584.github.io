@@ -1,9 +1,9 @@
 :root {
-  --trans-light: rgba(255, 255, 255, 0.85);
-  --trans-dark: rgba(25, 25, 25, 0.85);
+  --trans-light: rgba(255, 255, 255, 0.90);
+  --trans-dark: rgba(25, 25, 25, 0.90);
   --border-style: 1px solid rgb(169, 169, 169);
-  /* --backdrop-filter: blur(5px) saturate(150%); */
-  --backdrop-filter: none;
+  --backdrop-filter: blur(5px) saturate(150%);
+  /* --backdrop-filter: none; */
 }
 
 
