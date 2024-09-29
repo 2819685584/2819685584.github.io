@@ -49,9 +49,9 @@
       
         <tags>
             
-            <tag> CNN </tag>
-            
             <tag> 异常检测分类 </tag>
+            
+            <tag> CNN </tag>
             
             <tag> UNSW-NB15 </tag>
             
@@ -82,9 +82,9 @@
             
             <tag> CIC-IDS2017 </tag>
             
-            <tag> CNN </tag>
-            
             <tag> 异常检测分类 </tag>
+            
+            <tag> CNN </tag>
             
         </tags>
       
@@ -113,9 +113,9 @@
             
             <tag> CIC-IDS2017 </tag>
             
-            <tag> 异常检测分类 </tag>
-            
             <tag> DNN </tag>
+            
+            <tag> 异常检测分类 </tag>
             
         </tags>
       

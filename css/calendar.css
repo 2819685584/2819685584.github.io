@@ -45,7 +45,7 @@
 #calendar-area-left,
 #calendar-area-right {
     height: 100%;
-    padding: 4px;
+    padding: 3px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,9 +66,9 @@
 }
 
 #calendar-date {
-    height: 5rem;
+    height: 3rem;
     line-height: 1.3;
-    font-size: 48px;
+    font-size: 60px !important;
     letter-spacing: 3px;
     color: rgb(0 45 255);
     font-weight: bold;
@@ -81,7 +81,7 @@
 #calendar-solar,
 #calendar-lunar {
     height: 1rem;
-    font-size: 12px;
+    font-size: 13px;
     align-items: center;
     display: flex;
     position: absolute;
@@ -97,10 +97,10 @@
 }
 
 #calendar-main a {
-    height: 1rem;
-    width: 1rem;
+    height: 1.3rem;
+    width: 1.3rem;
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 12px;
     display: flex;
     justify-content: center;
@@ -237,7 +237,7 @@ progress::-webkit-progress-value {
 #schedule-title {
     height: 25px;
     line-height: 1;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
 }
 
@@ -252,6 +252,15 @@ progress::-webkit-progress-value {
 #schedule-date {
     height: 20px;
     line-height: 1;
-    font-size: 12px;
+    font-size: 13px;
     color: rgba(var(--op-dis), .5);
+}
+
+#card-widget-calendar .item-headline {
+    display: none;
+}
+
+
+#card-widget-schedule .item-headline {
+    display: none;
 }
