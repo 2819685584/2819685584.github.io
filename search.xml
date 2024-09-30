@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>LAN文件传输工具:Localsend</title>
+      <link href="/posts/ecb8a994.html"/>
+      <url>/posts/ecb8a994.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><p>LocalSend 是一个应用程序，需要安装客户端才能使用</p><p>它允许你在本地网络上安全地与附近设备分享文件，无需互联网连接，也就是说哪怕只有一个没联网的路由器，只要两台设备连接上这台路由器的WiFi组成一个局域网，这两台设备就可以自由地传输文件</p><p>LocalSend支持Windows、macOS、Linux、Android、iOS等主流操作系统，可以实现跨系统文件传输，可以当xftp用</p><p>在大多数情况下，LocalSend 开箱即用。 不过，如果在发送或接收文件时遇到问题，可能需要配置防火墙，允许 LocalSend 通过本地网络进行通信。如果是服务器的话，可能需要打开<code>53317端口</code></p><h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p>github上的开源项目 <a href="https://github.com/localsend/localsend?tab=readme-ov-file">localsend</a></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20240930214503161.png" alt="不同系统的localsend安装包"></p><h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>开箱即用，在PC和安卓手机上分别安装<code>.exe</code>和<code>.apk</code>后即可在两台设备直接传输文件，像传输图片、视频、文档等文件就不需要登录QQ or 微信当做中转设备了，特别是QQ和微信还有文件大小限制、本地上传速度也受限制，<code>使用LocalSend进行文件传输时，传输速度取决于路由器的性能</code>，现在的路由器性能都不弱，在传输600MB的文件时传输速度能达到50MB&#x2F;s</p><p>操作界面简洁，只需选择<code>接收</code>或<code>发送</code>即可开始文件传输</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20240930214541222.png" alt="Localsend UI"></p><p>PC端默认的文件保存目录为<code>下载</code>，我修改成了<code>C:\Users\LHF\Downloads\LocalSend Download</code>，以后接受到的文件都在这个目录下</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20240930214738618.png" alt="修改PC端保存路径"></p><p>Android客户端的默认保存位置也是<code>下载</code>，不知道在哪里的可以直接在localsend的设置下点一下<code>保存目录</code>就会自动打开保存路径了</p><h1 id="校园网环境"><a href="#校园网环境" class="headerlink" title="校园网环境"></a>校园网环境</h1><p>有用户说在校园网的环境下无法使用localsend，但是我测试了一下，PC和手机都连接GUET-WIFI是能够进行文件传输的，不知道花江校区行不行。但是传输速度远远不如一个路由器下的LAN，校园网只有2MB&#x2F;s~5MB&#x2F;s，因为所有流量都要先经过学校的交换机再到用户的设备上，相当于又绕了一圈，而且学校还对设备做了限速，如果是使用校园网传输那还不如直接使用QQ或者微信传文件，还省得专门下一个客户端。</p><p>localsend适合家庭LAN成员或者是一个实验室的用户连接到同一个AP进行文件传输，但是最快的还是PC对PC用硬盘传输。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 实用软件/工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>使用Github Action实现自动部署与源码备份</title>
       <link href="/posts/2657374c.html"/>
       <url>/posts/2657374c.html</url>
@@ -66,9 +85,9 @@
       
         <tags>
             
-            <tag> Docker </tag>
-            
             <tag> 实用软件/工具 </tag>
+            
+            <tag> Docker </tag>
             
         </tags>
       
@@ -238,9 +257,9 @@
       
         <tags>
             
-            <tag> hexo </tag>
-            
             <tag> bug </tag>
+            
+            <tag> hexo </tag>
             
         </tags>
       
@@ -342,9 +361,9 @@
       
         <tags>
             
-            <tag> Docker </tag>
-            
             <tag> 实用软件/工具 </tag>
+            
+            <tag> Docker </tag>
             
         </tags>
       
@@ -394,9 +413,9 @@
       
         <tags>
             
-            <tag> Docker </tag>
-            
             <tag> 实用软件/工具 </tag>
+            
+            <tag> Docker </tag>
             
         </tags>
       
