@@ -20,6 +20,16 @@
     --gavin-theme-color: var(--gavin-theme-color-dark);
 }
 
+/* 不显示顶栏标题 */
+#card-widget-calendar .item-headline {
+    display: none;
+}
+
+#card-widget-schedule .item-headline {
+    display: none;
+}
+/* 不显示顶栏标题 */
+
 .card-widget {
     padding: 10px !important;
     max-height: calc(100vh - 100px);
@@ -256,10 +266,3 @@ progress::-webkit-progress-value {
     color: rgba(var(--op-dis), .5);
 }
 
-#card-widget-calendar .item-headline {
-    display: none;
-}
-
-#card-widget-schedule .item-headline {
-    display: none;
-}

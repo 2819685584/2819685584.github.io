@@ -385,12 +385,12 @@
 
 /* 全局宽度 */
 .layout {
-  max-width: 1550px;
+  max-width: 1500px;
 }
 
 /* 侧边卡片栏宽度 */
 .aside-content {
-  max-width: 328px;
+  max-width: 310px;
   min-width: 300px;
 }
 
