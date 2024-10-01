@@ -390,7 +390,7 @@
 
 /* 侧边卡片栏宽度 */
 .aside-content {
-  max-width: 310px;
+  max-width: 315px;
   min-width: 300px;
 }
 
@@ -409,7 +409,7 @@
 #recent-posts>.recent-post-item {
   background: var(--trans-light);
   backdrop-filter: var(--backdrop-filter);
-  border-radius: 25px;
+  border-radius: 15px;
   border: var(--border-style);
 }
 
