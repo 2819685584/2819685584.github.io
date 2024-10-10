@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>UNSW-NB15代码(来自github)</title>
+      <link href="/posts/52e45ed5.html"/>
+      <url>/posts/52e45ed5.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><blockquote><p>项目发布于四年前，大概是2020年左右的代码，以<code>.ipynb</code>的形式呈现实验过程和结果</p></blockquote><p>github地址: <a href="https://github.com/SubrataMaji/IDS-UNSW-NB15/tree/master">IDS-UNSW-NB15</a></p><h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>实验使用的不是标准处理后的<code>UNSW_NB15_testing-set.csv</code>和<code>UNSW_NB15_training-set.csv</code>，而是使用下面四个csv文件，也是UNSW-NB15数据集官方提供的，只是比起处理好的训练集和测试集多了很多数据，而且大部分是良性数据，也就是说Normal数据占大部分，使用这几个数据集比处理好的训练集和测试集分类结果要好(因为良性数据占87%左右，怎么分类都能有不错的结果)，但是<code>使用下面的数据集会比原来提供的测试集和训练集更加不平衡</code></p><ul><li>UNSW-NB15_1.csv</li><li>UNSW-NB15_2.csv</li><li>UNSW-NB15_3.csv</li><li>UNSW-NB15_4.csv</li></ul><h1 id="什么是EDA？"><a href="#什么是EDA？" class="headerlink" title="什么是EDA？"></a>什么是EDA？</h1><blockquote><p>主要是看下数据集大概长什么样，以及简单处理一下</p></blockquote><p>EDA（探索性数据分析，Exploratory Data Analysis）是一种数据分析方法，主要用于<code>在建模和分析之前</code>，帮助分析师和数据科学家了解数据的结构、特征和模式，从而提高模型的有效性和准确性。</p><p>主要包括但不限于如下几个方面:</p><ul><li><strong>数据总结</strong>：计算描述性统计量，如均值、中位数、标准差、分位数等</li><li><strong>数据可视化</strong>：通过图表和可视化技术（如直方图、散点图、箱线图等）来直观展示数据特征和分布。</li><li><strong>缺失值分析</strong>：检查数据集中是否存在缺失值，评估其对分析结果的影响，并决定如何处理这些缺失值</li><li><strong>相关性分析</strong>：评估不同变量之间的关系，观察变量之间的关系强度和方向</li><li><strong>异常值检测</strong>：识别数据中的异常值，这些值可能会影响模型的训练和预测性能。</li><li><strong>数据分布检查</strong>：判断是否符合某种统计分布（如正态分布），这对于选择合适的模型和算法非常重要。</li></ul><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241010223804809.png" alt="项目EDA"></p><h1 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h1><p>这个实验提供了多种Machine Learning的方法进行测试，</p><ul><li>Logistic Regression</li><li>Linear SVC</li><li>Decision Tree</li><li>Random Forest</li><li>GBDT( Gradient boosted decision tree)</li></ul><blockquote><p>但从实验结果看，每种试验方法的效果都很不错，有95%~98%的效果</p></blockquote><p>但是我的论文打算使用的是<code>深度学习方法</code>，使用DNN或者CNN，先采用这个项目的实验方法来预处理数据，再把原来的机器学习方法换成深度学习方法看看效果如何。因为数据集太不平衡了，良性数据占了绝大部分，所以即使是效果不好，出来的结果也应该有90%以上，比预处理好的数据集好太多了，那个作死了也就91%左右，做差了才70%。</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241010224228982.png" alt="实验结果"></p><h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>在知乎上还有一个关于UNSW-NB15数据集的实验， <a href="https://www.zhihu.com/question/647025455?write=&utm_id=0">知乎帖子</a>  也是使用了ML或者DL的方法来处理数据集的，看起来结果也不错，<code>但是！</code>，他是直接从训练集里面划分出测试集的，没有使用别人弄好的测试集，所以看起来效果很好，其实已经过拟合了。</p><p>还有其他一些看起来很夸张的实验结果，什么accuracy、recall、F1-score全都是1.00或者0.9999..的，那些我怀疑他们都没有去掉<code>attack_cat</code>那一列，只要保留那一列，无论用什么方法都是100%的，因为这一列已经是标签列了</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241010231126254.png" alt="知乎-实验结果"></p><p>如果使用DNN或者CNN之后效果还能有95%左右的话，就可以使劲套方法增加模型复杂度了，原来的<code>GSMOTE+AE+DNN(CNN)</code>在CIC-IDS2017数据集反而会降低分类效果，直接使用DNN或者CNN效果都比套个AE要好，想用GSMOTE也用不上，一是one-hot编码后如果使用gsmote会使每一行新增的列都有小数产生，而不是固定只能为0或1值，还有就是数据集存在字符型数据处理起来很麻烦，另一个CIC-IDS2017数据集使用了gsmote，但是生成的数据也存在一些问题，全靠原来的数据集质量好才撑起99%的评估指标。</p><p>麻烦啊！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 科研 </category>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 异常检测分类 </tag>
+            
+            <tag> UNSW-NB15 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>git常用命令</title>
       <link href="/posts/423abe9e.html"/>
       <url>/posts/423abe9e.html</url>
