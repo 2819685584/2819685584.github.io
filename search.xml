@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>AE+DNN(CIC-IDS2017) 效果不错</title>
+      <link href="/posts/fcd23286.html"/>
+      <url>/posts/fcd23286.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>使用AE+DNN对CIC-IDS2017数据集进行二分类异常检测，没有使用GSmote来平衡数据集，还是能达到98%~99%的效果，我估计加上GSmote之后效果会变差，因为现在预处理和归一化之后数据全都在[0,1]直接，但是加上GSmote会由于距离原因产生负值，可能会对结果产生一定影响，而且大概率是不好的影响</p><h1 id="相关文章"><a href="#相关文章" class="headerlink" title="相关文章"></a>相关文章</h1><blockquote><p>Improving the Classification Effectiveness of Intrusion Detection by Using Improved Conditional Variational AutoEncoder and Deep Neural Network</p><p>2019年发表</p></blockquote><p>这个是在<code>UNSW-NB15数据集</code>上做多分类的，用的是<code>ICVAE-DNN模型</code>(改进的条件变分自编码器（ICVAE）与深度神经网络（DNN）)，实验结果如下</p><p>85%左右的ACC，90%的F1-Score，效果不算特别凸出，如果不去掉<code>attack_cat</code> 列，把这列保存下来做LabelEncoder的话，应该能达到98%~100%的效果，这篇文章效果不算突出，而且时间有一点久了</p><p>这篇文章提到了数据不平衡问题，它的方法是使用<code>ICVAE</code>解决数据不平衡问题，原文如下：</p><p><em><strong>训练好的ICVAE解码器根据指定的入侵类别生成新的攻击样本，以平衡训练数据，增加训练样本的多样性，从而提高对不平衡攻击的检测率。</strong></em></p><p><em><strong>训练好的ICVAE编码器不仅用于自动降低数据维度，还用于初始化DNN隐层权重，使得DNN能够通过反向传播和微调轻松实现全局优化。</strong></em></p><p><em><strong>ICVAE-DNN在数据增强方面优于三种著名的过采样方法(SMOTE、ADASYN、ROS)</strong></em></p><ul><li>smote（Synthetic Minority Over-sampling Technique）<ul><li>SMOTE通过在少数类样本的特征空间中进行插值来合成新的样本</li></ul></li><li>ADASYN (Adaptive Synthetic Sampling)<ul><li>ADASYN是对SMOTE的一种改进，它根据数据分布自适应地生成合成样本</li></ul></li><li>ROS (Random Over-Sampling)<ul><li>ROS是最简单的一种过采样方法，它通过随机复制少数类样本来增加样本数量。</li></ul></li></ul><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241014201228690.png" alt="ICVAE-DNN"></p><blockquote><p>A hybrid Intrusion Detection System based on Sparse autoencoder and Deep<br>Neural Network</p><p>2021年发表</p><p>期刊不错  <em>Computer Communications</em></p></blockquote><p>这个也是在<code>UNSW-NB15数据集</code>上做多分类的，用的是<code>SAE-DNN模型</code>，实验结果如下，每一项都是99.9%,很夸张，估计是保留了<code>attack_cat</code>列的效果，而且使用其他例如CNN、LSTM加上SAE的效果也是99%,玄乎</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241014201652656.png" alt="SAE-DNN(二分类)"></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241014201756599.png" alt="SAE-DNN(多分类)"></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241014201857724.png" alt="SAE+其他模型(多分类)"></p><h1 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h1><table><thead><tr><th>参数</th><th>结果</th><th align="left">混淆矩阵</th></tr></thead><tbody><tr><td>DNN:<br />阈值0.5<br />batch_size&#x3D;128<br />epochs&#x3D;20<br />结构4层数，128-64-32-1<br />优化器Adam<br />AE:<br />输出维度40<br />编码器层数5，256-128-64-32<br />训练自编码器batch_size&#x3D;64<br />loss &#x3D; mse，Adam优化器</td><td>准确率: 0.9943<br/>精确率: 0.9824<br/>召回率: 0.9933<br/>F1分数: 0.9878<br/>误报率: 0.0054</td><td align="left"></td></tr><tr><td>同上</td><td>准确率: 0.9930<br/>精确率: 0.9797<br/>召回率: 0.9905<br/>F1分数: 0.9851<br/>误报率: 0.0063</td><td align="left">[[360703   2279]<br/> [  1049 109819]]</td></tr><tr><td>AE输出维度为15，其余不变</td><td>准确率: 0.9949<br/>精确率: 0.9893<br/>召回率: 0.9890<br/>F1分数: 0.9892<br/>误报率: 0.0033</td><td align="left">[[361800   1182]<br/> [  1219 109649]]</td></tr><tr><td>AE输出维度为10，其余不变</td><td>准确率: 0.9943<br/>精确率: 0.9830<br/>召回率: 0.9926<br/>F1分数: 0.9878<br/>误报率: 0.0052</td><td align="left">[[361082   1900]<br/> [   819 110049]]</td></tr><tr><td>AE输出维度改为20维，DNN添加<br />一层隐藏层神经单元数为16</td><td>准确率: 0.9936<br/>精确率: 0.9808<br/>召回率: 0.9922<br/>F1分数: 0.9865<br/>误报率: 0.0059</td><td align="left">[[360827   2155]<br/> [   860 110008]]</td></tr><tr><td>AE训练20轮，batch_size&#x3D;128<br />维度输出为15，DNN训练30轮</td><td>准确率: 0.9953<br/>精确率: 0.9879<br/>召回率: 0.9921<br/>F1分数: 0.9900<br/>误报率: 0.0037</td><td align="left">[[361640   1342]<br/> [   876 109992]]</td></tr><tr><td>同上，重复实验，上一轮效果太好了</td><td>性能指标:<br/>准确率: 0.9933<br/>精确率: 0.9913<br/>召回率: 0.9798<br/>F1分数: 0.9855<br/>误报率: 0.0026</td><td align="left">混淆矩阵:<br/>[[362026    956]<br/> [  2234 108634]]</td></tr><tr><td>同上，重复试验</td><td>性能指标:<br/>准确率: 0.9943<br/>精确率: 0.9842<br/>召回率: 0.9913<br/>F1分数: 0.9878<br/>误报率: 0.0049</td><td align="left">[[361219   1763]<br/> [   960 109908]]</td></tr><tr><td>AE输出维度变为40，batch_size&#x3D;32</td><td>准确率: 0.9927<br/>精确率: 0.9778<br/>召回率: 0.9915<br/>F1分数: 0.9846<br/>误报率: 0.0069</td><td align="left">[[360490   2492]<br/> [   947 109921]]</td></tr><tr><td>AE输出维度变为15，batch_size&#x3D;256<br />阈值0.5</td><td>准确率: 0.9941<br/>精确率: 0.9873<br/>召回率: 0.9876<br/>F1分数: 0.9875<br/>误报率: 0.0039</td><td align="left">[[361570   1412]<br/> [  1371 109497]]</td></tr><tr><td>同上</td><td>准确率: 0.9951<br/>精确率: 0.9832<br/>召回率: 0.9961<br/>F1分数: 0.9896<br/>误报率: 0.0052</td><td align="left">[[361097   1885]<br/> [   435 110433]]</td></tr><tr><td>同上</td><td>准确率: 0.9951<br/>精确率: 0.9832<br/>召回率: 0.9961<br/>F1分数: 0.9896<br/>误报率: 0.0052</td><td align="left">[[361398   1584]<br/> [  1255 109613]]</td></tr><tr><td>同上</td><td>准确率: 0.9940<br/>精确率: 0.9858<br/>召回率: 0.9887<br/>F1分数: 0.9872<br/>误报率: 0.0044</td><td align="left">[[361398   1584]<br/> [  1255 109613]]</td></tr><tr><td>同上</td><td>准确率: 0.9959<br/>精确率: 0.9894<br/>召回率: 0.9931<br/>F1分数: 0.9912<br/>误报率: 0.0033</td><td align="left">[[361797   1185]<br/> [   763 110105]]</td></tr><tr><td>阈值为0.6</td><td>准确率: 0.9960<br/>精确率: 0.9927<br/>召回率: 0.9902<br/>F1分数: 0.9915<br/>误报率: 0.0022</td><td align="left">[[362179    803]<br/> [  1089 109779]]</td></tr><tr><td>阈值为0.7</td><td>准确率: 0.9954<br/>精确率: 0.9949<br/>召回率: 0.9854<br/>F1分数: 0.9901<br/>误报率: 0.0015</td><td align="left">[[362423    559]<br/> [  1623 109245]]</td></tr><tr><td>阈值为0.7<br />AE训练20轮，batch_size&#x3D;256<br />DNN训练30轮，batch_size&#x3D;128<br />AE输出维度为15</td><td>准确率: 0.9950<br/>精确率: 0.9958<br/>召回率: 0.9827<br/>F1分数: 0.9892<br/>误报率: 0.0013</td><td align="left">[[362519    463]<br/> [  1917 108951]]</td></tr></tbody></table><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>光使用AE+DNN能取得不错的效果，这次的AE+DNN比之前的效果要好，之前使用AE+DNN只能取得97%~98%的效果，从来没到过99%，但是这次可以，不知道是什么问题，可能是AE结构设置的问题，也可能是之前加了GSmote的问题，明天再加上GSmote试试，如果CIC-IDS2017数据集搞定了就开始处理UNSW-NB15数据集，那个加上<code>attack_cat</code>列应该效果很好</p><blockquote><p>模型训练时间、模型保存</p></blockquote><p>batch_size设置得越小，所消耗的训练时间就越长，尤其是AE的训练，当把batch_size调为64时，AE训练一轮要130S左右，二十轮训练就是四十分钟，加上DNN的训练估计要五十分钟，要花很多时间；但是给的batch_size足够大，例如256，一轮的训练时长就变为13S，大大节约了训练时间，<strong>最重要的是调整batch_size大小好像对实验结果影响不大</strong>。<strong>后续可以把训练好的AE模型保存为.hdf5</strong>，<strong>下次用的时候不用从头训练</strong>，直接调用训练好的模型即可，还没试过，后面实验再尝试一下使用保存的模型进行训练与预测。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 科研 </category>
+          
+          <category> 实验 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CIC-IDS2017 </tag>
+            
+            <tag> 异常检测分类 </tag>
+            
+            <tag> DNN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GSMOTE+AE+DNN(CIC-IDS-2017数据集)</title>
       <link href="/posts/8784b76b.html"/>
       <url>/posts/8784b76b.html</url>
@@ -193,9 +224,9 @@
       
         <tags>
             
-            <tag> CNN </tag>
-            
             <tag> 异常检测分类 </tag>
+            
+            <tag> CNN </tag>
             
             <tag> UNSW-NB15 </tag>
             
@@ -226,9 +257,9 @@
             
             <tag> CIC-IDS2017 </tag>
             
-            <tag> CNN </tag>
-            
             <tag> 异常检测分类 </tag>
+            
+            <tag> CNN </tag>
             
         </tags>
       
