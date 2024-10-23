@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>虚拟机网络模式(桥接、NAT、Host-Only)</title>
+      <link href="/posts/50587de9.html"/>
+      <url>/posts/50587de9.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>常用的虚拟机软件有很多，例如<code>VMware Workstation</code>、<code>Oracle VM VirtualBox</code>、<code>微软 Hyper-V</code>、<code>KVM</code>等等，不同虚拟机软件的网络模式名称可能有所不同，但都是大同小异，主要功能和原理也相似，本文以<code>VMware Workstation</code>为例进行说明。</p><p>如果需要在虚拟机上下载外网资源，例如更新软件包是使用的原生外国源，有时候会连不上导致各种更新、下载失败，这时候可以使用桥接模式直接连接到openwrt的局域网下进行下载。</p><h1 id="网络模式类型"><a href="#网络模式类型" class="headerlink" title="网络模式类型"></a>网络模式类型</h1><p>VMware 提供了几种网络模式，主要包括：</p><ol><li><strong>桥接模式（Bridged）</strong>：虚拟机直接连接到物理网络，像独立计算机一样获取IP地址。</li><li><strong>NAT模式（网络地址转换）</strong>：虚拟机通过主机共享IP地址，适合需要外部访问但不需要直接连接的场景。</li><li><strong>仅主机模式（Host-Only）</strong>：虚拟机只能与主机通信，适合测试和开发环境中。</li><li><strong>自定义模式</strong>：用户可以创建自定义网络，灵活配置虚拟机之间的通信方式。</li></ol><p>使用桥接模式时需要选择桥接的网卡，选对了网卡才能连接到相应的局域网。下面红框标出的分别是PC的有线网卡和无线网卡，选择桥接时需要根据PC的联网环境进行判断。</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241023223440392.png" alt="VMware 网络模式"></p><h1 id="NAT模式"><a href="#NAT模式" class="headerlink" title="NAT模式"></a>NAT模式</h1><p><strong>原理</strong>：虚拟机通过VMware的NAT服务共享主机的IP地址。虚拟机发出的网络请求经过NAT服务转换到PC的IP地址，然后从PC访问互联网再经过一层NAT转换，返回的数据也通过NAT服务回传给虚拟机。</p><p><strong>用途</strong>：适合需要访问互联网但不希望被外部网络直接访问的情况。</p><p><strong>注：</strong></p><p>在连接Vmnet8虚拟交换机时，虚拟机会将虚拟NAT设备及虚拟DHCP服务器连接到Vmnet8虚拟交换机上，同时也会将主机上的虚拟网卡VMware NetworkAdapterVMnet8连接到Vmnet8虚拟交换机上。<code>虚拟网卡VMware NetworkAdapterVMnet8只是作为主机与虚拟机通信的接口</code>，<code>虚拟机并不是依靠虚拟网卡VMwareNetworkAdapterVMnet8来联网的</code>。</p><p>所以VMware的虚拟和能通过<code>VMware NetworkAdapterVMnet8</code>来和本地PC进行通信，与<code>Oracle VM VirtualBox</code>的<code>NAT网络</code>模式一样</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/NAT_mode.jpg" alt="NAT模式原理图"></p><h1 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h1><ul><li><strong>原理</strong>：虚拟机通过VMware虚拟网络适配器连接到物理网络(与PC处在同一局域网)。虚拟机获取与物理主机相同网段的IP地址，可以直接与同一局域网下的其他网络设备通信。</li><li><strong>用途</strong>：适合需要与外部网络设备（如服务器、打印机）直接交互的场景。</li></ul><p><img src="https://statics.liuhengfeng.xyz/Hexo/%25E6%25A1%25A5%25E6%258E%25A5%25E6%25A8%25A1%25E5%25BC%258F.jpg" alt="桥接模式原理图"></p><h1 id="仅主机模式（Host-Only）："><a href="#仅主机模式（Host-Only）：" class="headerlink" title="仅主机模式（Host-Only）："></a>仅主机模式（Host-Only）：</h1><ul><li><strong>原理</strong>：虚拟机与主机之间建立一个独立的网络，不与外部网络连接。虚拟机与主机之间可以相互通信，但无法访问互联网或其他网络设备。</li><li><strong>用途</strong>：适合测试和开发环境，保证环境的隔离性。</li></ul><p><img src="https://statics.liuhengfeng.xyz/Hexo/Host-Only-mode.jpg" alt="Host Only模式"></p><h1 id="各网络模式设备连通性"><a href="#各网络模式设备连通性" class="headerlink" title="各网络模式设备连通性"></a>各网络模式设备连通性</h1><p>不一定完全准确，可能不同的虚拟机软件会存在一定差异，例如VMware就只有<code>NAT模式</code>没有<code>NAT网络模式</code>，但是PC可以ping通虚拟机。</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241023224301432.png" alt="不同模式网络连通性"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>屏幕截图助手-Assistant</title>
       <link href="/posts/6e243d7b.html"/>
       <url>/posts/6e243d7b.html</url>
