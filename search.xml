@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>Docker Desktop自定义安装目录与镜像保存路径</title>
+      <link href="/posts/ba5df127.html"/>
+      <url>/posts/ba5df127.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Docker在Windows上的默认安装路径为<code>C:\Program Files\Docker</code>，并且在安装过程中无法指定安装目录，镜像和容器数据通常存储在 <code>C:\ProgramData\Docker</code>。</p><p>一般安装软件需要安装到其他盘、减少C盘的占用，此时需要通过类似于Linux系统创建软链接的方式将路径<code>C:\Program Files\Docker</code>映射到其他盘。</p><p>在安装时是无法选择Docker的存储目录和安装路径的，点击<code>Docker Desktop Installer.exe</code>只会显示如下界面，点击<code>OK</code>之后就安装到C盘上去了，光Docker程序本身就占了2GB空间，加上镜像和容器可能会占用更多存储空间，所以要把它安装和存储镜像容器到别的盘上，</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025130001564.png" alt="docker安装界面"></p><h1 id="修改Docker安装目录"><a href="#修改Docker安装目录" class="headerlink" title="修改Docker安装目录"></a>修改Docker安装目录</h1><p>1.打开win+R打开运行窗口，输入cmd，同时按下快捷键CTRL+SHIFT+Enter即可以管理员身份打开</p><p>Windows自带的cmd命令行</p><p><strong>注意</strong>：需要保证<strong>以管理员身份打开命令行</strong>，否则执行创建软链接命令时会提示<em>拒绝访问。</em>，无法创建成功。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mklink /j &quot;C:\Program Files\Docker&quot; &quot;E:\Docker&quot;</span><br></pre></td></tr></table></figure><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025161458903.png" alt="创建软链接"></p><p>配置</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025162802004.png" alt="修改镜像存储位置"></p><p>**”connect ENOENT \.\pipe\dockerBackendApiServer”**，这是一个常见的 Docker Desktop 错误，通常与管道通信问题或 Docker Desktop 后台服务未正确运行有关。</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025162824904.png" alt="报错信息"></p><h1 id="软链接问题"><a href="#软链接问题" class="headerlink" title="软链接问题"></a>软链接问题</h1><blockquote><p>使用软链接注意事项：在创建符号链接或联接时，<strong>必须使用管理员权限</strong>运行命令提示符，否则会提示权限不足。</p></blockquote><hr><p>安装docker之前C盘的存储空间为404GB，安装之后也是404GB，而安装docker程序所需的存储空间为2GB，说明了docker程序没有安装在C盘上，而是通过软链接安装在了<code>E:\Docker</code>。</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025163903722.png" alt="硬盘空间"></p><h2 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h2><p>在C盘的<code>C:\Program Files\Docker</code>文件夹下也能看到docker的安装文件，而且还能正常点开和运行，地址栏的URL也是C盘的而不是跳转到E盘，我还以为docker重复安装在了两个位置，<code>其实没有重复安装</code>，而是在C盘上显示的一种错觉，实际上程序还是在E盘上</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025164121702.png" alt="在C盘打开docker文件"></p><p>用了软链接（<code>mklink /j</code>）后，两个目录的内容实际上是共享的。软链接的本质是创建一个指向原始位置的引用，而不是复制文件，因此在查看属性时，系统可能会错误地计算这两个位置的大小，导致它们看起来各自占用了2GB的空间。</p><p>使用 <code>mklink /j</code> 创建了一个目录联接，它会让 Windows 将所有对 <code>C:\Program Files\Docker</code> 的访问重定向到 <code>E:\Docker</code>。这样，<code>C:\Program Files\Docker</code> 实际上不再占用额外的磁盘空间。</p><p>还能通过创建文件夹的方式检验是否能够成功链接，例如<code>C:\Program Files\Docker</code>创建了 一个新的文件夹test,打开<code>E:\Docker</code>发现test文件夹也在。当我在<code>E:\Docker</code>删除了test文件夹，<code>C:\Program Files\Docker</code>中的test文件夹也消失了</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025164715036.png" alt="test文件夹"></p><h2 id="软链接补充知识"><a href="#软链接补充知识" class="headerlink" title="软链接补充知识"></a>软链接补充知识</h2><h3 id="硬链接（Hard-Link）"><a href="#硬链接（Hard-Link）" class="headerlink" title="硬链接（Hard Link）"></a>硬链接（Hard Link）</h3><p><strong>作用</strong>：</p><p>​为一个文件创建多个引用，多个引用指向相同的文件内容。像同一本书的多个目录入口，它们都指向同一内容。如果其中一个目录入口被删除，其他入口仍然可以访问那本书的内容。硬链接与目标文件共享<strong>同一块数据</strong>。硬链接和原始文件之间没有区别，都指向磁盘中的相同数据块。删除任意一个链接或原始文件，数据不会丢失，直到<strong>所有链接</strong>都删除时，数据才会从磁盘中释放。</p><p><strong>特点：</strong></p><p>​只能在同一卷中创建（不能跨磁盘）。</p><p>​硬链接和原始文件共享同一内容，即使删除了其中一个链接，文件内容仍然存在。</p><p><strong>效果:</strong></p><p>​下面示例展示了通过 <code>C:\backup\report_link.txt</code> 和 <code>C:\data\report.txt</code> 访问同一个文件内容。</p><p>​无论在 <code>report.txt</code> 还是 <code>report_link.txt</code> 中修改内容，两者都会同步更新，因为它们指向同一块磁盘数据。</p><p>​如果删除了 <code>report.txt</code>，<code>report_link.txt</code> 依然存在，文件内容不会丢失</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 示例</span><br><span class="line">mklink /H &quot;C:\backup\report_link.txt&quot; &quot;C:\data\report.txt&quot;</span><br></pre></td></tr></table></figure><h3 id="软链接-Symbolic-Link"><a href="#软链接-Symbolic-Link" class="headerlink" title="软链接&#x2F;Symbolic Link"></a>软链接&#x2F;Symbolic Link</h3><p><strong>作用：</strong></p><p>​软链接像一个指针，可以指向文件或目录，支持跨卷操作指向另一个文件或文件夹的位置。如果目标文件或文件夹被删除或移动，软链接会失效（就像坏掉的快捷方式）。</p><p><strong>效果：</strong></p><p>​在 <code>D:\project\data</code> 中有一个数据文件夹，但希望在 <code>C:\work</code> 中也能访问这个文件夹，而不复制它。做了下面这一步之后，可以从 <code>C:\work\data_link</code> 访问 <code>D:\project\data</code> 文件夹中的所有内容，如果在 <code>C:\work\data_link</code> 中创建、修改或删除文件，<code>D:\project\data</code> 中会同步变化。如果删除了 <code>D:\project\data</code> 目录，<code>C:\work\data_link</code> 会指向一个不存在的位置，访问时会出错。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mklink /D &quot;C:\work\data_link&quot; &quot;D:\project\data&quot;</span><br></pre></td></tr></table></figure><h3 id="二者的区别"><a href="#二者的区别" class="headerlink" title="二者的区别"></a>二者的区别</h3><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241025170726734.png" alt="软链接与硬链接的区别"></p><h3 id="目录联接（Junction）"><a href="#目录联接（Junction）" class="headerlink" title="目录联接（Junction）"></a>目录联接（Junction）</h3><p><strong>本次方法采用的就是目录链接</strong>，<strong>和软链接非常像</strong>。它是一种特殊的链接类型，只能用于目录之间的映射。它允许将一个目录的路径映射到另一个位置，但不支持文件的映射。当想将某个程序或文件夹的路径重定向到另一个磁盘（比如把 <code>C:\Program Files</code> 下的文件重定向到 D 盘），但不想改变原路径时，目录联接非常有用。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 这会将 C:\Program Files\Docker 变成一个指向 E:\Docker 的目录联接。</span><br><span class="line">mklink /J &quot;C:\Program Files\Docker&quot; &quot;E:\Docker&quot;</span><br></pre></td></tr></table></figure><h2 id="mklink-命令的详细用法"><a href="#mklink-命令的详细用法" class="headerlink" title="mklink 命令的详细用法"></a><code>mklink</code> 命令的详细用法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mklink [选项] &lt;链接路径&gt; &lt;目标路径&gt;</span><br></pre></td></tr></table></figure><h3 id="常用选项："><a href="#常用选项：" class="headerlink" title="常用选项："></a><strong>常用选项：</strong></h3><ul><li>**<code>/D</code>**：创建一个指向目录的符号链接。</li><li>**<code>/J</code>**：创建目录联接（Junction）。</li><li>**<code>/H</code>**：创建文件的硬链接。</li><li><strong>（无选项）</strong>：默认创建文件的符号链接。</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+            <tag> 实用软件/工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>虚拟机网络模式(桥接、NAT、Host-Only)</title>
       <link href="/posts/50587de9.html"/>
       <url>/posts/50587de9.html</url>
@@ -356,9 +377,9 @@
       
         <tags>
             
-            <tag> 实用软件/工具 </tag>
-            
             <tag> Docker </tag>
+            
+            <tag> 实用软件/工具 </tag>
             
         </tags>
       
@@ -632,9 +653,9 @@
       
         <tags>
             
-            <tag> 实用软件/工具 </tag>
-            
             <tag> Docker </tag>
+            
+            <tag> 实用软件/工具 </tag>
             
         </tags>
       
@@ -684,9 +705,9 @@
       
         <tags>
             
-            <tag> 实用软件/工具 </tag>
-            
             <tag> Docker </tag>
+            
+            <tag> 实用软件/工具 </tag>
             
         </tags>
       
