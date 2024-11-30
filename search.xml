@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>论文画图</title>
+      <link href="/posts/161014cc.html"/>
+      <url>/posts/161014cc.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>收集一些论文上看见的画得比较好的结构图和模型图，方便日后借鉴。在GitHub上也有一个机器学习的PPT模版，给了很多机器学习的形状可以在模型中使用，PPT放在文章后面了。有很多画图软件，例如vision、origin、MATLAB等，一个都还没用过，后面真正到画图那一步再去学习一下，现在还没有看到哪一篇文章画图画得特别生动的，来来回回都是几个模型，怎么样才能画得好看呢。</p><h1 id="ml-visuals"><a href="#ml-visuals" class="headerlink" title="ml-visuals"></a>ml-visuals</h1><p>GitHub上的项目，提供了很多深度学习的PPT模版可供使用，</p><blockquote><p>项目自述如下</p></blockquote><p><code>ML Visuals 包含图表和模板，您可以重复使用和定制这些图表和模板，以改进您的科学写作。</code></p><p>项目地址：<a href="https://github.com/dair-ai/ml-visuals">ml-visuals</a></p><h1 id="精美论文结构图"><a href="#精美论文结构图" class="headerlink" title="精美论文结构图"></a>精美论文结构图</h1><h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><p>出处：<strong>Deep residual convolutional neural Network: An efficient technique for  intrusion detection system</strong> </p><p>文章位置：<strong>H:\文章\有用的文章\深度残差卷积神经网络.pdf</strong></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241130185206418.png" alt="图1"></p><h2 id="2"><a href="#2" class="headerlink" title="2"></a>2</h2><p>出处：<strong>Anomal-E:Aself-supervisednetworkintrusiondetectionsystem basedongraphneuralnetworks</strong> </p><p>文章位置：<strong>H:\文章\有用的文章\1-s2.0-S0950705122011236-main.pdf</strong></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241130185438652.png" alt="图2"></p><h1 id="GitHub深度学习PPT模版预览"><a href="#GitHub深度学习PPT模版预览" class="headerlink" title="GitHub深度学习PPT模版预览"></a>GitHub深度学习PPT模版预览</h1><div class="row">    <embed src="https://statics.liuhengfeng.xyz/paper/%E8%AE%BA%E6%96%87%E7%94%BB%E5%9B%BE%E6%A8%A1%E7%89%88.pdf" width="100%" height="550" type="application/pdf"></div>]]></content>
+      
+      
+      <categories>
+          
+          <category> 科研 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 科研 </tag>
+            
+            <tag> 论文 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>家庭网络&amp;WiFi升级</title>
       <link href="/posts/40f21060.html"/>
       <url>/posts/40f21060.html</url>
