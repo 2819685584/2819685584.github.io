@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>图床照片无法显示(SSL问题)</title>
+      <link href="/posts/bfc3cf2c.html"/>
+      <url>/posts/bfc3cf2c.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>打开网站显示如下，所有图片都无法加载，但是js脚本和css都能正常渲染，一开始以为是图床出问题了，在阿里云的OSS打开图片也无法显示，是一个加载错误的图标。后面才想起可能是证书出问题了，因为浏览器打开网站显示连接不安全，而OSS和网站都配置了SSL证书，之前WordPress网站配置证书的时候有效期只有90天，转到阿里云申请的免费证书有效期也只有90天。</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/df337263fff5ccdd33b2578ee79ff333.png" alt="显示页面"></p><blockquote><p>更新证书后网站连接才显示正常，否则会有一个红色的<code>×</code></p></blockquote><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218213426648.png" alt="更新证书"></p><h1 id="阿里云更换SSL证书"><a href="#阿里云更换SSL证书" class="headerlink" title="阿里云更换SSL证书"></a>阿里云更换SSL证书</h1><h2 id="申请SSL证书"><a href="#申请SSL证书" class="headerlink" title="申请SSL证书"></a>申请SSL证书</h2><p>在阿里云的<code>数字证书管理服务</code>申请证书，进入<code>个人测试证书</code></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218213612258.png" alt="步骤一"></p><p>填写使用SSL证书的域名，这里需要注意一下，图床使用的域名是<code>statics.liuhengfeng.xyz</code>,之前申请证书的时候我没注意，填写的是<code>static.liuhengfeng.xyz</code>,少了一个<code>s</code>,导致部署证书时无法匹配到已有域名从而导致部署失败，我使用了两张证书，一张给<code>statics.liuhengfeng.xyz</code>，另一张给<code>liuhengfeng.xyz</code>和<code>www.liuhengfeng.xyz</code></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218213726368.png" alt="步骤二"></p><p>申请成功之后如下图所示</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218214113222.png" alt="SSL申请成功"></p><h2 id="部署证书"><a href="#部署证书" class="headerlink" title="部署证书"></a>部署证书</h2><p>申请完成后，选择右侧的部署，把证书部署到相应的云产品上，我两个证书一个部署到对象存储OSS上，一个部署到CDN上</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218214555046.png" alt="部署证书"></p><p>部署之后可以在CDN控制台看到证书的相关信息，既可以自动匹配证书，也可以自定义上传证书</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218214906640.png" alt="证书信息"></p><p>下载证书需要在<code>SSL证书管理</code>页面点击右边的<code>更多</code>，然后选择<code>下载</code>，选择<code>Nginx类型</code>，然后手动上传到相应的服务上即可</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218215040440.png" alt="下载证书-1"></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218215118474.png" alt="下载证书-2"></p><h2 id="CDN配置"><a href="#CDN配置" class="headerlink" title="CDN配置"></a>CDN配置</h2><p>CDN具体配置信息如下，现在使用<code>www.liuhengfeng.xyz</code>访问网站能使用CDN进行加速，访问图片时也能使用CDN缓存，但是如果使用<code>liuhengfeng.xyz</code>访问网站能进行加速吗？</p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218215825566.png" alt="1"></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218215430311.png" alt="2"></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241218220340027.png" alt="冲突信息"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>2024-12</title>
       <link href="/posts/3c5d6b39.html"/>
       <url>/posts/3c5d6b39.html</url>
@@ -79,9 +98,9 @@
       
         <tags>
             
-            <tag> 科研 </tag>
-            
             <tag> 笔记 </tag>
+            
+            <tag> 科研 </tag>
             
         </tags>
       
