@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>Geometric SMOTE算法描述</title>
+      <link href="/posts/251b79b3.html"/>
+      <url>/posts/251b79b3.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="算法描述示例"><a href="#算法描述示例" class="headerlink" title="算法描述示例"></a>算法描述示例</h1><h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/e89d51588fb3d5c63a7fd8ae52715223.png" alt="算法描述1"></p><h2 id="2"><a href="#2" class="headerlink" title="2"></a>2</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/97f122ea4e190841046eee32eafe9107.png" alt="算法描述2"></p><h2 id="3"><a href="#3" class="headerlink" title="3"></a>3</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/JSJA2024S2122_39100.jpg" alt="示例3"></p><h2 id="4"><a href="#4" class="headerlink" title="4"></a>4</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/HGZD202405012_06600.jpg" alt="示例4"></p><h2 id="5"><a href="#5" class="headerlink" title="5"></a>5</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241219170153526.png" alt="示例5-1"></p><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241219170302660.png" alt="示例5-2"></p><h2 id="6"><a href="#6" class="headerlink" title="6"></a>6</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241219170508932.png" alt="示例6"></p><h2 id="7"><a href="#7" class="headerlink" title="7"></a>7</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241219171142611.png" alt="示例7"></p><h2 id="8"><a href="#8" class="headerlink" title="8"></a>8</h2><p><img src="https://statics.liuhengfeng.xyz/Hexo/image-20241219171252688.png" alt="示例8"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 科研 </tag>
+            
+            <tag> 论文 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>图床照片无法显示(SSL问题)</title>
       <link href="/posts/bfc3cf2c.html"/>
       <url>/posts/bfc3cf2c.html</url>
@@ -98,9 +119,9 @@
       
         <tags>
             
-            <tag> 笔记 </tag>
-            
             <tag> 科研 </tag>
+            
+            <tag> 笔记 </tag>
             
         </tags>
       
@@ -694,9 +715,9 @@
       
         <tags>
             
-            <tag> bug </tag>
-            
             <tag> hexo </tag>
+            
+            <tag> bug </tag>
             
         </tags>
       
