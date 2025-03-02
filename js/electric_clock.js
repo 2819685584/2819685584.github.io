@@ -174,20 +174,37 @@ function getIpInfo() {
   let location = "";
 
   // 封装天气请求，确保 URL 始终带上 location 与 key 参数
-  function fetchWeather(location) {
-    let weatherUrl = `https://devapi.qweather.com/v7/weather/now?location=${location}&key=${qweather_key}`;
-    console.log("Fetching weather from: " + weatherUrl);
-    fetch(weatherUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        if (document.getElementById("hexo_electric_clock")) {
-          clockUpdateTime(data, cityName);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching weather:", err);
-      });
-  }
+function fetchWeather(location) {
+  let weatherUrl = `https://devapi.qweather.com/v7/weather/now?location=${location}&key=${qweather_key}`;
+  console.log("Fetching weather from: " + weatherUrl);
+
+  fetch(weatherUrl)
+    .then((response) => {
+      if (!response.ok) {
+        // 处理 HTTP 错误状态
+        return response.json().then((errData) => {
+          throw new Error(
+            `HTTP ${response.status}: ${errData.code} - ${errData.message}`
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (document.getElementById("hexo_electric_clock")) {
+        clockUpdateTime(data, cityName);
+      }
+    })
+    .catch((err) => {
+      console.error("❌ 天气请求失败:", err.message);
+      if (err.message.includes("401")) {
+        console.warn(
+          "⚠️ 可能的原因: API Key 无效/过期，请检查 QWeather 开发者平台"
+        );
+      }
+    });
+}
+
 
   if (clock_default_rectangle_enable === "true") {
     // 使用预设的 rectangle 坐标
