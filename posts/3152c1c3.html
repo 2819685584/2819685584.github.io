@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Python装饰器与函数参数(*args,**kwargs) | Liu's Secret Blog</title><meta name="author" content="iKun"><meta name="copyright" content="iKun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="位置参数与关键字参数在 Python 中，位置参数（Positional Argument） 和 关键字参数（Keyword Argument） 是两种常见的函数参数传递方式。 1. 位置参数（Positional Argument） 位置参数是按照参数定义的顺序传递的值。 传递参数时，顺序必须匹配函数的参数顺序。  123456789# 示例def greet(name, age):    pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python装饰器与函数参数(*args,**kwargs)">
+<meta property="og:url" content="https://liuhengfeng.xyz/posts/3152c1c3.html">
+<meta property="og:site_name" content="Liu&#39;s Secret Blog">
+<meta property="og:description" content="位置参数与关键字参数在 Python 中，位置参数（Positional Argument） 和 关键字参数（Keyword Argument） 是两种常见的函数参数传递方式。 1. 位置参数（Positional Argument） 位置参数是按照参数定义的顺序传递的值。 传递参数时，顺序必须匹配函数的参数顺序。  123456789# 示例def greet(name, age):    pr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-19_13-48-56.png">
+<meta property="article:published_time" content="2025-03-20T05:31:08.000Z">
+<meta property="article:modified_time" content="2025-03-20T05:31:08.000Z">
+<meta property="article:author" content="iKun">
+<meta property="article:tag" content="技能学习">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-19_13-48-56.png"><link rel="shortcut icon" href="https://statics.liuhengfeng.xyz/Hexo/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240907191402.jpg"><link rel="canonical" href="https://liuhengfeng.xyz/posts/3152c1c3.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":280},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体中文","cht_to_chs":"你已切换为简体中文","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Python装饰器与函数参数(*args,**kwargs)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-20 13:31:08'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 7 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/universe.css"><span id="fps"></span><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/hexo_electric_clock.css"><link rel="stylesheet" href="/css/bottom_runtime.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><link rel="stylesheet" href="/css/calendar.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="/css/swiper.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="/css/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+document.addEventListener('pjax:send', () => {
+  Pace.restart()
+})
+</script><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/progress_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/u%3D1968668429%2C2104382916%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">54</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-19_13-48-56.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Liu's Secret Blog"><img class="site-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/71324098a20dbb13870ea57a6bf0f7a0.jpeg"/><span class="site-name">Liu's Secret Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Python装饰器与函数参数(*args,**kwargs)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-20T05:31:08.000Z" title="发表于 2025-03-20 13:31:08">2025-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-20T05:31:08.000Z" title="更新于 2025-03-20 13:31:08">2025-03-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Python装饰器与函数参数(*args,**kwargs)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="位置参数与关键字参数"><a href="#位置参数与关键字参数" class="headerlink" title="位置参数与关键字参数"></a>位置参数与关键字参数</h1><p>在 Python 中，<strong>位置参数（Positional Argument）</strong> 和 <strong>关键字参数（Keyword Argument）</strong> 是两种常见的函数参数传递方式。</p>
+<h2 id="1-位置参数（Positional-Argument）"><a href="#1-位置参数（Positional-Argument）" class="headerlink" title="1. 位置参数（Positional Argument）"></a>1. <strong>位置参数（Positional Argument）</strong></h2><ul>
+<li>位置参数是按照<strong>参数定义的顺序</strong>传递的值。</li>
+<li>传递参数时，<strong>顺序必须匹配</strong>函数的参数顺序。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 示例</span><br><span class="line">def greet(name, age):</span><br><span class="line">    print(f&quot;Hello, my name is &#123;name&#125; and I am &#123;age&#125; years old.&quot;)</span><br><span class="line"></span><br><span class="line">greet(&quot;Alice&quot;, 25)  # 位置参数，按顺序匹配 name=&quot;Alice&quot;, age=25</span><br><span class="line"></span><br><span class="line"># 如果参数顺序错误，可能导致错误或意外的结果。</span><br><span class="line">greet(25, &quot;Alice&quot;)  # 结果会不正确</span><br><span class="line">Hello, my name is 25 and I am Alice years old.</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-关键字参数（Keyword-Argument）"><a href="#2-关键字参数（Keyword-Argument）" class="headerlink" title="2. 关键字参数（Keyword Argument）"></a>2. <strong>关键字参数（Keyword Argument）</strong></h2><ul>
+<li>关键字参数是<strong>通过参数名</strong>来传递的值，而不依赖位置。</li>
+<li>这样可以<strong>不考虑顺序</strong>，只要参数名称匹配即可。</li>
+<li>代码可读性更高，明确参数的作用。</li>
+<li>允许改变参数顺序，而不会影响函数的执行结果。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 示例</span><br><span class="line">greet(age=25, name=&quot;Alice&quot;)  # 顺序无关紧要</span><br><span class="line">Hello, my name is Alice and I am 25 years old.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-混合使用位置参数和关键字参数"><a href="#3-混合使用位置参数和关键字参数" class="headerlink" title="3. 混合使用位置参数和关键字参数"></a>3. <strong>混合使用位置参数和关键字参数</strong></h2><ul>
+<li><strong>位置参数必须写在前面，关键字参数写在后面</strong>，否则会报错。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 正确</span><br><span class="line">greet(&quot;Alice&quot;, age=25)  # 位置参数 + 关键字参数</span><br><span class="line"># 错误</span><br><span class="line">greet(name=&quot;Alice&quot;, 25)  # 关键字参数后面不能有位置参数</span><br><span class="line">SyntaxError: positional argument follows keyword argument</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-默认参数（Default-Argument）"><a href="#4-默认参数（Default-Argument）" class="headerlink" title="4. 默认参数（Default Argument）"></a>4. <strong>默认参数（Default Argument）</strong></h2><ul>
+<li>可以为关键字参数设置默认值，使其成为<strong>可选参数</strong>。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def greet(name, age=18):  # age 设定默认值 18</span><br><span class="line">    print(f&quot;Hello, my name is &#123;name&#125; and I am &#123;age&#125; years old.&quot;)</span><br><span class="line"></span><br><span class="line">greet(&quot;Bob&quot;)       # 没提供 age，默认值生效</span><br><span class="line">greet(&quot;Alice&quot;, 25) # 提供了 age，使用 25</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250319141359479.png" alt="位置参数与关键字参数"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def example_function(a, b, *args, c=10, **kwargs):</span><br><span class="line">    print(f&quot;a = &#123;a&#125;, b = &#123;b&#125;&quot;)</span><br><span class="line">    print(f&quot;args = &#123;args&#125;&quot;)  # 额外的位置参数</span><br><span class="line">    print(f&quot;c = &#123;c&#125;&quot;)  # 关键字参数，带默认值</span><br><span class="line">    print(f&quot;kwargs = &#123;kwargs&#125;&quot;)  # 额外的关键字参数</span><br><span class="line"></span><br><span class="line">example_function(1, 2, 3, 4, c=20, x=30, y=40)</span><br><span class="line"></span><br><span class="line">a = 1, b = 2</span><br><span class="line">args = (3, 4)</span><br><span class="line">c = 20</span><br><span class="line">kwargs = &#123;&#x27;x&#x27;: 30, &#x27;y&#x27;: 40&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="args与-kwargs"><a href="#args与-kwargs" class="headerlink" title="*args与**kwargs"></a>*args与**kwargs</h1><p>在 Python 中，<code>*args</code> 和 <code>**kwargs</code> 用于<strong>定义函数时</strong>接收可变数量的参数，其实就是传递给函数的参数。主要用于函数定义，可以将<strong>不定数量</strong>的参数传递给一个函数，提高函数的灵活性，使其能够处理不同数量的输入参数。</p>
+<h2 id="args"><a href="#args" class="headerlink" title="*args"></a>*args</h2><p>这里不定的意思是： 预先并不知道，函数使用者会传递多少个参数给你，所在在这个场景下使用这两个关键字。* args 是用来发送一个非键值的可变数量的参数列表给一个函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"># 示例</span><br><span class="line">def test_var_args(f_arg, *argv):</span><br><span class="line">    print(&quot;first normal arg:&quot;,f_arg)</span><br><span class="line">    for arg in argv:</span><br><span class="line">        print(&quot;another arg through *argv:&quot;,arg)</span><br><span class="line">test_var_args(&#x27;yasoob&#x27;,&#x27;python&#x27;,&#x27;eggs&#x27;,&#x27;test&#x27;)</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">first normal arg: yasoob</span><br><span class="line">another arg through *argv: python</span><br><span class="line">another arg through *argv: eggs</span><br><span class="line">another arg through *argv: test</span><br><span class="line"></span><br><span class="line"># 示例2  定义一个打印的函数，传入任意参数即可</span><br><span class="line">def print_func(*args):</span><br><span class="line">    print(type(args))</span><br><span class="line">    print(args)</span><br><span class="line">print_func(1,2,&#x27;python&#x27;,[])</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">&lt;class &#x27;tuple&#x27;&gt;</span><br><span class="line">(1, 2, &#x27;python&#x27;, [])</span><br><span class="line"></span><br><span class="line"># 示例3 在打印函数的参数处，新增 x 和 y 变量</span><br><span class="line">def print_func(x,y,*args):</span><br><span class="line">    print(type(x))</span><br><span class="line">    print(x)</span><br><span class="line">    print(y)</span><br><span class="line">    print(type(args))</span><br><span class="line">    print(args)</span><br><span class="line">print_func(1,2,&#x27;python&#x27;,[])</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">&lt;class &#x27;int&#x27;&gt;</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">&lt;class &#x27;tuple&#x27;&gt;</span><br><span class="line">(&#x27;python&#x27;, [])</span><br></pre></td></tr></table></figure>
+
+<p><strong>args 是 arguments 的缩写，表示位置参数；kwargs 是 keyword arguments 的缩写，表示关键字参数。</strong></p>
+<p>使用时要求 <em>args 参数要在</em>* kwargs 前面 【<strong>因为位置参数在关键字参数的前面</strong>。】</p>
+<blockquote>
+<p><code>*args</code> 用于传递<strong>可变数量</strong>的<strong>位置参数</strong>。它表示将参数打包成一个元组（tuple，不可变的有序序列数据类型），并传递给函数。在函数内部，可以使用 args 来访问这些参数。这意味着你可以传递任意数量的位置参数给函数。</p>
+</blockquote>
+<h2 id="kwargs"><a href="#kwargs" class="headerlink" title="**kwargs"></a>**kwargs</h2><p><strong>kwargs允许将不定长度的 【键值对 key-value 】，作为参数传递给一个函数。如果想要在一个函数里处理带名字的参数，应该使用</strong>kwargs</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 示例1</span><br><span class="line">def print_func(**kwargs):</span><br><span class="line">    print(type(kwargs))</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line">print_func(a=1, b=2, c=&#x27;呵呵&#x27;, d=[])</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">&lt;class &#x27;dict&#x27;&gt;</span><br><span class="line">&#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: &#x27;呵呵&#x27;, &#x27;d&#x27;: []&#125;</span><br><span class="line"></span><br><span class="line"># 示例2</span><br><span class="line">def greet_me(**kwargs):</span><br><span class="line">    for key, value in kwargs.items():</span><br><span class="line">        print(&quot;&#123;0&#125; == &#123;1&#125;&quot;.format(key, value))</span><br><span class="line">greet_me(name=&quot;yasoob&quot;)</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">name == yasoob</span><br></pre></td></tr></table></figure>
+
+<p><code>arg,*args,**kwargs</code> ,三者是可以组合使用的，但是组合使用需要遵循一定的语法规则，即顺序为王。</p>
+<p>需要按照：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def print_func(x, *args, **kwargs):</span><br><span class="line">    print(x)</span><br><span class="line">    print(args)</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line">print_func(1, 2, 3, 4, y=1, a=2, b=3, c=4)</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">1</span><br><span class="line">(2, 3, 4)</span><br><span class="line">&#123;&#x27;y&#x27;: 1, &#x27;a&#x27;: 2, &#x27;b&#x27;: 3, &#x27;c&#x27;: 4&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>arg,*args,**kwargs</code> 作为函数参数的顺序:</p>
+<ul>
+<li><p><code>*args</code> 用于接收任意数量的位置参数，返回一个元组。</p>
+</li>
+<li><p><code>**kwargs</code> 用于接收任意数量的关键字参数，返回一个字典。</p>
+</li>
+<li><p>在函数定义中可以同时使用 <code>*args</code> 和 <code>**kwargs</code> 来提高灵活性。</p>
+</li>
+<li><p><code>*</code> 和 <code>**</code> 还可以在函数调用时解包序列（列表、字典等）。</p>
+</li>
+<li><p>在类和装饰器中也能很好地运用这两个特性。</p>
+</li>
+</ul>
+<h1 id="python装饰器"><a href="#python装饰器" class="headerlink" title="python装饰器"></a>python装饰器</h1><p><strong>python里是万物皆对象，也就是万物都可传参,函数也可以作为函数的参数进行传递</strong></p>
+<p> <strong>装饰器</strong> 允许在不修改函数本身的情况下，动态地增加或修改函数的行为。装饰器本质上是一个函数，<strong>它接收一个函数作为参数输入，并在不改变原函数代码的情况下，返回一个增强的函数</strong>。装饰器的核心思想是“<strong>函数是第一类对象</strong>”，即函数可以作为参数传递和返回。</p>
+<p>装饰器要写在具体应用的函数前面，否则会报错，要先定义装饰器，才能在具体函数上面使用”@”进行装饰。</p>
+<blockquote>
+<p>装饰器给现有的模块增添新的小功能，可以对原函数进行功能扩展，而且还不需要修改原函数的内容，也不需要修改原函数的调用。</p>
+</blockquote>
+<ul>
+<li><code>decorator</code> 是装饰器函数，接受一个函数 <code>func</code> 作为参数。</li>
+<li><code>wrapper</code> 是我们在装饰器内部定义的一个新函数，它在执行原始函数 <code>func</code> 之前和之后添加了自定义的功能。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def decorator(func):</span><br><span class="line">    def wrapper():</span><br><span class="line">        print(&quot;Before function call&quot;)</span><br><span class="line">        func()  # 调用原始函数</span><br><span class="line">        print(&quot;After function call&quot;)</span><br><span class="line">    return wrapper</span><br></pre></td></tr></table></figure>
+
+<h2 id="带参数的装饰器"><a href="#带参数的装饰器" class="headerlink" title="带参数的装饰器"></a>带参数的装饰器</h2><p>装饰器函数也是函数，既然是函数，那么就可以进行参数传递，怎么写一个带参数的装饰器呢？</p>
+<p>前面的装饰器只是实现了一个计数，如果想在使用该装饰器的时候，传入一些备注的msg信息，怎么办做？</p>
+<p>基于原来的count_time函数外部<strong>再包一层用于接收参数的count_time_args</strong>，接收回来的参数就可以直接在内部的函数里面调用了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def count_time_args(msg=None):</span><br><span class="line">    def count_time(func):</span><br><span class="line">        def wrapper(*args, **kwargs):</span><br><span class="line">            t1 = time.time()</span><br><span class="line">            func(*args, **kwargs)</span><br><span class="line">            print(f&quot;[&#123;msg&#125;]执行时间为：&quot;, time.time() - t1)</span><br><span class="line">        return wrapper</span><br><span class="line">    return count_time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@count_time_args(msg=&quot;baiyu&quot;)</span><br><span class="line">def fun_one():</span><br><span class="line">    time.sleep(1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@count_time_args(msg=&quot;zhh&quot;)</span><br><span class="line">def fun_two():</span><br><span class="line">    time.sleep(1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@count_time_args(msg=&quot;mylove&quot;)</span><br><span class="line">def fun_three():</span><br><span class="line">    time.sleep(1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    fun_one()</span><br><span class="line">    fun_two()</span><br><span class="line">    fun_three()</span><br></pre></td></tr></table></figure>
+
+<h2 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h2><p>类装饰器是一个<strong>实现 <code>__call__</code> 方法的类</strong>，它可以像<strong>函数装饰器</strong>一样使用 <code>@</code> 语法来修饰其他函数或类。</p>
+<p>🔹 <strong>类装饰器的本质</strong>：</p>
+<ol>
+<li>类被用作装饰器，必须实现 <code>__call__</code> 方法。</li>
+<li><code>__call__</code> 方法会在被装饰函数调用时执行。</li>
+<li><strong>可以保持状态</strong>（相比于函数装饰器）。</li>
+</ol>
+<p>在python中，可以同类来实现装饰器的功能，称之为类装饰器。类装饰器的实现是调用了类里面的__call__函数。类装饰器的写法比装饰器函数的写法更加简单。</p>
+<p>当我们将类作为一个装饰器，工作流程：</p>
+<ul>
+<li>通过__init__（）方法初始化类</li>
+<li>通过__call__（）方法调用真正的装饰方法</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaiyuDecorator:</span><br><span class="line">    def __init__(self, func):</span><br><span class="line">        self.func = func</span><br><span class="line">        print(&quot;执行类的__init__方法&quot;)</span><br><span class="line"></span><br><span class="line">    def __call__(self, *args, **kwargs):</span><br><span class="line">        print(&#x27;进入__call__函数&#x27;)</span><br><span class="line">        t1 = time.time()</span><br><span class="line">        self.func(*args, **kwargs)</span><br><span class="line">        print(&quot;执行时间为：&quot;, time.time() - t1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@BaiyuDecorator</span><br><span class="line">def baiyu():</span><br><span class="line">    print(&quot;我是攻城狮白玉&quot;)</span><br><span class="line">    time.sleep(2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def python_blog_list():</span><br><span class="line">    time.sleep(5)</span><br><span class="line">    print(&#x27;&#x27;&#x27;【Python】爬虫实战，零基础初试爬虫下载图片（附源码和分析过程）</span><br><span class="line">    https://blog.csdn.net/zhh763984017/article/details/119063252 &#x27;&#x27;&#x27;)</span><br><span class="line">    print(&#x27;&#x27;&#x27;【Python】除了多线程和多进程，你还要会协程</span><br><span class="line">    https://blog.csdn.net/zhh763984017/article/details/118958668 &#x27;&#x27;&#x27;)</span><br><span class="line">    print(&#x27;&#x27;&#x27;【Python】爬虫提速小技巧，多线程与多进程（附源码示例）</span><br><span class="line">    https://blog.csdn.net/zhh763984017/article/details/118773313 &#x27;&#x27;&#x27;)</span><br><span class="line">    print(&#x27;&#x27;&#x27;【Python】爬虫解析利器Xpath，由浅入深快速掌握（附源码例子）</span><br><span class="line">    https://blog.csdn.net/zhh763984017/article/details/118634945 &#x27;&#x27;&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@BaiyuDecorator</span><br><span class="line">def blog(name):</span><br><span class="line">    print(&#x27;进入blog函数&#x27;)</span><br><span class="line">    name()</span><br><span class="line">    print(&#x27;我的博客是 https://blog.csdn.net/zhh763984017&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    baiyu()</span><br><span class="line">    print(&#x27;--------------&#x27;)</span><br><span class="line">    blog(python_blog_list)</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320000353995.png" alt="运行结果"></p>
+<h2 id="带参数的类装饰器"><a href="#带参数的类装饰器" class="headerlink" title="带参数的类装饰器"></a>带参数的类装饰器</h2><p>当装饰器有参数的时候，<strong>init</strong>() 函数就不能传入<strong>func</strong>（func代表要装饰的函数）了，而<strong>func</strong>是在__call__函数调用的时候传入的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class BaiyuDecorator:</span><br><span class="line">    def __init__(self, arg1, arg2):  # init()方法里面的参数都是装饰器的参数</span><br><span class="line">        print(&#x27;执行类Decorator的__init__()方法&#x27;)</span><br><span class="line">        self.arg1 = arg1</span><br><span class="line">        self.arg2 = arg2</span><br><span class="line"> </span><br><span class="line">    def __call__(self, func):  # 因为装饰器带了参数，所以接收传入函数变量的位置是这里</span><br><span class="line">        print(&#x27;执行类Decorator的__call__()方法&#x27;)</span><br><span class="line"> </span><br><span class="line">        def baiyu_warp(*args):  # 这里装饰器的函数名字可以随便命名，只要跟return的函数名相同即可</span><br><span class="line">            print(&#x27;执行wrap()&#x27;)</span><br><span class="line">            print(&#x27;装饰器参数：&#x27;, self.arg1, self.arg2)</span><br><span class="line">            print(&#x27;执行&#x27; + func.__name__ + &#x27;()&#x27;)</span><br><span class="line">            func(*args)</span><br><span class="line">            print(func.__name__ + &#x27;()执行完毕&#x27;)</span><br><span class="line"> </span><br><span class="line">        return baiyu_warp</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">@BaiyuDecorator(&#x27;Hello&#x27;, &#x27;Baiyu&#x27;)</span><br><span class="line">def example(a1, a2, a3):</span><br><span class="line">    print(&#x27;传入example()的参数：&#x27;, a1, a2, a3)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    print(&#x27;准备调用example()&#x27;)</span><br><span class="line">    example(&#x27;Baiyu&#x27;, &#x27;Happy&#x27;, &#x27;Coder&#x27;)</span><br><span class="line">    print(&#x27;测试代码执行完毕&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320001644179.png" alt="运行结果"></p>
+<h2 id="装饰器的顺序"><a href="#装饰器的顺序" class="headerlink" title="装饰器的顺序"></a>装饰器的顺序</h2><blockquote>
+<p>一个函数可以被多个装饰器进行装饰，那么装饰器的执行顺序是怎么样的？</p>
+<p>由输出结果可知，在装饰器修饰完的函数，在执行的时候先执行原函数的功能，然后再<strong>由里到外</strong>(从下到上)依次执行装饰器的内容。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">def BaiyuDecorator_1(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(&#x27;我是装饰器1&#x27;)</span><br><span class="line"> </span><br><span class="line">    return wrapper</span><br><span class="line"> </span><br><span class="line">def BaiyuDecorator_2(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(&#x27;我是装饰器2&#x27;)</span><br><span class="line"> </span><br><span class="line">    return wrapper</span><br><span class="line"> </span><br><span class="line">def BaiyuDecorator_3(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(&#x27;我是装饰器3&#x27;)</span><br><span class="line"> </span><br><span class="line">    return wrapper</span><br><span class="line"> </span><br><span class="line">@BaiyuDecorator_1</span><br><span class="line">@BaiyuDecorator_2</span><br><span class="line">@BaiyuDecorator_3</span><br><span class="line">def baiyu():</span><br><span class="line">    print(&quot;我是攻城狮白玉&quot;)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    baiyu()</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320000856918.png" alt="运行结果"></p>
+<h2 id="框架中的装饰器"><a href="#框架中的装饰器" class="headerlink" title="框架中的装饰器"></a>框架中的装饰器</h2><p>在一些框架中的 <code>@app.router()</code> 装饰器，它们和 Python 中常见的装饰器一样，本质上通过 <code>@</code> 符号修饰目标函数，但是它们的上下文通常与特定的框架有关，用于实现框架内部的功能（如 HTTP 路由）；</p>
+<p>一些框架（如 <strong>Flask</strong> 或 <strong>FastAPI</strong> 等）也使用了类似的装饰器语法来定义路由。这里的 <code>@app.router()</code> 也是一个装饰器，它的作用是将一个函数绑定到特定的 HTTP 路由上。当访问该路由时，框架会调用装饰器绑定的函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from fastapi import FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line">@app.get(&quot;/&quot;)</span><br><span class="line">def read_root():</span><br><span class="line">    return &#123;&quot;message&quot;: &quot;Hello, World!&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320003705586.png" alt="总结"></p>
+<h2 id="经典的python装饰器"><a href="#经典的python装饰器" class="headerlink" title="经典的python装饰器"></a>经典的python装饰器</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">#  计时装饰器，可以用来测量函数执行时间。</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">def timing_decorator(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        start = time.time()</span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        end = time.time()</span><br><span class="line">        print(f&quot;&#123;func.__name__&#125; took &#123;end - start&#125; seconds to execute&quot;)</span><br><span class="line">        return result</span><br><span class="line">    return wrapper</span><br><span class="line"></span><br><span class="line">@timing_decorator</span><br><span class="line">def example_function():</span><br><span class="line">    time.sleep(1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">example_function()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 日志记录装饰器，用于在函数调用前后打印日志信息。</span><br><span class="line">def logging_decorator(func):</span><br><span class="line">	def wrapper(*args, **kwargs):</span><br><span class="line">        print(f&quot;Calling function: &#123;func.__name__&#125;&quot;)</span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        print(f&quot;Function &#123;func.__name__&#125; finished executing.&quot;)</span><br><span class="line">		return result</span><br><span class="line">	return wrapper</span><br><span class="line"> </span><br><span class="line">@logging_decorator</span><br><span class="line">def another_example():</span><br><span class="line">	pass</span><br><span class="line"> </span><br><span class="line">another_example()</span><br><span class="line"></span><br><span class="line"># 类装饰器</span><br><span class="line">def add_extra_attribute(cls):</span><br><span class="line">    cls.extra_attribute = &quot;This is an extra attribute.&quot;</span><br><span class="line">    return cls</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@add_extra_attribute</span><br><span class="line">class MyClass:</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = MyClass()</span><br><span class="line">print(instance.extra_attribute)</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p>CSDN:<a target="_blank" rel="noopener" href="https://blog.csdn.net/GODSuner/article/details/117961990?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522deb18daa99097d2efd8bf1bf3423c908%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=deb18daa99097d2efd8bf1bf3423c908&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-117961990-null-null.142%5Ev102%5Epc_search_result_base2&utm_term=*args&spm=1018.2226.3001.4187">【Python】<code>*args</code> 和 <code>**kwargs</code>的用法【最全详解】</a></p>
+<p>CSDN:[【Python】一文弄懂python装饰器（附源码例子）]</p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>Python装饰器与函数参数(*args,**kwargs)</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://liuhengfeng.xyz/posts/3152c1c3.html">https://liuhengfeng.xyz/posts/3152c1c3.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>iKun</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2025-03-20</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2025-03-20</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%8A%80%E8%83%BD%E5%AD%A6%E4%B9%A0/">技能学习</a><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-19_13-48-56.png" data-sites="twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/29dc6fe8.html" title="Docker常用命令"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-17_16-01-30.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Docker常用命令</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/29dc6fe8.html" title="Docker常用命令"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-17_16-01-30.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-17</div><div class="title">Docker常用命令</div></div></a></div><div><a href="/posts/4802f5b8.html" title="Ubuntu20.04 LTS虚拟机安装docker"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-16_23-12-49.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-16</div><div class="title">Ubuntu20.04 LTS虚拟机安装docker</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E4%B8%8E%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">位置参数与关键字参数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BD%8D%E7%BD%AE%E5%8F%82%E6%95%B0%EF%BC%88Positional-Argument%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">1. 位置参数（Positional Argument）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0%EF%BC%88Keyword-Argument%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">2. 关键字参数（Keyword Argument）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B7%B7%E5%90%88%E4%BD%BF%E7%94%A8%E4%BD%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E5%92%8C%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">3. 混合使用位置参数和关键字参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0%EF%BC%88Default-Argument%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">4. 默认参数（Default Argument）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#args%E4%B8%8E-kwargs"><span class="toc-number">2.</span> <span class="toc-text">*args与**kwargs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#args"><span class="toc-number">2.1.</span> <span class="toc-text">*args</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kwargs"><span class="toc-number">2.2.</span> <span class="toc-text">**kwargs</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">python装饰器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">带参数的装饰器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">类装饰器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">3.3.</span> <span class="toc-text">带参数的类装饰器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-number">3.4.</span> <span class="toc-text">装饰器的顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">3.5.</span> <span class="toc-text">框架中的装饰器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E7%9A%84python%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">3.6.</span> <span class="toc-text">经典的python装饰器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">参考文章</span></a></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-wrap" id="footer-wrap"> <div class="copyright">&copy;2023 - 2025 By iKun</div><div class="footer_custom_text"><div id="runtime"></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async src="https://statics.liuhengfeng.xyz/js/fps.js"></script><script src="https://statics.liuhengfeng.xyz/js/jquery-3.6.1.min.js"></script><script src="https://statics.liuhengfeng.xyz/js/txmap.js"></script><canvas id="snow"></canvas><script async src="https://statics.liuhengfeng.xyz/js/snow.js"></script><script src="https://statics.liuhengfeng.xyz/js/jquery-3.6.3.min.js"></script><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script async src="https://statics.liuhengfeng.xyz/js/copyPrompt.js"></script><script async src="https://statics.liuhengfeng.xyz/js/bottom_runtime.js"></script><script async src="/js/lunar.js"></script><script async src="/js/calendar.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false#  open shake (抖動特效);
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('card-widget card-announcement')[2];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'f89c5a6b949a4345a0d22f0ad5b040ea';
+  var gaud_map_key = 'a36227a8c2b6dcd6b90a98920a06ac89';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '108.230574,22.793414';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://devapi.qweather.com/v7/weather/now?key=f89c5a6b949a4345a0d22f0ad5b040ea"></script><script data-pjax src="https://statics.liuhengfeng.xyz/js/electric_clock.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="博客主题为Butterfly" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-d021d6?style=flat&amp;logo=buefy&amp;color=purple" alt=""/></a><a class="github-badge" target="_blank" href="https://pages.github.com/" style="margin-inline:5px" data-title="本站项目托管于Github Pages" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github%20Pages-d021d6?style=flat&amp;logo=githubpages&amp;color=brown" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="GitHub万岁" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Thanks-Github-d021d6?style=flat&amp;logo=GitHub&amp;color=indigo" alt=""/></a><a class="github-badge" target="_blank" href="https://www.alibabacloud.com/zh/product/content-delivery-network?_p_lc=1" style="margin-inline:5px" data-title="网站资源使用阿里云CDN加速" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/CDN-%E9%98%BF%E9%87%8C%E4%BA%91CDN-d021d6?style=flat&amp;logo=speedtest&amp;color=blue" alt=""/></a><a class="github-badge" target="_blank" href="https://www.aliyun.com/benefit" style="margin-inline:5px" data-title="本站图床部署于阿里云OSS" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/OSS-%E9%98%BF%E9%87%8C%E4%BA%91OSS-d021d6?style=flat&amp;logo=alibabacloud&amp;color=orange" alt=""/></a><a class="github-badge" target="_blank" href="https://beian.miit.gov.cn" style="margin-inline:5px" data-title="网站备案号" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/ICP-%E6%A1%82ICP%E5%A4%872023012461%E5%8F%B7-d021d6?style=flat&amp;logo=brandfolder&amp;color=yellow" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=creativecommons" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/4433d2d6.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/day_news.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-06</span><a class="blog-slider__title" href="posts/4433d2d6.html" alt="">每天60秒读懂世界</a><div class="blog-slider__text">每日新闻早报</div><a class="blog-slider__button" href="posts/4433d2d6.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/eafd0d8b.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-01_23-35-13.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-03-01</span><a class="blog-slider__title" href="posts/eafd0d8b.html" alt="">2025-03</a><div class="blog-slider__text">2025年3月</div><a class="blog-slider__button" href="posts/eafd0d8b.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/9dfa3d1d.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-02-19_21-22-33.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-02-19</span><a class="blog-slider__title" href="posts/9dfa3d1d.html" alt="">2025-02</a><div class="blog-slider__text">2025年2月</div><a class="blog-slider__button" href="posts/9dfa3d1d.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/4f36ca7.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-01-02_21-37-36.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-02</span><a class="blog-slider__title" href="posts/4f36ca7.html" alt="">2025-01</a><div class="blog-slider__text">2025年1月</div><a class="blog-slider__button" href="posts/4f36ca7.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/3c5d6b39.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/2024-12-02_23-11-41.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-04</span><a class="blog-slider__title" href="posts/3c5d6b39.html" alt="">2024-12</a><div class="blog-slider__text">2024年12月</div><a class="blog-slider__button" href="posts/3c5d6b39.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/e4ce9af4.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/4de89523-2218-4748-8b18-5b961e39906d.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-06</span><a class="blog-slider__title" href="posts/e4ce9af4.html" alt="">2025</a><div class="blog-slider__text">My Life in 2025</div><a class="blog-slider__button" href="posts/e4ce9af4.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/93c9aa62.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/20241105bg2.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-05</span><a class="blog-slider__title" href="posts/93c9aa62.html" alt="">2024</a><div class="blog-slider__text">My Life In 2024!</div><a class="blog-slider__button" href="posts/93c9aa62.html" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://statics.liuhengfeng.xyz/js/swiper.js"></script><script defer data-pjax src="https://statics.liuhengfeng.xyz/js/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInRight');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInLeft');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('footer-wrap');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInUp');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('show');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInDown');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('is-center');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInLeft');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-data');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInLeft');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-social-icons');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInLeft');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-btn');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInLeft');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '700ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body></html>
