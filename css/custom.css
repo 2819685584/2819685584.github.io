@@ -365,7 +365,7 @@
   /* 为载入的字体取名字(随意) */
   font-family: 'myFont';
   /* 字体文件地址(相对或者绝对路径都可以) */
-  src: url(/font/hm-m.woff2);
+  src: url('https://statics.liuhengfeng.xyz/font/hm-m.woff2');
   /* 定义加粗样式(加粗多少) */
   font-weight: normal;
   /* 定义字体样式(斜体/非斜体) */
@@ -377,7 +377,7 @@
 /* 代码字体 */
 @font-face {
   font-family: 'CodeFont';
-  src: url('/font/JetBrainsMono-Regular.woff2');
+  src: url('https://statics.liuhengfeng.xyz/font/JetBrainsMono-Regular.woff2');
   font-weight: normal;
   font-style: normal;
   font-display: block;
