@@ -1,0 +1,507 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Python的异步编程:asyncio | Liu's  Blog</title><meta name="author" content="LHF"><meta name="copyright" content="LHF"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="学习一下python的异步编程，了解如何提高程序运行效率">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的异步编程:asyncio">
+<meta property="og:url" content="https://liuhengfeng.xyz/posts/9e5736b2.html">
+<meta property="og:site_name" content="Liu&#39;s  Blog">
+<meta property="og:description" content="学习一下python的异步编程，了解如何提高程序运行效率">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-20_16-28-03.png">
+<meta property="article:published_time" content="2025-03-20T08:26:49.000Z">
+<meta property="article:modified_time" content="2025-03-20T08:26:49.000Z">
+<meta property="article:author" content="LHF">
+<meta property="article:tag" content="技能学习">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-20_16-28-03.png"><link rel="shortcut icon" href="https://statics.liuhengfeng.xyz/Hexo/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240907191402.jpg"><link rel="canonical" href="https://liuhengfeng.xyz/posts/9e5736b2.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":290},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体中文","cht_to_chs":"你已切换为简体中文","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Python的异步编程:asyncio',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-20 16:26:49'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/custom.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/universe.css"><span id="fps"></span><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/hexo_electric_clock.css"><link rel="stylesheet" href="/css/bottom_runtime.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.15.6/lib/theme-chalk/index.css"><link rel="stylesheet" href="/css/calendar.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="/css/swiperstyle.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+document.addEventListener('pjax:send', () => {
+  Pace.restart()
+})
+</script><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/progress_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/u%3D1968668429%2C2104382916%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-20_16-28-03.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Liu's  Blog"><img class="site-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/2876f803-ae9a-49ac-bcd9-9d623c5beb03.jpg"/><span class="site-name">Liu's  Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Python的异步编程:asyncio</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-20T08:26:49.000Z" title="发表于 2025-03-20 16:26:49">2025-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-20T08:26:49.000Z" title="更新于 2025-03-20 16:26:49">2025-03-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>15分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Python的异步编程:asyncio"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><p>并发是指在一个时间段内，<strong>多个任务可以被交替执行</strong>。 这些任务不会真正同时运行，而是通过时间片轮转或任务切换实现“同时进行”的效果。</p>
+<blockquote>
+<p> <strong>并发</strong> 是 <strong>任务之间切换</strong>，使多个任务<strong>看起来</strong>是同时进行的，<strong>用于单核 CPU</strong>。</p>
+</blockquote>
+<p>适用于 <strong>I&#x2F;O 密集型任务</strong>（如网络请求、数据库访问），主要由 <strong>多线程</strong> 或 <strong>协程（Coroutine）</strong> 实现。</p>
+<p>假设正在做饭，同时在等待烧水和炒菜，打开水壶烧水，等待烧开（但不会一直盯着），在等水开的时间里，开始炒菜。水开了，回来泡茶，然后继续炒菜。虽然在“同时”完成烧水和炒菜，但实际上 CPU 只是在任务之间快速切换。</p>
+<h2 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h2><p><strong>并行是指多个任务在同一时刻真正地同时执行。</strong> 需要多个 CPU 核心（多核处理器）或多台计算机协同工作。主要由 <strong>多进程（Multiprocessing）</strong> 实现。</p>
+<p>假设和朋友一起做饭，我烧水，他炒菜，两个人真正同时工作，这样可以比一个人轮流完成更快。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>并发和并行的核心区别主要在于 <strong>是否真正同时执行任务</strong>，一个 CPU 核心可以实现并发（交替执行），但不能实现并行。多个 CPU 核心才可以实现并行。</p>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>同步是指任务按照顺序执行，下一个任务必须等待上一个任务完成后才能开始。<strong>每个任务必须等前一个任务完成后才能执行</strong>，导致总时间较长。单线程。</p>
+<p>假设做饭：先烧水，等水开。水开后，再炒菜。炒完菜，再泡茶。所有任务严格按顺序执行，不能交叉。</p>
+<h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><p><strong>异步（Asynchronous）</strong> 是一种编程方式，它允许任务在等待的时候执行其他任务，而不会阻塞整个程序的运行。不必等待前一个任务完成后再执行。主要用于 I&#x2F;O 密集型任务，如网络请求、数据库查询等。</p>
+<p><strong>核心特点</strong>：当某个任务在等待（如 I&#x2F;O 操作），程序不会停下来，而是去执行其他任务，等等待的任务完成后再继续处理。</p>
+<p><strong>任务可以在等待时交替执行，提高效率。</strong>适用于 <strong>I&#x2F;O 密集型任务</strong>（爬虫、API 调用）。主要通过 <strong><code>async/await</code> + 协程</strong> 实现。</p>
+<p>做饭时，打开水壶烧水，不用等它开，就去切菜。切完菜，水也快开了，可以直接泡茶，然后炒菜。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320163551244.png" alt="对比"></p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p><strong>进程是独立运行的程序，每个进程都有自己的内存空间</strong>，不能直接共享数据。进程间<strong>相互独立</strong>，一个崩溃不会影响其他进程。适合 <strong>CPU 密集型任务</strong>，如数据分析、机器学习等。</p>
+<p>一个应用程序可以有 <strong>一个</strong> 进程，也可以有 <strong>多个</strong> 进程，具体取决于应用程序的设计。</p>
+<ul>
+<li><strong>单进程应用</strong>：<strong>一个应用程序只有一个进程</strong>，所有任务都在这个进程里运行。如命令行终端（CMD、终端），运行时只有一个进程，执行命令时也是在同一个进程内完成。<strong>如果进程崩溃，整个程序都会崩溃</strong>。</li>
+<li><strong>多进程应用</strong>： <strong>一个应用程序可以创建多个进程，每个进程执行不同的任务</strong>。Google Chrome（多进程浏览器），每个<strong>标签页（Tab）</strong>是一个独立进程，如果一个标签页崩溃，不会影响其他标签页，还有<strong>渲染进程、GPU 进程、网络进程</strong>等多个进程。微信、QQ（聊天软件）有主进程：管理界面、窗口。有网络进程：负责消息发送和接收。有音视频进程：负责语音、视频通话。<strong>进程间隔离</strong>，如果某个进程崩溃，不会影响整个程序。<strong>利用多核 CPU</strong>，多个进程可以并行运行，提高性能。</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320164846916.png" alt="计算机进程"></p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p><strong>线程是进程内部的执行单元</strong>，多个线程共享进程的资源（内存、文件等）。线程是轻量级的，崩溃可能影响整个进程,切换快，开销小,<strong>同一进程的线程共享</strong> 内存、变量、文件句柄等.</p>
+<p>线程间通信快，但需要同步机制（如锁 <code>Lock</code>）。适合 <strong>I&#x2F;O 密集型任务</strong>，如网络爬虫、数据库查询等。</p>
+<blockquote>
+<p><strong>并发、并行、同步、异步</strong> 既可以基于 <strong>线程</strong>，也可以基于 <strong>进程</strong>，它们的实现方式和适用场景有所不同。</p>
+</blockquote>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><h4 id="餐厅经营"><a href="#餐厅经营" class="headerlink" title="餐厅经营"></a>餐厅经营</h4><p>假设我是一家餐厅的老板，我有 <strong>多个厨师（线程）</strong> 和 <strong>多个厨房（进程）</strong>。</p>
+<p><strong>🔹 进程 &#x3D; 独立的厨房</strong></p>
+<ul>
+<li>开了一家餐厅 <strong>（进程）</strong>，里面有<strong>自己的厨房</strong>，完全独立。</li>
+<li>另一家餐厅（另一个进程）<strong>不能直接访问你的厨房</strong>，只能通过<strong>送外卖</strong>（进程间通信）来传递信息。</li>
+<li>如果<strong>一个厨房（进程）着火了</strong>，不会影响其他餐厅（进程）。</li>
+</ul>
+<blockquote>
+<p><strong>特点</strong>：每个进程都有自己的资源，互不干扰，无法直接共享数据。</p>
+</blockquote>
+<p><strong>🔹 线程 &#x3D; 一个厨房里的多个厨师</strong></p>
+<ul>
+<li>我雇了<strong>多个厨师（线程）</strong>，他们<strong>共享厨房（共享内存）</strong>，可以同时做菜。</li>
+<li>但是如果<strong>多个厨师同时用同一个锅（变量）</strong>，就可能发生冲突（数据竞争），需要有<strong>管理规则（锁）</strong>。</li>
+<li>如果<strong>一个厨师（线程）出了问题</strong>，可能会影响整个厨房（进程）。</li>
+</ul>
+<blockquote>
+<p><strong>特点</strong>：同一进程内的线程共享资源，但容易相互影响，需要同步控制。</p>
+</blockquote>
+<h4 id="学校教学"><a href="#学校教学" class="headerlink" title="学校教学"></a>学校教学</h4><p><strong>🔹 进程：不同的学校</strong></p>
+<ul>
+<li>每所学校（进程）都是<strong>独立的</strong>，有自己的教学楼、教师和学生。</li>
+<li>不同学校之间不能随便互相借课本（进程不能直接共享数据）。</li>
+</ul>
+<p><strong>🔹 线程：一个学校的多个老师</strong></p>
+<ul>
+<li>在同一个学校（进程）里，有多个老师（线程）。</li>
+<li><strong>老师们共享学校的资源（比如教室、课本）</strong>。</li>
+<li>但如果多个老师同时要用一块黑板，就需要排队（同步机制）。</li>
+</ul>
+<p><strong>如果应用程序需要同时运行多个独立的任务（如 Chrome 多个标签页）</strong> 👉 <strong>多进程</strong></p>
+<p><strong>如果任务需要共享数据，且是 I&#x2F;O 密集型（如爬虫、网络请求）</strong> 👉 <strong>多线程</strong></p>
+<p><strong>如果任务是 CPU 密集型（如深度学习）</strong> 👉 <strong>多进程</strong></p>
+<h1 id="python异步编程"><a href="#python异步编程" class="headerlink" title="python异步编程"></a>python异步编程</h1><p><strong>异步编程的两大核心： 事件循环 + 协程函数</strong></p>
+<p>所谓「异步 IO」，就是发起一个 IO 操作，却不用等它结束，你可以继续做其他事情，当它结束时，我会得到相应的事件通知。</p>
+<p><strong>Asyncio 采用的是并发（concurrency）方式</strong>。Asyncio 并不能带来真正的并行（parallelism）。因为 GIL（全局解释器锁）的存在，Python 的多线程也不能带来真正的并行。</p>
+<p>可以交给 asyncio 执行的任务称为协程（coroutine）。一个协程可以放弃执行(存在等待结果的过程时)，把CPU的运行让给其它协程（即 <code>await</code>）</p>
+<h2 id="什么是asyncio？"><a href="#什么是asyncio？" class="headerlink" title="什么是asyncio？"></a>什么是asyncio？</h2><blockquote>
+<p>使用<code>async def</code>定义协程函数，<code>await</code>用于等待异步操作完成。</p>
+</blockquote>
+<p><code>asyncio</code> 是 Python 内置的 <strong>异步编程库</strong>，用于 <strong>异步 I&#x2F;O</strong> 操作。它可以让程序在等待 I&#x2F;O（如网络请求、文件读写、数据库查询）时，<strong>不阻塞主线程</strong>，从而提高运行效率。</p>
+<p>在普通的 <strong>同步</strong> 程序中，遇到 I&#x2F;O 操作（比如等待网络请求返回）时，程序必须 <strong>等待</strong>，浪费了 CPU 资源。而 <strong><code>asyncio</code> 可以让程序在等待 I&#x2F;O 任务完成的同时，可以去做其他事情</strong>，提高性能。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"># 同步示例</span><br><span class="line"></span><br><span class="line">def task1():</span><br><span class="line">    print(&quot;任务 1 开始&quot;)</span><br><span class="line">    time.sleep(2)  # 模拟 I/O 操作</span><br><span class="line">    print(&quot;任务 1 结束&quot;)</span><br><span class="line"></span><br><span class="line">def task2():</span><br><span class="line">    print(&quot;任务 2 开始&quot;)</span><br><span class="line">    time.sleep(2)</span><br><span class="line">    print(&quot;任务 2 结束&quot;)</span><br><span class="line"></span><br><span class="line">task1()</span><br><span class="line">task2()</span><br><span class="line">print(&quot;所有任务完成&quot;)</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">任务 1 开始</span><br><span class="line">（等待 2 秒）</span><br><span class="line">任务 1 结束</span><br><span class="line">任务 2 开始</span><br><span class="line">（等待 2 秒）</span><br><span class="line">任务 2 结束</span><br><span class="line">所有任务完成</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 异步示例，await asyncio.sleep(2) 不会阻塞主线程，两个任务可以同时进行，总共耗时 2 秒</span><br><span class="line">import asyncio</span><br><span class="line"></span><br><span class="line">async def task1():</span><br><span class="line">    print(&quot;任务 1 开始&quot;)</span><br><span class="line">    await asyncio.sleep(2)  # 模拟 I/O 操作</span><br><span class="line">    print(&quot;任务 1 结束&quot;)</span><br><span class="line"></span><br><span class="line">async def task2():</span><br><span class="line">    print(&quot;任务 2 开始&quot;)</span><br><span class="line">    await asyncio.sleep(2)</span><br><span class="line">    print(&quot;任务 2 结束&quot;)</span><br><span class="line"></span><br><span class="line">async def main():</span><br><span class="line">    await asyncio.gather(task1(), task2())  # 并发执行</span><br><span class="line"></span><br><span class="line">asyncio.run(main())  # 运行异步事件循环</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">任务 1 开始</span><br><span class="line">任务 2 开始</span><br><span class="line">（等待 2 秒）</span><br><span class="line">任务 1 结束</span><br><span class="line">任务 2 结束</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="协程-Coroutine：协同程序"><a href="#协程-Coroutine：协同程序" class="headerlink" title="协程(Coroutine：协同程序)"></a>协程(Coroutine：协同程序)</h2><p>传统的<strong>函数</strong>是<strong>一步步执行到底</strong>，中途不能暂停。<strong>协程可以在 <code>await</code> 关键字处暂停，让出 CPU，等任务完成后再继续执行</strong>。这样可以在等待 I&#x2F;O 任务时，<strong>不阻塞主线程，提高程序效率</strong>。</p>
+<p>协程的定义，需要使用 <code>async def</code> 语句。</p>
+<p><code>async def do_some_work(x): pass</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import asyncio  # 导入 asyncio 库</span><br><span class="line"></span><br><span class="line">async def my_coroutine():</span><br><span class="line">    print(&quot;任务开始&quot;)</span><br><span class="line">    await asyncio.sleep(2)  # 模拟 I/O 操作</span><br><span class="line">    print(&quot;任务结束&quot;)</span><br><span class="line"></span><br><span class="line"># 运行协程</span><br><span class="line">asyncio.run(my_coroutine())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>async def my_coroutine()</code> 定义了一个<strong>协程</strong>，可以异步运行。</p>
+</li>
+<li><p><code>await asyncio.sleep(2)</code> <strong>让出 CPU</strong>，不会阻塞主线程。</p>
+</li>
+<li><p><code>asyncio.run(my_coroutine())</code> <strong>运行协程</strong>，启动事件循环。</p>
+</li>
+</ul>
+<p>直接调用协程函数，协程并不会开始运行，只是返回一个协程对象，要让这个协程对象运行的话，有两种方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import asyncio</span><br><span class="line"> </span><br><span class="line">async def func():</span><br><span class="line">    print(&quot;协程内部代码&quot;)</span><br><span class="line"> </span><br><span class="line"># 调用协程函数，返回一个协程对象。</span><br><span class="line">result = func()</span><br><span class="line"> </span><br><span class="line"># 方式一</span><br><span class="line">loop = asyncio.get_event_loop() # 创建一个事件循环，只有 loop 运行了，协程才可能运行</span><br><span class="line">loop.run_until_complete(result) # 将协程当做任务提交到事件循环的任务列表中，协程执行完成之后终止。</span><br><span class="line"> </span><br><span class="line"># 方式二 最常用！！</span><br><span class="line"># 本质上方式一是一样的，内部先 创建事件循环 然后执行 run_until_complete，一个简便的写法。</span><br><span class="line">#asyncio.run 函数在 Python 3.7 中加入 asyncio 模块，</span><br><span class="line">asyncio.run(result)</span><br></pre></td></tr></table></figure>
+
+<p>这个过程可以理解为：将<code>协程</code>当做任务添加到 <code>事件循环</code> 的任务列表，然后事件循环检测列表中的<code>协程任务</code>是否已准备就绪（默认理解为就绪状态），如果准备就绪则执行协程的内部代码。</p>
+<p><code>await</code> 是一个只能在 <strong>协程函数</strong> 中使用的关键字。它的作用是当遇到 <strong>IO操作</strong> 时，<strong>挂起当前协程</strong>，让事件循环去执行其他 <strong>任务</strong>。当其他任务完成后，事件循环会将控制权切换回当前任务，继续执行协程函数 <code>await</code> 后面的代码。</p>
+<h2 id="事件循环（Event-Loop）"><a href="#事件循环（Event-Loop）" class="headerlink" title="事件循环（Event Loop）"></a><strong>事件循环（Event Loop）</strong></h2><p>事件循环可以当做是一个<code>while</code>循环，这个while循环在周期性的运行并执行一些<code>任务</code>，在特定条件下终止循环。其实也可以理解为就是创建一个<code>while</code>的死循环，在特定条件下终止循环. </p>
+<p><strong>事件循环</strong> 是异步程序的 <strong>核心调度器</strong>，负责<strong>管理协程</strong>（Coroutine）和 <strong>任务</strong>（Task）；</p>
+<p><strong>回调（Callback）</strong> 是 <strong>当任务完成时自动执行的函数</strong>，用于<strong>通知主程序异步任务的结果</strong>。</p>
+<p>📌 <strong>流程</strong></p>
+<ol>
+<li>事件循环启动。</li>
+<li>将所有的 <strong>协程转换为 Task</strong> 并调度执行。</li>
+<li><strong>等待 I&#x2F;O 任务完成</strong>，期间可以执行其他任务（不会阻塞）。</li>
+<li>任务完成后，事件循环 <strong>恢复暂停的协程</strong>，继续执行。</li>
+</ol>
+<h1 id="任务（task）（不明白！！）"><a href="#任务（task）（不明白！！）" class="headerlink" title="任务（task）（不明白！！）"></a>任务（task）（不明白！！）</h1><p>在 asyncio 中，Task 是对协程进行调度管理的对象。Task 实际上是 asyncio 事件循环的一个抽象概念，通过 Task 可以控制协程（coroutine）的执行，允许它们并发运行。在底层，Task 使用事件循环调度多个协程，使得它们看起来是同时运行的。</p>
+<hr>
+<blockquote>
+<p>这里的内容存疑</p>
+</blockquote>
+<p>当使用 <code>asyncio.create_task()</code> 创建一个任务时，它会被任务调度到事件循环中，等待事件循环来调度它的执行。如果创建了任务，但如果事件循环没有运行或者没有被 <code>await</code> 或通过 <code>gather()</code>、<code>as_completed()</code> 等函数显式触发，任务也会执行。</p>
+<p>在使用<code>asyncio.create_task(coro())</code>为协程函数创建任务时，若没有显式调用<code>await</code>、<code>asyncio.gather</code>或<code>asyncio.as_completed</code>等方法来等待任务完成，任务所代表的协程函数的代码依然会执行。不过，由于事件循环没有被强制等待这些任务完成，所以它们可能在事件循环结束之前都无法完成。</p>
+<hr>
+<p>使用 <code>asyncio.create_task()</code> 方法创建 Task，它会立即调度协程的运行并返回一个 Task 对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">import asyncio</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">async def my_coroutine():</span><br><span class="line">    print(f&quot;协程开始时间 &#123;time.strftime(&#x27;%X&#x27;)&#125;&quot;)</span><br><span class="line">    await asyncio.sleep(2)</span><br><span class="line">    print(f&quot;协程结束时间 &#123;time.strftime(&#x27;%X&#x27;)&#125;&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">async def main():</span><br><span class="line">    print(f&quot;主协程开始时间：&#123;time.strftime(&#x27;%X&#x27;)&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    # 创建一个 Task</span><br><span class="line">    task = asyncio.create_task(my_coroutine())</span><br><span class="line"></span><br><span class="line">    print(f&quot;任务创建时间：&#123;time.strftime(&#x27;%X&#x27;)&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    # 稍微等待一下，但不会 await Task</span><br><span class="line">    await asyncio.sleep(5)</span><br><span class="line"></span><br><span class="line">    print(f&quot;延时结束，开始等待任务：&#123;time.strftime(&#x27;%X&#x27;)&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    # 现在等待 Task 完成</span><br><span class="line">    await task</span><br><span class="line"></span><br><span class="line">    print(f&quot;主协程结束时间：&#123;time.strftime(&#x27;%X&#x27;)&#125;&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 运行主协程</span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">输出：</span><br><span class="line">主协程开始时间：17:45:30</span><br><span class="line">任务创建时间：17:45:30</span><br><span class="line">协程开始时间 17:45:30</span><br><span class="line">协程结束时间 17:45:32</span><br><span class="line">延时结束，开始等待任务：17:45:35</span><br><span class="line">主协程结束时间：17:45:35</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320184622165.png" alt="总结"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250320222525033.png" alt="三者 关系"></p>
+<p><strong>实现协程异步其实只需做三件事：</strong></p>
+<ol>
+<li>.定义协程函数</li>
+<li>包装协程为任务</li>
+<li>建立事件循环</li>
+</ol>
+<h2 id="await关键字理解"><a href="#await关键字理解" class="headerlink" title="await关键字理解"></a>await关键字理解</h2><p><code>await</code> 是 asyncio<code>中的关键字，它用于**等待一个可等待对象（awaitable）完成执行**。在</code>async<code> 函数内部，</code>await<code> 允许代码**非阻塞**地挂起当前任务，并让出控制权给事件循环，允许其他任务继续执行。</code>reponse &#x3D; await + 可等待对象&#96; ，await 遇到IO操作会挂起当前协程，当前协程挂起时，事件循环可以去执行其他协程</p>
+<p><strong>任务未完成时</strong>：<code>await</code> 关键字会暂停当前协程的执行，让出事件循环的控制权，以便其它协程或异步任务可以执行；</p>
+<p><strong>任务完成时</strong>：一旦被等待的对象完成，await 表达式将返回对象的结果，并且当前协程将继续执行；</p>
+<p><em>同一个协程任务中（如main()），多个<code>await</code>, 会依次等待可等待对象执行完成；不同协程任务中，遇到await会交替执行。</em>   <strong>（☆☆☆，之前的困惑点，是否交替取决于是在同一个协程任务中还是在事件循环的不同协程任务）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"># 同一任务</span><br><span class="line">import asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">async def func(flags):</span><br><span class="line">    print(&quot;func() start&quot;)</span><br><span class="line">    await asyncio.sleep(2)   # 这里模拟IO操作</span><br><span class="line">    print(&quot;func() end&quot;)</span><br><span class="line">    return &quot;我是 func(&quot; + flags + &quot;)&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">async def main():</span><br><span class="line">    print(&quot;执行协程函数 main()&quot;)</span><br><span class="line"></span><br><span class="line">    # 遇到IO操作挂起当前协程(任务)，等待IO操作完成之后在继续往下执行，当前协程挂起，事件循环可以去执行其他的协程(任务)</span><br><span class="line">    result = await func(&quot;1&quot;)</span><br><span class="line">    print(&quot;IO第一次的请求结果：&quot;, result)</span><br><span class="line"></span><br><span class="line">    result = await func(&quot;2&quot;)</span><br><span class="line">    print(&quot;IO第二次的请求结果：&quot;, result)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">执行协程函数 main()</span><br><span class="line">func() start</span><br><span class="line">func() end</span><br><span class="line">IO第一次的请求结果： 我是 func(1)</span><br><span class="line">func() start</span><br><span class="line">func() end</span><br><span class="line">IO第二次的请求结果： 我是 func(2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 不同任务(这种才能体现异步的作用)</span><br><span class="line">import asyncio</span><br><span class="line">import time</span><br><span class="line">async def say_hello(str):</span><br><span class="line">    await asyncio.sleep(1)</span><br><span class="line">    print(f&quot;Hello, world!&#123;str&#125;&quot;)</span><br><span class="line"></span><br><span class="line">async def main():</span><br><span class="line">    start = time.time()</span><br><span class="line">    task1 = asyncio.create_task(say_hello(1))  # 启动异步任务</span><br><span class="line">    task2 = asyncio.create_task(say_hello(2))  # 启动另一个任务</span><br><span class="line">    await task1  # 等待任务完成</span><br><span class="line">    await task2</span><br><span class="line">    end = time.time()</span><br><span class="line">    print(f&quot;Time taken: &#123;end - start&#125;&quot;)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">Hello, world!1</span><br><span class="line">Hello, world!2</span><br><span class="line">Time taken: 1.0130705833435059</span><br></pre></td></tr></table></figure>
+
+<h2 id="asyncio常用函数"><a href="#asyncio常用函数" class="headerlink" title="asyncio常用函数"></a>asyncio常用函数</h2><ol>
+<li><code>asyncio.run(main())</code>：运行一个顶层的协程（<code>main()</code>），并自动管理事件循环。适用于主程序的入口点,在该事件循环中运行 <code>main()</code>，直到它完成。</li>
+<li><code>asyncio.create_task(coro())</code>:创建一个新的<strong>并发任务</strong>（Task），用于在事件循环中并行执行协程。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import asyncio</span><br><span class="line"></span><br><span class="line">async def foo():</span><br><span class="line">    await asyncio.sleep(2)</span><br><span class="line">    print(&quot;Task finished&quot;)</span><br><span class="line"></span><br><span class="line">async def main():</span><br><span class="line">    task = asyncio.create_task(foo())</span><br><span class="line">    print(&quot;Task created&quot;)</span><br><span class="line">    await asyncio.sleep(1)</span><br><span class="line">    print(&quot;Main function continues...&quot;)</span><br><span class="line">    await task  # 等待任务完成</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>await asyncio.sleep(seconds)</code>:异步休眠，不会阻塞事件循环,让出控制权，允许事件循环调度其他任务执行</li>
+<li><code>asyncio.gather(coros(),foo())</code>：并发运行多个协程，以列表的形式收集它们的返回值。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import asyncio</span><br><span class="line"></span><br><span class="line">async def foo():</span><br><span class="line">    await asyncio.sleep(1)</span><br><span class="line">    return &quot;foo&quot;</span><br><span class="line"></span><br><span class="line">async def bar():</span><br><span class="line">    await asyncio.sleep(2)</span><br><span class="line">    return &quot;bar&quot;</span><br><span class="line"></span><br><span class="line">async def main():</span><br><span class="line">    results = await asyncio.gather(foo(), bar())</span><br><span class="line">    print(results)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">[&#x27;foo&#x27;, &#x27;bar&#x27;]</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><code>asyncio.wait(tasks)</code>：等待多个任务完成，但不像 <code>gather</code> 那样收集返回值。</li>
+<li><strong><code>asyncio.as_completed()</code><strong>：返回已完成任务的结果，</strong>按完成顺序</strong>返回，不需要等到所有任务都完成才返回</li>
+</ol>
+<hr>
+<p><code>await asyncio.sleep(1)</code> 和 <code>time.sleep(1)</code> 的主要区别在于它们的<strong>阻塞行为</strong>：</p>
+<p><strong><code>await asyncio.sleep(1)</code>（非阻塞）</strong></p>
+<ul>
+<li><strong>异步操作</strong>，不会阻塞事件循环。</li>
+<li>让出 CPU 控制权，允许其他 <code>asyncio</code> 任务在这 1 秒内继续执行。</li>
+<li>适用于 <code>asyncio</code> 事件循环内部的任务调度。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import asyncio</span><br><span class="line"></span><br><span class="line">async def foo():</span><br><span class="line">    print(&quot;Start foo&quot;)</span><br><span class="line">    await asyncio.sleep(2)  # 期间可以执行其他任务</span><br><span class="line">    # time.sleep(2)  # 会完全阻塞 2 秒</span><br><span class="line">    print(&quot;End foo&quot;)</span><br><span class="line"></span><br><span class="line">async def bar():</span><br><span class="line">    print(&quot;Start bar&quot;)</span><br><span class="line">    await asyncio.sleep(1)</span><br><span class="line">    print(&quot;End bar&quot;)</span><br><span class="line"></span><br><span class="line">async def main():</span><br><span class="line">    task1 = asyncio.create_task(foo())</span><br><span class="line">    task2 = asyncio.create_task(bar())</span><br><span class="line">    await asyncio.gather(task1, task2)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line"># 输出结果</span><br><span class="line">Start foo</span><br><span class="line">Start bar</span><br><span class="line">End bar</span><br><span class="line">End foo</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>time.sleep(1)</code>（阻塞）</strong></p>
+<ul>
+<li><strong>同步操作</strong>，会完全阻塞当前线程。</li>
+<li>在调用 <code>time.sleep(1)</code> 期间，Python 解释器不会执行任何其他代码，即使是 <code>asyncio</code> 任务。</li>
+<li>适用于普通同步代码，但<strong>不适用于 <code>asyncio</code> 事件循环</strong>，因为它会让整个事件循环卡住。</li>
+</ul>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p>CSDN:<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_56059292/article/details/138972771?ops_request_misc=&request_id=&biz_id=102&utm_term=python%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8Basyncio&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-138972771.nonecase&spm=1018.2226.3001.4187">python的异步编程(基于asyncio)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>Python的异步编程:asyncio</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://liuhengfeng.xyz/posts/9e5736b2.html">https://liuhengfeng.xyz/posts/9e5736b2.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>LHF</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2025-03-20</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2025-03-20</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%8A%80%E8%83%BD%E5%AD%A6%E4%B9%A0/">技能学习</a><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-20_16-28-03.png" data-sites="twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/76cb56d.html" title="安装Vue及Vue的基础知识学习"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-22_14-57-33.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">安装Vue及Vue的基础知识学习</div></div></a></div><div class="next-post pull-right"><a href="/posts/3152c1c3.html" title="Python装饰器与函数参数(*args,**kwargs)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-19_13-48-56.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Python装饰器与函数参数(*args,**kwargs)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/3152c1c3.html" title="Python装饰器与函数参数(*args,**kwargs)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-19_13-48-56.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-20</div><div class="title">Python装饰器与函数参数(*args,**kwargs)</div></div></a></div><div><a href="/posts/2ca90abc.html" title="AI基础知识"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/bc18e18a-2e2d-4378-9c15-f1c678fc5ed1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-19</div><div class="title">AI基础知识</div></div></a></div><div><a href="/posts/29dc6fe8.html" title="Docker常用命令"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-17_16-01-30.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-17</div><div class="title">Docker常用命令</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91"><span class="toc-number">1.1.</span> <span class="toc-text">并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.2.</span> <span class="toc-text">并行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.1.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5"><span class="toc-number">1.3.</span> <span class="toc-text">同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5"><span class="toc-number">1.4.</span> <span class="toc-text">异步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text">进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.6.</span> <span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.6.1.</span> <span class="toc-text">示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A4%90%E5%8E%85%E7%BB%8F%E8%90%A5"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">餐厅经营</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E6%A0%A1%E6%95%99%E5%AD%A6"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">学校教学</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">python异步编程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFasyncio%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">什么是asyncio？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B-Coroutine%EF%BC%9A%E5%8D%8F%E5%90%8C%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.2.</span> <span class="toc-text">协程(Coroutine：协同程序)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%EF%BC%88Event-Loop%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">事件循环（Event Loop）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%EF%BC%88task%EF%BC%89%EF%BC%88%E4%B8%8D%E6%98%8E%E7%99%BD%EF%BC%81%EF%BC%81%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">任务（task）（不明白！！）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#await%E5%85%B3%E9%94%AE%E5%AD%97%E7%90%86%E8%A7%A3"><span class="toc-number">3.1.</span> <span class="toc-text">await关键字理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#asyncio%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">asyncio常用函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">参考文章</span></a></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-wrap" id="footer-wrap"> <div class="copyright">&copy;2024 - 2025 By LHF</div><div class="footer_custom_text"><div id="runtime"></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><canvas id="universe"></canvas><script src="https://statics.liuhengfeng.xyz/js/jquery-3.6.1.min.js"></script><script async src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script><script async src="https://unpkg.com/element-ui@2.15.6/lib/index.js"></script><script async src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/js/lunar.min.js"></script><script src="/js/calendar.min.js"></script><script async src="https://statics.liuhengfeng.xyz/js/common.min.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false#  open shake (抖動特效);
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('card-widget card-announcement')[2];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'f89c5a6b949a4345a0d22f0ad5b040ea';
+  var gaud_map_key = 'a36227a8c2b6dcd6b90a98920a06ac89';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '108.230574,22.793414';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://devapi.qweather.com/v7/weather/now?key=f89c5a6b949a4345a0d22f0ad5b040ea"></script><script data-pjax src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/js/electric_clock.min.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="博客主题为Butterfly" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-d021d6?style=flat&amp;logo=buefy&amp;color=purple" alt=""/></a><a class="github-badge" target="_blank" href="https://pages.github.com/" style="margin-inline:5px" data-title="本站项目托管于Github Pages" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github%20Pages-d021d6?style=flat&amp;logo=githubpages&amp;color=brown" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="GitHub万岁" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Thanks-Github-d021d6?style=flat&amp;logo=GitHub&amp;color=indigo" alt=""/></a><a class="github-badge" target="_blank" href="https://www.alibabacloud.com/zh/product/content-delivery-network?_p_lc=1" style="margin-inline:5px" data-title="网站资源使用阿里云CDN加速" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/CDN-%E9%98%BF%E9%87%8C%E4%BA%91CDN-d021d6?style=flat&amp;logo=speedtest&amp;color=blue" alt=""/></a><a class="github-badge" target="_blank" href="https://www.aliyun.com/benefit" style="margin-inline:5px" data-title="本站图床部署于阿里云OSS" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/OSS-%E9%98%BF%E9%87%8C%E4%BA%91OSS-d021d6?style=flat&amp;logo=alibabacloud&amp;color=orange" alt=""/></a><a class="github-badge" target="_blank" href="https://beian.miit.gov.cn" style="margin-inline:5px" data-title="网站备案号" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/ICP-%E6%A1%82ICP%E5%A4%872023012461%E5%8F%B7-d021d6?style=flat&amp;logo=brandfolder&amp;color=yellow" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=creativecommons" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInRight');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('footer-wrap');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInUp');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('show');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInDown');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('is-center');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-data');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-social-icons');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-btn');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/4433d2d6.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/day_news.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-06</span><a class="blog-slider__title" href="posts/4433d2d6.html" alt="">每天60秒读懂世界</a><div class="blog-slider__text">每日新闻早报</div><a class="blog-slider__button" href="posts/4433d2d6.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/eafd0d8b.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-01_23-35-13.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-03-01</span><a class="blog-slider__title" href="posts/eafd0d8b.html" alt="">2025-03</a><div class="blog-slider__text">2025年3月</div><a class="blog-slider__button" href="posts/eafd0d8b.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/9dfa3d1d.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-02-19_21-22-33.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-02-19</span><a class="blog-slider__title" href="posts/9dfa3d1d.html" alt="">2025-02</a><div class="blog-slider__text">2025年2月</div><a class="blog-slider__button" href="posts/9dfa3d1d.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/4f36ca7.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-01-02_21-37-36.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-02</span><a class="blog-slider__title" href="posts/4f36ca7.html" alt="">2025-01</a><div class="blog-slider__text">2025年1月</div><a class="blog-slider__button" href="posts/4f36ca7.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/3c5d6b39.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/2024-12-02_23-11-41.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-04</span><a class="blog-slider__title" href="posts/3c5d6b39.html" alt="">2024-12</a><div class="blog-slider__text">2024年12月</div><a class="blog-slider__button" href="posts/3c5d6b39.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/e4ce9af4.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/4de89523-2218-4748-8b18-5b961e39906d.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-06</span><a class="blog-slider__title" href="posts/e4ce9af4.html" alt="">2025</a><div class="blog-slider__text">My Life in 2025</div><a class="blog-slider__button" href="posts/e4ce9af4.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/93c9aa62.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/20241105bg2.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-05</span><a class="blog-slider__title" href="posts/93c9aa62.html" alt="">2024</a><div class="blog-slider__text">My Life In 2024!</div><a class="blog-slider__button" href="posts/93c9aa62.html" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://statics.liuhengfeng.xyz/js/swiper.min.js"></script><script defer data-pjax src="https://statics.liuhengfeng.xyz/js/swiper_init.js"></script><!-- hexo injector body_end end --></body></html>

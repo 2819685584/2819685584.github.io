@@ -32,7 +32,7 @@
 }
 
 /* 侧边栏个人信息卡片动态渐变色 */
-#aside-content > .card-widget.card-info {
+/* #aside-content > .card-widget.card-info {
   background: linear-gradient(
     -45deg,
     #e8d8b9,
@@ -80,20 +80,20 @@
   100% {
     background-position: 0% 50%;
   }
-}
+} */
 
 /* 黑夜模式适配 */
-[data-theme="dark"] #aside-content > .card-widget.card-info {
+/* [data-theme="dark"] #aside-content > .card-widget.card-info {
   background: #191919ee;
-}
+}  */
 
 /* 个人信息Follow me按钮 */
 #aside-content > .card-widget.card-info > #card-info-btn {
-  background-color: #3eb8be;
+  background-color: #46875f;
   border-radius: 8px;
 }
 
-
+/* 黑夜霓虹灯 */
 /* 日间模式不生效 */
 [data-theme="light"] #site-name,
 [data-theme="light"] #site-title,
@@ -211,6 +211,7 @@
     text-shadow: #5636ed 0 0 5px;
   }
 }
+/* 黑夜霓虹灯 */
 
 /* 翻页按钮居中 */
 #pagination {
@@ -385,12 +386,12 @@
 
 /* 全局宽度 */
 .layout {
-  max-width: 1550px;
+  max-width: 1500px;
 }
 
 /* 侧边卡片栏宽度 */
 .aside-content {
-  max-width: 328px;
+  max-width: 315px;
   min-width: 300px;
 }
 
@@ -409,7 +410,7 @@
 #recent-posts>.recent-post-item {
   background: var(--trans-light);
   backdrop-filter: var(--backdrop-filter);
-  border-radius: 25px;
+  border-radius: 15px;
   border: var(--border-style);
 }
 
@@ -498,3 +499,84 @@ div#archive {
   font-size: 1.2rem;
   margin: 5px;
 }
+
+
+
+/* 加载动画显示图片 */
+.loading-img {
+  background: url(https://statics.liuhengfeng.xyz/Hexo/u%3D1968668429%2C2104382916%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp) no-repeat center center;
+  background-size: cover;
+}
+
+
+/* 个人信息卡片背景图 */
+[data-theme="light"] #aside-content>.card-widget.card-info {
+  background-image: url(https://statics.liuhengfeng.xyz/Hexo/light_card.webp);
+  background-repeat: no-repeat;
+  background-attachment: inherit;
+  background-size: 100%;
+}
+
+[data-theme="dark"] #aside-content>.card-widget.card-info {
+  /* background-image: url(https://statics.liuhengfeng.xyz/Hexo/aurora.webp); */
+  background-image: url(https://statics.liuhengfeng.xyz/Hexo/universe.webp);
+  background-repeat: no-repeat;
+  background-attachment: inherit;
+  background-size: 100%;
+}
+
+
+/* 修改个人卡片字体和图标的显示颜色  以适应背景图 */
+[data-theme="light"] .card-info-data.site-data.is-center.wow.animate__backInLeft *,
+[data-theme="light"] .author-info__description,
+[data-theme="light"] .author-info__name,
+[data-theme="light"] .card-info-social-icons.is-center.wow.animate__backInLeft i {
+  color: #f18136 !important;
+}
+
+[data-theme="dark"] .card-info-data.site-data.is-center.wow.animate__backInLeft *,
+[data-theme="dark"] .author-info__description,
+[data-theme="dark"] .author-info__name {
+  color: #be370e !important;
+}
+/* 修改个人卡片字体和图标的显示颜色  以适应背景图 */
+
+
+
+/* 头像呼吸灯 */
+[data-theme="light"] .avatar-img {
+  animation: huxi_light 4s ease-in-out infinite;
+}
+
+[data-theme="dark"] .avatar-img {
+  animation: huxi_dark 4s ease-in-out infinite;
+}
+
+@keyframes huxi_light {
+  0% {
+    box-shadow: 0px 0px 1px 1px #e9f5fa;
+  }
+
+  50% {
+    box-shadow: 0px 0px 5px 5px #e9f5fa;
+  }
+
+  100% {
+    box-shadow: 0px 0px 1px 1px #e9f5fa;
+  }
+}
+
+@keyframes huxi_dark {
+  0% {
+    box-shadow: 0px 0px 1px 1px #39c5bb;
+  }
+
+  50% {
+    box-shadow: 0px 0px 5px 5px #39c5bb;
+  }
+
+  100% {
+    box-shadow: 0px 0px 1px 1px #39c5bb;
+  }
+}
+

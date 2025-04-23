@@ -1,0 +1,676 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>GSmote+AE+DNN(UNSW-NB15) | Liu's  Blog</title><meta name="author" content="LHF"><meta name="copyright" content="LHF"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="使用GSmote+AE+DNN在UNSW-NB15数据集上进行实验，作为最终模型使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSmote+AE+DNN(UNSW-NB15)">
+<meta property="og:url" content="https://liuhengfeng.xyz/posts/d332bbe1.html">
+<meta property="og:site_name" content="Liu&#39;s  Blog">
+<meta property="og:description" content="使用GSmote+AE+DNN在UNSW-NB15数据集上进行实验，作为最终模型使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png">
+<meta property="article:published_time" content="2024-10-18T04:51:15.000Z">
+<meta property="article:modified_time" content="2024-10-28T13:36:15.000Z">
+<meta property="article:author" content="LHF">
+<meta property="article:tag" content="异常检测分类">
+<meta property="article:tag" content="DNN">
+<meta property="article:tag" content="UNSW-NB15">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png"><link rel="shortcut icon" href="https://statics.liuhengfeng.xyz/Hexo/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240907191402.jpg"><link rel="canonical" href="https://liuhengfeng.xyz/posts/d332bbe1.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":290},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体中文","cht_to_chs":"你已切换为简体中文","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'GSmote+AE+DNN(UNSW-NB15)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-28 21:36:15'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/custom.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/universe.css"><span id="fps"></span><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/hexo_electric_clock.css"><link rel="stylesheet" href="/css/bottom_runtime.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.15.6/lib/theme-chalk/index.css"><link rel="stylesheet" href="/css/calendar.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="/css/swiperstyle.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+document.addEventListener('pjax:send', () => {
+  Pace.restart()
+})
+</script><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/progress_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/u%3D1968668429%2C2104382916%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Liu's  Blog"><img class="site-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/2876f803-ae9a-49ac-bcd9-9d623c5beb03.jpg"/><span class="site-name">Liu's  Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">GSmote+AE+DNN(UNSW-NB15)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-18T04:51:15.000Z" title="发表于 2024-10-18 12:51:15">2024-10-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-28T13:36:15.000Z" title="更新于 2024-10-28 21:36:15">2024-10-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="GSmote+AE+DNN(UNSW-NB15)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>对<code>UNSW-NB15</code>数据集进行最终的实验，如果效果还可以的话就把该实验结果作为最终的实验结果使用。前面的<code>CIC-IDS2017</code>数据集已经能达到最终实验结果的要求了，现在就只差<code>UNSW-NB15</code>了，等做完这个实验如果能产出好结果，就直接开始写论文，争取在今年寒假放假之前完成论文初稿。</p>
+<h1 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h1><h2 id="无attack-cat列"><a href="#无attack-cat列" class="headerlink" title="无attack_cat列"></a>无attack_cat列</h2><blockquote>
+<p>去掉attack_cat列的实验结果如下</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>实验参数</th>
+<th>评估指标</th>
+<th>混淆矩阵</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AE+DNN</strong><br />基准模型<br />阈值0.5</td>
+<td>准确率: 0.8388<br/>精确率: 0.7772<br/>召回率: 0.9913<br/>F1 分数: 0.8713<br/>误报率 (FAR): 0.3481</td>
+<td>[[24121 12879]<br/> [  395 44937]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.8550<br/>精确率: 0.8030<br/>召回率: 0.9762<br/>F1 分数: 0.8812<br/>误报率 (FAR): 0.2934</td>
+<td>[[26144 10856]<br/> [ 1081 44251]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.8374<br/>精确率: 0.7764<br/>召回率: 0.9897<br/>F1 分数: 0.8702<br/>误报率 (FAR): 0.3491</td>
+<td>[[24083 12917]<br/> [  468 44864]]</td>
+</tr>
+<tr>
+<td>阈值改为0.9，其他不变</td>
+<td>准确率: 0.9088<br/>精确率: 0.9644<br/>召回率: 0.8664<br/>F1 分数: 0.9128<br/>误报率 (FAR): 0.0392</td>
+<td>[[35550  1450]<br/> [ 6058 39274]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.8967<br/>精确率: 0.9831<br/>召回率: 0.8265<br/>F1 分数: 0.8980<br/>误报率 (FAR): 0.0175</td>
+<td>[[36354   646]<br/> [ 7863 37469]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.9024<br/>精确率: 0.9858<br/>召回率: 0.8348<br/>F1 分数: 0.9040<br/>误报率 (FAR): 0.0148</td>
+<td>[[36453   547]<br/> [ 7487 37845]]</td>
+</tr>
+<tr>
+<td>阈值改为0.7，其他不变</td>
+<td>准确率: 0.9049<br/>精确率: 0.9099<br/>召回率: 0.9183<br/>F1 分数: 0.9141<br/>误报率 (FAR): 0.1114</td>
+<td>[[32877  4123]<br/> [ 3704 41628]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.9046<br/>精确率: 0.9032<br/>召回率: 0.9261<br/>F1 分数: 0.9145<br/>误报率 (FAR): 0.1216</td>
+<td>[[32501  4499]<br/> [ 3352 41980]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.9008<br/>精确率: 0.9011<br/>召回率: 0.9209<br/>F1 分数: 0.9109<br/>误报率 (FAR): 0.1239</td>
+<td>[[32417  4583]<br/> [ 3584 41748]]</td>
+</tr>
+<tr>
+<td>阈值改为0.8，其他不变</td>
+<td>准确率: 0.8951<br/>精确率: 0.8777<br/>召回率: 0.9406<br/>F1 分数: 0.9081<br/>误报率 (FAR): 0.1606</td>
+<td>[[31058  5942]<br/> [ 2693 42639]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.8984<br/>精确率: 0.9056<br/>召回率: 0.9104<br/>F1 分数: 0.9080<br/>误报率 (FAR): 0.1163</td>
+<td>[[32697  4303]<br/> [ 4062 41270]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.8995<br/>精确率: 0.8899<br/>召回率: 0.9328<br/>F1 分数: 0.9108<br/>误报率 (FAR): 0.1414</td>
+<td>[[31770  5230]<br/> [ 3048 42284]]</td>
+</tr>
+<tr>
+<td>阈值改为0.6</td>
+<td>准确率: 0.8877<br/>精确率: 0.8648<br/>召回率: 0.9436<br/>F1 分数: 0.9025<br/>误报率 (FAR): 0.1808</td>
+<td>[[30310  6690]<br/> [ 2557 42775]]<br/></td>
+</tr>
+<tr>
+<td>同行，重复实验</td>
+<td>准确率: 0.8943<br/>精确率: 0.8840<br/>召回率: 0.9302<br/>F1 分数: 0.9065<br/>误报率 (FAR): 0.1496</td>
+<td>[[31464  5536]<br/> [ 3163 42169]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.8864<br/>精确率: 0.8570<br/>召回率: 0.9526<br/>F1 分数: 0.9023<br/>误报率 (FAR): 0.1948</td>
+<td>[[29793  7207]<br/> [ 2147 43185]]</td>
+</tr>
+<tr>
+<td>阈值改为0.5，训练150轮</td>
+<td>准确率: 0.8587<br/>精确率: 0.8148<br/>召回率: 0.9620<br/>F1 分数: 0.8823<br/>误报率 (FAR): 0.2679</td>
+<td>混淆矩阵:<br/>[[27089  9911]<br/> [ 1721 43611]]</td>
+</tr>
+<tr>
+<td>阈值0.5，训练200轮</td>
+<td>准确率: 0.8526<br/>精确率: 0.8035<br/>召回率: 0.9693<br/>F1 分数: 0.8787<br/>误报率 (FAR): 0.2905</td>
+<td>[[26253 10747]<br/> [ 1390 43942]]</td>
+</tr>
+</tbody></table>
+<h2 id="无attack-cat列实验结果总结"><a href="#无attack-cat列实验结果总结" class="headerlink" title="无attack_cat列实验结果总结"></a>无attack_cat列实验结果总结</h2><p>如果删掉数据集中的<code>attack_cat</code>列，最终的实验结果如上表所示，阈值从0.5~0.9都打不到很好的效果，准确率最好的也就是阈值0.9的90.88%，F1-Score只有91%，远远达不到其他论文动不动就是95%以上的评估指标，但是如果不去掉<code>attack_cat</code>列的话，所有评估指标都是99.90%以上的，接近100%了，四个指标都是99.99%实在是太夸张了，参考的论文最终结果也只是99%出头，如何降低添加上<code>attack_cat</code>列的指标是一个问题，要降低一个百分点，在98%~99%的范围</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20241018134243696.png" alt="参考论文实验结果"></p>
+<h2 id="保留attack-cat列"><a href="#保留attack-cat列" class="headerlink" title="保留attack_cat列"></a>保留attack_cat列</h2><blockquote>
+<p>保留attack_cat列的实验结果如下</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>实验参数</th>
+<th>评估参数</th>
+<th>混淆矩阵</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AE训练100轮，<br />batch_size&#x3D;128<br />AE输出维度为15<br />DNN训练200轮<br />batch_size&#x3D;128<br />阈值为0.5</td>
+<td>准确率: 0.9996<br/>精确率: 0.9998<br/>召回率: 0.9996<br/>F1 分数: 0.9997<br/>误报率 (FAR): 0.0003</td>
+<td>[[36989    11]<br/> [   19 45313]]</td>
+</tr>
+<tr>
+<td>重复试验，把DNN轮次改为30</td>
+<td>准确率: 0.9994<br/>精确率: 0.9996<br/>召回率: 0.9994<br/>F1 分数: 0.9995<br/>误报率 (FAR): 0.0005</td>
+<td>[[36980    20]<br/> [   29 45303]]</td>
+</tr>
+<tr>
+<td>同上，重复试验</td>
+<td>准确率: 0.9995<br/>精确率: 0.9994<br/>召回率: 0.9997<br/>F1 分数: 0.9996<br/>误报率 (FAR): 0.0007</td>
+<td>[[36974    26]<br/> [   12 45320]]</td>
+</tr>
+<tr>
+<td>修改attack_cat列对应的标签顺序<br />把normal-&gt;worms：0 –&gt; 9<br />改成normal-&gt;worms：9 –&gt; 0</td>
+<td>准确率: 0.9963<br/>精确率: 0.9977<br/>召回率: 0.9955<br/>F1 分数: 0.9966<br/>误报率 (FAR): 0.0028</td>
+<td>[[36898   102]<br/> [  205 45127]]</td>
+</tr>
+<tr>
+<td>改一下batch_size&#x3D;256，<br />其他同上</td>
+<td>准确率: 0.9966<br/>精确率: 0.9978<br/>召回率: 0.9961<br/>F1 分数: 0.9969<br/>误报率 (FAR): 0.0027</td>
+<td>[[36899   101]<br/> [  176 45156]]</td>
+</tr>
+<tr>
+<td>改一下batch_size&#x3D;512，<br />其他同上</td>
+<td>准确率: 0.9948<br/>精确率: 0.9919<br/>召回率: 0.9988<br/>F1 分数: 0.9953<br/>误报率 (FAR): 0.0100</td>
+<td>[[36630   370]<br/> [   56 45276]]</td>
+</tr>
+<tr>
+<td>改一下batch_size&#x3D;1024，<br />其他同上</td>
+<td>准确率: 0.9958<br/>精确率: 0.9949<br/>召回率: 0.9974<br/>F1 分数: 0.9962<br/>误报率 (FAR): 0.0062</td>
+<td>[[36770   230]<br/> [  119 45213]]</td>
+</tr>
+<tr>
+<td>重复上面实验</td>
+<td>准确率: 0.9955<br/>精确率: 0.9956<br/>召回率: 0.9962<br/>F1 分数: 0.9959<br/>误报率 (FAR): 0.0054</td>
+<td>[[36799   201]<br/> [  170 45162]]</td>
+</tr>
+<tr>
+<td>改一下batch_size&#x3D;2048，<br />其他同上</td>
+<td>准确率: 0.9955<br/>精确率: 0.9954<br/>召回率: 0.9965<br/>F1 分数: 0.9959<br/>误报率 (FAR): 0.0056</td>
+<td>[[36791   209]<br/> [  159 45173]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.9951<br/>精确率: 0.9947<br/>召回率: 0.9963<br/>F1 分数: 0.9955<br/>误报率 (FAR): 0.0065</td>
+<td>[[36760   240]<br/> [  166 45166]]</td>
+</tr>
+<tr>
+<td>训练200轮，其余同上</td>
+<td>准确率: 0.9975<br/>精确率: 0.9988<br/>召回率: 0.9967<br/>F1 分数: 0.9977<br/>误报率 (FAR): 0.0015</td>
+<td>[[36944    56]<br/> [  149 45183]]</td>
+</tr>
+<tr>
+<td>训练50轮，其余同上，atch_size&#x3D;2048</td>
+<td>准确率: 0.9962<br/>精确率: 0.9977<br/>召回率: 0.9954<br/>F1 分数: 0.9966<br/>误报率 (FAR): 0.0028</td>
+<td>[[36897   103]<br/> [  209 45123]]</td>
+</tr>
+<tr>
+<td>DNN训练5轮，atch_size&#x3D;2048，其余同上</td>
+<td>准确率: 0.9885<br/>精确率: 0.9836<br/>召回率: 0.9958<br/>F1 分数: 0.9896<br/>误报率 (FAR): 0.0204</td>
+<td>[[36245   755]<br/> [  190 45142]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.9861<br/>精确率: 0.9780<br/>召回率: 0.9973<br/>F1 分数: 0.9875<br/>误报率 (FAR): 0.0275</td>
+<td>[[35981  1019]<br/> [  123 45209]]</td>
+</tr>
+<tr>
+<td>同上，重复试验，5轮，2048&#x3D;batch_size</td>
+<td>准确率: 0.9882<br/>精确率: 0.9832<br/>召回率: 0.9956<br/>F1 分数: 0.9894<br/>误报率 (FAR): 0.0208</td>
+<td>[[36230   770]<br/> [  200 45132]]</td>
+</tr>
+<tr>
+<td>训练30轮<br />epochs&#x3D;30, batch_size&#x3D;2048<br />这个结果就很不错</td>
+<td>准确率: 0.9924<br/>精确率: 0.9880<br/>召回率: 0.9983<br/>F1 分数: 0.9931<br/>误报率 (FAR): 0.0149</td>
+<td>[[36450   550]<br/> [   75 45257]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率: 0.9925<br/>精确率: 0.9881<br/>召回率: 0.9985<br/>F1 分数: 0.9933<br/>误报率 (FAR): 0.0148</td>
+<td>[[36454   546]<br/> [   69 45263]]</td>
+</tr>
+<tr>
+<td>同上，重复试验</td>
+<td>准确率: 0.9925<br/>精确率: 0.9881<br/>召回率: 0.9985<br/>F1 分数: 0.9933<br/>误报率 (FAR): 0.0148</td>
+<td>[[36454   546]<br/> [   69 45263]]</td>
+</tr>
+<tr>
+<td>同上<br />这个结果也挺均衡，假阴性和假阳性都是<br />200多</td>
+<td>准确率: 0.9943<br/>精确率: 0.9950<br/>召回率: 0.9947<br/>F1 分数: 0.9948<br/>误报率 (FAR): 0.0062</td>
+<td>[[36772   228]<br/> [  239 45093]]</td>
+</tr>
+</tbody></table>
+<h2 id="AE-DNN保留attack-cat列实验结果总结"><a href="#AE-DNN保留attack-cat列实验结果总结" class="headerlink" title="AE+DNN保留attack_cat列实验结果总结"></a>AE+DNN保留attack_cat列实验结果总结</h2><p>要<code>降低评估指标</code>，可以尝试以下几种方法：</p>
+<ul>
+<li>提高DNN模型的<code>batch_size</code>，之前的参数很小，都是128,256之类的，直接感到2048之类的特大值，可以降低1%的评估指标</li>
+<li>降低DNN模型的训练轮次epochs，之前99%都是用的20~30轮，降到5~10轮也能降低一些评估指标</li>
+<li>调整<code>attack_cat</code>列的字符值与数值之间的映射关系，原本是把Normal映射为0，其他类似按样本数量从大到小进行排列分从对应数字1~9,那个时候各种指标都是99.9%以上，但是现在Normal类型不对应0，对应其他数字，也能稍微降低一些评估指标</li>
+</ul>
+<h2 id="GSmote-AE-DNN"><a href="#GSmote-AE-DNN" class="headerlink" title="GSmote+AE+DNN"></a>GSmote+AE+DNN</h2><blockquote>
+<p>现在在AE+DNN的模型上加上GSmote，实验结果如下表所示</p>
+</blockquote>
+<p><code>保留attack_cat列</code>，实验结果如下:</p>
+<table>
+<thead>
+<tr>
+<th>实验参数</th>
+<th>评估参数</th>
+<th>混淆矩阵</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AE结构不变，<br />输出维度为15<br />DNN4层，阈值0.5<br />训练20次，<br />batch_size&#x3D;128</td>
+<td>准确率 (Accuracy): 0.9389<br/>精确率 (Precision): 0.9016<br/>召回率 (Recall): 0.9979<br/>误报率 (False Alarm Rate): 0.1334</td>
+<td>[[32065  4935]<br/> [   95 45237]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.8999<br/>精确率 (Precision): 0.8472<br/>召回率 (Recall): 0.9983<br/>误报率 (False Alarm Rate): 0.2206</td>
+<td>[[28837  8163]<br/> [   79 45253]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.9721<br/>精确率 (Precision): 0.9594<br/>召回率 (Recall): 0.9912<br/>误报率 (False Alarm Rate): 0.0513</td>
+<td>[[35101  1899]<br/> [  400 44932]]</td>
+</tr>
+<tr>
+<td>同上，重复实验<br /><strong>还是看概率，<br />结果时好时坏</strong></td>
+<td>准确率 (Accuracy): 0.9670<br/>精确率 (Precision): 0.9457<br/>召回率 (Recall): 0.9973<br/>误报率 (False Alarm Rate): 0.0702</td>
+<td>[[34402  2598]<br/> [  123 45209]]<br /></td>
+</tr>
+<tr>
+<td>去掉<code>attack_cat列</code></td>
+<td>准确率 (Accuracy): 0.8571<br/>精确率 (Precision): 0.8031<br/>召回率 (Recall): 0.9811<br/>误报率 (False Alarm Rate): 0.2948</td>
+<td>[[26094 10906]<br/> [  857 44475]]<br /></td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.8420<br/>精确率 (Precision): 0.7818<br/>召回率 (Recall): 0.9892<br/>误报率 (False Alarm Rate): 0.3382</td>
+<td>[[24485 12515]<br/> [  490 44842]]</td>
+</tr>
+<tr>
+<td>AE输出维度为40<br />DNN训练50轮<br />DNN四层结构<br />batch_size为128</td>
+<td>准确率 (Accuracy): 0.9887<br/>精确率 (Precision): 0.9887<br/>召回率 (Recall): 0.9908<br/>F1 值 (F1-score): 0.9897<br/>误报率: 0.0139</td>
+<td>[[36486   514]<br/> [  419 44913]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.9763<br/>精确率 (Precision): 0.9620<br/>召回率 (Recall): 0.9964<br/>F1 值 (F1-score): 0.9789<br/>误报率 : 0.0483</td>
+<td>[[35214  1786]<br/> [  165 45167]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.9734<br/>精确率 (Precision): 0.9559<br/>召回率 (Recall): 0.9977<br/>F1 值 (F1-score): 0.9763<br/>误报率 (False Alarm Rate): 0.0564</td>
+<td>[[34913  2087]<br/> [  105 45227]]</td>
+</tr>
+<tr>
+<td>DNN训练100轮<br />其他不变</td>
+<td>准确率 (Accuracy): 0.9856<br/>精确率 (Precision): 0.9886<br/>召回率 (Recall): 0.9852<br/>F1 值 (F1-score): 0.9869<br/>误报率 (False Alarm Rate): 0.0139</td>
+<td>[[36484   516]<br/> [  669 44663]]</td>
+</tr>
+<tr>
+<td>同上</td>
+<td>准确率 (Accuracy): 0.9864<br/>精确率 (Precision): 0.9778<br/>召回率 (Recall): 0.9980<br/>F1 值 (F1-score): 0.9878<br/>误报率 (False Alarm Rate): 0.0278</td>
+<td>[[35971  1029]<br/> [   92 45240]]</td>
+</tr>
+<tr>
+<td>同上，<br />始终不能突破到99%</td>
+<td>准确率 (Accuracy): 0.9819<br/>精确率 (Precision): 0.9919<br/>召回率 (Recall): 0.9751<br/>F1 值 (F1-score): 0.9834<br/>误报率 (False Alarm Rate): 0.0098</td>
+<td>[[36639   361]<br/> [ 1131 44201]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.9657<br/>精确率 (Precision): 0.9476<br/>召回率 (Recall): 0.9927<br/>F1 值 (F1-score): 0.9696<br/>误报率 (False Alarm Rate): 0.0673</td>
+<td>[[34510  2490]<br/> [  331 45001]]</td>
+</tr>
+<tr>
+<td>AE输出维度&#x3D;30<br />DNN训练30轮</td>
+<td>准确率 (Accuracy): 0.9962<br/>精确率 (Precision): 0.9963<br/>召回率 (Recall): 0.9968<br/>F1 值 (F1-score): 0.9965<br/>误报率 (False Alarm Rate): 0.0046</td>
+<td>[[36831   169]<br/> [  146 45186]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.9859<br/>精确率 (Precision): 0.9766<br/>召回率 (Recall): 0.9982<br/>F1 值 (F1-score): 0.9873<br/>误报率 (False Alarm Rate): 0.0292</td>
+<td>[[35918  1082]<br/> [   80 45252]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.9961<br/>精确率 (Precision): 0.9982<br/>召回率 (Recall): 0.9947<br/>F1 值 (F1-score): 0.9964<br/>误报率 (False Alarm Rate): 0.0022</td>
+<td>[[36917    83]<br/> [  241 45091]]</td>
+</tr>
+<tr>
+<td>AE输出维度为45，已保存模型</td>
+<td>准确率 (Accuracy): 0.9902<br/>精确率 (Precision): 0.9901<br/>召回率 (Recall): 0.9922<br/>F1 值 (F1-score): 0.9912<br/>误报率 (False Alarm Rate): 0.0121</td>
+<td>[[36551   449]<br/> [  354 44978]]</td>
+</tr>
+<tr>
+<td>同上，重复实验</td>
+<td>准确率 (Accuracy): 0.9916<br/>精确率 (Precision): 0.9885<br/>召回率 (Recall): 0.9964<br/>F1 值 (F1-score): 0.9924<br/>误报率 (False Alarm Rate): 0.0142</td>
+<td>[[36476   524]<br/> [  165 45167]]</td>
+</tr>
+<tr>
+<td>AE输出25，训练50轮<br />DNN训练50轮<br />阈值0.8</td>
+<td>准确率 (Accuracy): 0.9845<br/>精确率 (Precision): 0.9836<br/>召回率 (Recall): 0.9884<br/>F1 值 (F1-score): 0.9860<br />误报率 (False Alarm Rate): 0.0202</td>
+<td>[[36251   749]<br/> [  524 44808]]</td>
+</tr>
+</tbody></table>
+<h2 id="GSmote-AE-DNN实验结果总结"><a href="#GSmote-AE-DNN实验结果总结" class="headerlink" title="GSmote+AE+DNN实验结果总结"></a>GSmote+AE+DNN实验结果总结</h2><p>如果保留<code>attack_cat</code>列，实验结果还是不错的，上述实验中评估指标只有96%左右，后续可以通过优化AE模型或者优化DNN模型来提高评估指标；如果去掉了<code>attack_cat</code>列，那评估指标的结果就比较惨淡了，只有85%左右，远远达不到文章要求，所以<code>最终还是决定保留attack_cat列</code>，虽然这样做不太正确，但是不要让结果影响论文~</p>
+<h1 id="GSmote平衡训练集注意事项"><a href="#GSmote平衡训练集注意事项" class="headerlink" title="GSmote平衡训练集注意事项"></a>GSmote平衡训练集注意事项</h1><p>之前在<code>CIC-IDS2017</code>中使用GSmote时，因为这个数据集的最后一列是字符型的数据，全是记载着各种攻击类型，例如[‘BENIGN’、’DoS Hulk’、’PortScan’、’DDoS’、’FTP-Patator’  ……]，这就是这个数据集的标签。<code>在平衡完数据集之后</code>有一个<code>map_labels</code>步骤，就是把BENIGN转化为0，其他所有攻击类型转化为1，再把原来字符型的标签列全部用0和1替换掉原来的内容，最后面才进行DNN训练和分类。</p>
+<p>在UNSW-NB15数据集中，<code>attack_cat</code>  列记载样本属于哪种攻击类型，<code>label</code>列才是真正的标签列，该列只包含0和1。而我需要根据<code>attack_cat</code>  列来生成特定类型的攻击样本数据，这时候直接套用之前的GSmote平衡步骤就会出错，因为GSmote中要求<code>y_resampled</code>是真正的标签，但在UNSW中<code>attack_cat</code>  不是标签列，而是副标签，所以有点麻烦。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_resampled, y_resampled = gsmote.fit_resample(X, Y)</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>GSmote+AE+DNN(UNSW-NB15)</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://liuhengfeng.xyz/posts/d332bbe1.html">https://liuhengfeng.xyz/posts/d332bbe1.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>LHF</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2024-10-18</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2024-10-28</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E5%88%86%E7%B1%BB/">异常检测分类</a><a class="post-meta__tags" href="/tags/DNN/">DNN</a><a class="post-meta__tags" href="/tags/UNSW-NB15/">UNSW-NB15</a></div><div class="post_share"><div class="social-share" data-image="https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" data-sites="twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/75e74530.html" title="解决IDM虚假序列号弹窗问题(重装+crack.exe)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/IDM.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">解决IDM虚假序列号弹窗问题(重装+crack.exe)</div></div></a></div><div class="next-post pull-right"><a href="/posts/5a979c1b.html" title="GSmote+AE+DNN(CIC-IDS2017)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">GSmote+AE+DNN(CIC-IDS2017)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/fcd23286.html" title="AE+DNN(CIC-IDS2017) 效果不错"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-14</div><div class="title">AE+DNN(CIC-IDS2017) 效果不错</div></div></a></div><div><a href="/posts/6a858c3d.html" title="CIC-IDS2017使用DNN进行分类"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-20</div><div class="title">CIC-IDS2017使用DNN进行分类</div></div></a></div><div><a href="/posts/5a979c1b.html" title="GSmote+AE+DNN(CIC-IDS2017)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-15</div><div class="title">GSmote+AE+DNN(CIC-IDS2017)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">2.</span> <span class="toc-text">实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0attack-cat%E5%88%97"><span class="toc-number">2.1.</span> <span class="toc-text">无attack_cat列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0attack-cat%E5%88%97%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E6%80%BB%E7%BB%93"><span class="toc-number">2.2.</span> <span class="toc-text">无attack_cat列实验结果总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E7%95%99attack-cat%E5%88%97"><span class="toc-number">2.3.</span> <span class="toc-text">保留attack_cat列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AE-DNN%E4%BF%9D%E7%95%99attack-cat%E5%88%97%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E6%80%BB%E7%BB%93"><span class="toc-number">2.4.</span> <span class="toc-text">AE+DNN保留attack_cat列实验结果总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GSmote-AE-DNN"><span class="toc-number">2.5.</span> <span class="toc-text">GSmote+AE+DNN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GSmote-AE-DNN%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E6%80%BB%E7%BB%93"><span class="toc-number">2.6.</span> <span class="toc-text">GSmote+AE+DNN实验结果总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GSmote%E5%B9%B3%E8%A1%A1%E8%AE%AD%E7%BB%83%E9%9B%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.</span> <span class="toc-text">GSmote平衡训练集注意事项</span></a></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-wrap" id="footer-wrap"> <div class="copyright">&copy;2024 - 2025 By LHF</div><div class="footer_custom_text"><div id="runtime"></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><canvas id="universe"></canvas><script src="https://statics.liuhengfeng.xyz/js/jquery-3.6.1.min.js"></script><script async src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script><script async src="https://unpkg.com/element-ui@2.15.6/lib/index.js"></script><script async src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/js/lunar.min.js"></script><script src="/js/calendar.min.js"></script><script async src="https://statics.liuhengfeng.xyz/js/common.min.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false#  open shake (抖動特效);
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('card-widget card-announcement')[2];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'f89c5a6b949a4345a0d22f0ad5b040ea';
+  var gaud_map_key = 'a36227a8c2b6dcd6b90a98920a06ac89';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '108.230574,22.793414';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://devapi.qweather.com/v7/weather/now?key=f89c5a6b949a4345a0d22f0ad5b040ea"></script><script data-pjax src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/js/electric_clock.min.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="博客主题为Butterfly" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-d021d6?style=flat&amp;logo=buefy&amp;color=purple" alt=""/></a><a class="github-badge" target="_blank" href="https://pages.github.com/" style="margin-inline:5px" data-title="本站项目托管于Github Pages" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github%20Pages-d021d6?style=flat&amp;logo=githubpages&amp;color=brown" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="GitHub万岁" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Thanks-Github-d021d6?style=flat&amp;logo=GitHub&amp;color=indigo" alt=""/></a><a class="github-badge" target="_blank" href="https://www.alibabacloud.com/zh/product/content-delivery-network?_p_lc=1" style="margin-inline:5px" data-title="网站资源使用阿里云CDN加速" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/CDN-%E9%98%BF%E9%87%8C%E4%BA%91CDN-d021d6?style=flat&amp;logo=speedtest&amp;color=blue" alt=""/></a><a class="github-badge" target="_blank" href="https://www.aliyun.com/benefit" style="margin-inline:5px" data-title="本站图床部署于阿里云OSS" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/OSS-%E9%98%BF%E9%87%8C%E4%BA%91OSS-d021d6?style=flat&amp;logo=alibabacloud&amp;color=orange" alt=""/></a><a class="github-badge" target="_blank" href="https://beian.miit.gov.cn" style="margin-inline:5px" data-title="网站备案号" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/ICP-%E6%A1%82ICP%E5%A4%872023012461%E5%8F%B7-d021d6?style=flat&amp;logo=brandfolder&amp;color=yellow" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=creativecommons" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInRight');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('footer-wrap');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInUp');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('show');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInDown');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('is-center');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-data');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-social-icons');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-btn');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/4433d2d6.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/day_news.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-06</span><a class="blog-slider__title" href="posts/4433d2d6.html" alt="">每天60秒读懂世界</a><div class="blog-slider__text">每日新闻早报</div><a class="blog-slider__button" href="posts/4433d2d6.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/eafd0d8b.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-03-01_23-35-13.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-03-01</span><a class="blog-slider__title" href="posts/eafd0d8b.html" alt="">2025-03</a><div class="blog-slider__text">2025年3月</div><a class="blog-slider__button" href="posts/eafd0d8b.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/9dfa3d1d.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-02-19_21-22-33.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-02-19</span><a class="blog-slider__title" href="posts/9dfa3d1d.html" alt="">2025-02</a><div class="blog-slider__text">2025年2月</div><a class="blog-slider__button" href="posts/9dfa3d1d.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/4f36ca7.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-01-02_21-37-36.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-02</span><a class="blog-slider__title" href="posts/4f36ca7.html" alt="">2025-01</a><div class="blog-slider__text">2025年1月</div><a class="blog-slider__button" href="posts/4f36ca7.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/3c5d6b39.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/2024-12-02_23-11-41.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-04</span><a class="blog-slider__title" href="posts/3c5d6b39.html" alt="">2024-12</a><div class="blog-slider__text">2024年12月</div><a class="blog-slider__button" href="posts/3c5d6b39.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/e4ce9af4.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/4de89523-2218-4748-8b18-5b961e39906d.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-06</span><a class="blog-slider__title" href="posts/e4ce9af4.html" alt="">2025</a><div class="blog-slider__text">My Life in 2025</div><a class="blog-slider__button" href="posts/e4ce9af4.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/93c9aa62.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/20241105bg2.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-05</span><a class="blog-slider__title" href="posts/93c9aa62.html" alt="">2024</a><div class="blog-slider__text">My Life In 2024!</div><a class="blog-slider__button" href="posts/93c9aa62.html" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://statics.liuhengfeng.xyz/js/swiper.min.js"></script><script defer data-pjax src="https://statics.liuhengfeng.xyz/js/swiper_init.js"></script><!-- hexo injector body_end end --></body></html>

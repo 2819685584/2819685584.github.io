@@ -4,6 +4,12 @@
     --gavin-theme-color-dark: 0, 150, 255;
 }
 
+/* 隐藏指定卡片中的标题项 item-headline */
+#card-widget-schedule .item-headline,
+#card-widget-calendar .item-headline {
+    display: none;
+}
+
 [data-theme="light"] {
     --op: 255, 255, 255;
     --op-dis: 0, 0, 0;
@@ -45,7 +51,7 @@
 #calendar-area-left,
 #calendar-area-right {
     height: 100%;
-    padding: 3px;
+    padding: 4px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,9 +63,9 @@
 }
 
 #calendar-week {
-    height: 0.2rem;
+    height: 1.2rem;
     font-size: 14px;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
     font-weight: bold;
     align-items: center;
     display: flex;
@@ -68,9 +74,9 @@
 #calendar-date {
     height: 3rem;
     line-height: 1.3;
-    font-size: 60px !important;
-    letter-spacing: 3px;
-    color: rgb(0 45 255);
+    font-size: 50px;
+    letter-spacing: -1px;
+    color: var(--gavin-highlight);
     font-weight: bold;
     align-items: center;
     display: flex;
@@ -81,7 +87,7 @@
 #calendar-solar,
 #calendar-lunar {
     height: 1rem;
-    font-size: 13px;
+    font-size: 12px;
     align-items: center;
     display: flex;
     position: absolute;
@@ -97,10 +103,10 @@
 }
 
 #calendar-main a {
-    height: 1.3rem;
-    width: 1.3rem;
+    height: 1rem;
+    width: 1rem;
     border-radius: 50%;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 12px;
     display: flex;
     justify-content: center;
@@ -237,29 +243,24 @@ progress::-webkit-progress-value {
 #schedule-title {
     height: 25px;
     line-height: 1;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
 }
 
 #schedule-days {
-    height: 40px;
+    height: 70px;
     line-height: 1;
-    font-size: 40px;
-    font-weight: 900;
-    color: rgb(0, 45, 255)
+    font-size: 40px !important;
+    letter-spacing: -1px;
+    font-weight: bold;
+    color: var(--gavin-highlight);
 }
 
 #schedule-date {
-    height: 20px;
-    line-height: 1;
-    font-size: 13px;
+    height: 3rem;
+    line-height: 1.3;
+    font-size: 12px;
     color: rgba(var(--op-dis), .5);
 }
 
-#card-widget-calendar .item-headline {
-    display: none;
-}
 
-#card-widget-schedule .item-headline {
-    display: none;
-}
