@@ -1486,6 +1486,11 @@ body {
   font-family: myFont;
   line-height: 2;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 *::-webkit-scrollbar {
   width: 12px;
@@ -1996,7 +2001,7 @@ figure.highlight pre .javascript .function {
 #article-container .code-expand-btn:not(.expand-done) ~ table,
 #article-container .code-expand-btn:not(.expand-done) ~ pre {
   overflow: hidden;
-  height: 290px;
+  height: 300px;
 }
 @-moz-keyframes code-expand-key {
   0% {
@@ -2400,7 +2405,7 @@ figure.highlight pre .javascript .function {
   }
 }
 .layout > div:first-child {
-  width: 74%;
+  width: 87%;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -o-transition: all 0.3s;
@@ -2956,7 +2961,7 @@ h1.page-title + .tag-cloud-list {
   margin-top: -0.42em;
 }
 #aside-content .card-info .card-info-data {
-  margin: 14px 0 4px;
+  margin: 0px 0 0px;
 }
 #aside-content .card-info .card-info-social-icons {
   margin: 6px 0 -6px;
@@ -3356,12 +3361,13 @@ h1.page-title + .tag-cloud-list {
   color: #49b1f5 !important;
 }
 .site-data > a .headline {
-  color: var(--font-color);
+  color: #a2e4fe !important;
 }
 .site-data > a .length-num {
   margin-top: -0.32em;
   color: var(--text-highlight-color);
   font-size: 1.4em;
+  color: #a2e4fe !important;
 }
 @media screen and (min-width: 900px) {
   html.hide-aside .layout {

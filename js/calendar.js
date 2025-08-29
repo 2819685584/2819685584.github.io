@@ -24,20 +24,20 @@ function cardRefreshTimes() {
       ((asideDay / 365) * 100).toFixed(2) + "%";
     cardWidgetSchedule.querySelector(
       ".schedule-r0 .schedule-d1 .aside-span2"
-    ).innerHTML = "还剩<a> " + (365 - asideDay).toFixed(0) + " </a>天";
+    ).innerHTML = "剩余<a> " + (365 - asideDay).toFixed(0) + " </a>天";
     cardWidgetSchedule.querySelector("#pBar_month").value = date;
     cardWidgetSchedule.querySelector("#pBar_month").max = dates;
     cardWidgetSchedule.querySelector("#p_span_month").innerHTML =
       ((date / dates) * 100).toFixed(2) + "%";
     cardWidgetSchedule.querySelector(
       ".schedule-r1 .schedule-d1 .aside-span2"
-    ).innerHTML = "还剩<a> " + (dates - date) + " </a>天";
+    ).innerHTML = "剩余<a> " + (dates - date) + " </a>天";
     cardWidgetSchedule.querySelector("#pBar_week").value = week == 0 ? 7 : week;
     cardWidgetSchedule.querySelector("#p_span_week").innerHTML =
       (((week == 0 ? 7 : week) / 7) * 100).toFixed(2) + "%";
     cardWidgetSchedule.querySelector(
       ".schedule-r2 .schedule-d1 .aside-span2"
-    ).innerHTML = "还剩<a> " + (7 - (week == 0 ? 7 : week)) + " </a>天";
+    ).innerHTML = "剩余<a> " + (7 - (week == 0 ? 7 : week)) + " </a>天";
   }
 }
 // 侧边栏日历卡片

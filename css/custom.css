@@ -511,7 +511,7 @@ div#archive {
 
 /* 个人信息卡片背景图 */
 [data-theme="light"] #aside-content>.card-widget.card-info {
-  background-image: url(https://statics.liuhengfeng.xyz/Hexo/light_card.webp);
+  background-image: url(http://statics.liuhengfeng.xyz/Hexo/07f44d271ae9299e2f920ab0fd128590.png);
   background-repeat: no-repeat;
   background-attachment: inherit;
   background-size: 100%;
