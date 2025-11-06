@@ -449,7 +449,7 @@ div#post {
   margin: 5px;
 }
 
-/* 加载动画显示图片 */
+/* 加载占位图 */
 .loading-img {
   background: url(https://statics.liuhengfeng.xyz/Hexo/u%3D1968668429%2C2104382916%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp) no-repeat center center;
   background-size: cover;
