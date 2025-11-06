@@ -1,0 +1,375 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Context Engineering | Notes  Blog</title><meta name="author" content="LHF"><meta name="copyright" content="LHF"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Context Engineering相关知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Context Engineering">
+<meta property="og:url" content="https://www.liuhengfeng.xyz/posts/35eaa9b4.html">
+<meta property="og:site_name" content="Notes  Blog">
+<meta property="og:description" content="Context Engineering相关知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-08-20_00-26-06.jpg">
+<meta property="article:published_time" content="2025-08-19T13:58:14.000Z">
+<meta property="article:modified_time" content="2025-08-19T13:58:14.000Z">
+<meta property="article:author" content="LHF">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-08-20_00-26-06.jpg"><link rel="shortcut icon" href="https://statics.liuhengfeng.xyz/Hexo/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240907191402.jpg"><link rel="canonical" href="https://www.liuhengfeng.xyz/posts/35eaa9b4.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体中文","cht_to_chs":"你已切换为简体中文","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Context Engineering',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-08-19 21:58:14'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="http://statics.liuhengfeng.xyz/css/custom.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/universe.css"><span id="fps"></span><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/hexo_electric_clock.css"><link rel="stylesheet" href="/css/bottom_runtime.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.15.6/lib/theme-chalk/index.css"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/calendar.css"><style>.article-entry,.post-body,.post-content,#post,article,main,#content{-webkit-user-select:text!important;user-select:text!important}</style><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/u%3D1968668429%2C2104382916%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">81</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-08-20_00-26-06.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Notes  Blog"><img class="site-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/2876f803-ae9a-49ac-bcd9-9d623c5beb03.jpg"/><span class="site-name">Notes  Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Context Engineering</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-19T13:58:14.000Z" title="发表于 2025-08-19 21:58:14">2025-08-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-19T13:58:14.000Z" title="更新于 2025-08-19 21:58:14">2025-08-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="上下文长度（Context-Length）"><a href="#上下文长度（Context-Length）" class="headerlink" title="上下文长度（Context Length）"></a>上下文长度（Context Length）</h1><p>所有厂商提供的LLM都有上下文长度限制，不同模型的上下文长度限制可能不一样，大部分LLM都可以支持到20w~60w Token，Gemini更是支持到了100w Token。</p>
+<p><strong>大语言模型的”记忆”本质上是一个固定大小的文本窗口。就像人类的记忆一样，这个窗口有容量限制。当新信息进入时，旧信息就有可能被”挤出去”。</strong>  </p>
+<p><strong>[系统提示] + [历史对话] + [当前输入] &#x3D; 总上下文</strong></p>
+<p>以DeepSeek为例，无论是推理模型还是对话模型，Context Window 都是 64K，如果要给 Context Window 下一个定义，那么应该是这样：<br><strong>LLM 的 Context Window 指模型在单次推理过程中可处理的最大 Token 长度，也可以理解为LLM在进行一次推理时所能看到的最大上下文信息；提供更多的上下文信息，能辅助LLM更好地回答问题。</strong></p>
+<p><strong>上下文窗口是模型处理单次推理的硬限制，不可突破；这里的‘单次’既可以是单轮对话，也可以是多轮对话</strong></p>
+<blockquote>
+<p>单轮对话的情况</p>
+</blockquote>
+<p>例如打开一个 DeepSeek 新会话窗口时，会开启一轮新的会话，用户输入内容，模型输出推理内容。这就是一个单次推理过程。在这简单的一来一回的过程中，所有内容（输入+输出）的Tokens总和不能超过 64K（约 6 万多字）。</p>
+<p><code>DeepSeek V3</code>模型最大输出长度为 8K，那么输入内容的上限就是：64K- 8K &#x3D; 56K。在一次性问答中，最多可以输入 5 万多字，模型最多输出 8 千多字。</p>
+<blockquote>
+<p>多轮对话的情况</p>
+</blockquote>
+<p><strong>多轮对话实际上是在历史对话记录（输入+输出）后面拼接上最新的输入，然后一起提交给大模型，模型根据历史对话和最新的提问产生最新输出内容。</strong></p>
+<p><strong>DeepSeek <code>/chat/completions</code> API 是一个“无状态” API，即服务端不记录用户请求的上下文，用户在每次请求时，</strong>需将之前所有对话历史拼接好后<strong>，传递给对话 API。</strong>——<strong>出自deepseek官方文档</strong></p>
+<p>在多轮对话的情况下，并不是每一轮对话的 <code>Context Window</code> 都是 64K，而是随着对话轮次的增多 <code>Context Window</code> 越来越小。比如第一轮对话的输入+输出使用了 32K，那么第二轮就只剩下 32K 了，原理就像单轮对话分析的那样。</p>
+<blockquote>
+<p>上下文截断</p>
+</blockquote>
+<p>如果每轮对话的输入+输出都很长，那么是不是用不了几轮就超过模型限制无法使用了？实际上还能正常使用！无论对话多少轮，模型都能响应并输出内容。</p>
+<p>在使用基于大模型的产品时（如 DeepSeek、Qwen等），<strong>服务提供商不会让用户直接面对硬性的上下文窗口限制</strong>，而是通过 “上下文截断” 策略实现“超长文本处理”。例如模型原生支持 64K，但用户累计输入+输出已达 64K ，当用户再进行一次请求（比如输入有 2K）时就超限了，这时候服务端仅保留最后 64K Tokens 供模型参考，初始的前 2K Token被丢弃（可能是输入内容，也可能包含LLM的响应内容）。对用户来说，最后输入的内容被保留了下来，最早的输入（or输出）被丢弃了。<strong>这就是为什么在进行多轮对话时，虽然还是能够得到正常响应，但大模型可能会产生 “失忆” 的状况。</strong><code>Context Window</code> 总量就那么多，超出范围之后LLM记不住所有东西，只能选择记住后面的忘记前面的。</p>
+<p><strong>在模型架构层面，上下文窗口是硬性约束</strong>，由以下因素决定：</p>
+<ol>
+<li>位置编码的范围：Transformer 模型通过位置编码（如 RoPE、ALiBi）为每个 token 分配位置信息，其设计范围直接限制模型能处理的最大序列长度。</li>
+<li>自注意力机制的计算方式：生成每个新 token 时，模型需计算其与所有历史 token（输入+已生成输出） 的注意力权重，因此总序列长度严格受限。KV Cache 的显存占用与总序列长度成正比，超过窗口会导致显存溢出或计算错误。</li>
+</ol>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250820005528371.png" alt="DeepSeek上下文长度限制"></p>
+<h1 id="什么是“上下文”？"><a href="#什么是“上下文”？" class="headerlink" title="什么是“上下文”？"></a>什么是“上下文”？</h1><p>如果把LLM看做CPU，<code>Context</code>就像是RAM。RAM的存储空间是有限的，LLM 处理各种上下文的能力也是有限的，所有大模型都有上下文窗口限制。正如操作系统会精心管理哪些内容可以放入 CPU 的 RAM 中一样，可以认为“Context Engineering”也扮演着类似的角色，<strong>如何让LLM在有限的”记忆空间”中始终关注最重要的信息，并在每一次对话中把精心挑选的最重要的信息传递给大模型，这就是<code>Context Engineering</code>要解决的根本问题。</strong></p>
+<p><strong>“Context”包含模型在生成回答之前，它所能看到的全部信息。</strong>不仅仅包含<code>用户 | System</code>的输入Prompt，还包括以下这些组成部分，它们共同构成了模型看到的<code>Context</code>：</p>
+<ul>
+<li><strong>系统指令</strong>（System Prompt）：开场设定，告诉模型这次对话应该怎么表现。可以包含示例、规则等等。</li>
+<li><strong>用户输入</strong>：用户的提问或任务指令。</li>
+<li><strong>对话历史</strong>（短期记忆）：本轮对话中模型和用户的所有来回问答内容。</li>
+<li><strong>长期记忆</strong>：跨会话保存的信息，比如用户偏好、过往项目的总结、或明确告诉模型要记住的事实。</li>
+<li><strong>外部检索信息</strong>（RAG）：从文档、数据库或 API 获取的最新资料，用来辅助模型回答。</li>
+<li><strong>可用工具</strong>：模型可以调用的工具或函数说明。</li>
+<li><strong>结构化输出格式</strong>：指定模型回答的格式，如一个 JSON 对象。</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250820002720104.png" alt="Context组成"></p>
+<p><strong>简单来说，<code>Context Engineering</code>就是给LLM提供”恰到好处”的背景信息，让它能准确理解任务并给出高质量的回答。它是提示词工程（Prompt Engineering）的进化和扩展，专注于如何更好地利用模型的上下文窗口。它教会我们如何与LLM“对话”，让LLM更好地理解我们的意图，以便生成更好、更符合人类预期的回答。</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250819233409541.png" alt="LLM应用中常用的Context类型"></p>
+<h1 id="从“提示词工程”到“上下文工程”"><a href="#从“提示词工程”到“上下文工程”" class="headerlink" title="从“提示词工程”到“上下文工程”"></a>从“提示词工程”到“上下文工程”</h1><p><strong>主要区别：</strong>提示词工程专注于<strong>单次交互</strong>的优化和精确控制。<strong>上下文工程更注重长期知识积累和环境构建</strong>，其核心目标是通过动态管理和优化模型输入的上下文信息，提升模型的任务执行能力和输出质量。</p>
+<p>如果提示词工程是写一段聪明的指令让模型尽可能给出好结果，那上下文工程做的事情要更复杂,上下文工程包含设计和构建一整套动态系统，确保在对的时间，把对的信息，用对的格式，喂给大模型，以更好地完成目标任务。</p>
+<ul>
+<li>不是一句话，而是一个系统</li>
+<li>按需生成，实时定制</li>
+<li>关键在于“信息+工具”的时机与精度：模型输出质量好不好，核心是给它的东西准不准、够不够。</li>
+<li>信息呈现方式也很重要：一堆乱七八糟的原始数据，远不如一个清晰的摘要；一段模糊的提示，不如一个结构明确的工具调用说明。</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250820003200688.png" alt="上下文工程 VS 提示词工程"></p>
+<h1 id="Agent的上下文工程的实现方法"><a href="#Agent的上下文工程的实现方法" class="headerlink" title="Agent的上下文工程的实现方法"></a>Agent的上下文工程的实现方法</h1><p>可以分为四种方式：<code>保存Context</code>、<code>选择Context</code>、<code>压缩Context</code>、<code>隔离Context</code></p>
+<h2 id="保存Context"><a href="#保存Context" class="headerlink" title="保存Context"></a>保存Context</h2><p>保存一般由模型公司定义，可以根据模型支持的上下文长度看出该模型的记忆能力。</p>
+<p>人类在解决任务时，可以通过做笔记，记住一些事情，以便将来完成相关任务。Agent也可以利用这些能力，通过其他方式将日后要使用的信息保存起来，可以存到内存、硬盘、数据库之内，在模型需要的时候再发给模型，核心理念是将信息保存在上下文窗口之外的地方，以便需要时可以取用。一个典型的例子是ChatGPT的记忆功能(长期记忆，跨会话保存的信息)。</p>
+<h2 id="选择Context"><a href="#选择Context" class="headerlink" title="选择Context"></a>选择Context</h2><p>选择Context是指从海量的信息中选择出一部分与用户问题最相关的内容，并且把它们放在模型的Context中。一个好的选择策略是整个系统准确运行的基本保障。选择策略可以粗略分为静态选择和动态选择。静态相当于角色&#x2F;Mask提示词，每次都固定调用；动态是模型根据输入的问题，主动寻找能用的内容（通常是RAG）或工具（最好用MCP）。</p>
+<blockquote>
+<p>静态选择</p>
+</blockquote>
+<p>把一些永远重要、必须遵守的信息在每一次请求时都全部放在Context里，就像是焊死给LLM的原则，无论用户问什么问题，都必须遵守这些要求。对于这些短小的信息，可以选择全都要，只要不撑爆上下文Context窗口就行，一般只占用少量的Token，例如系统提示词。</p>
+<blockquote>
+<p>动态选择</p>
+</blockquote>
+<p>选择与用户问题最相关的信息，把它放人Context里，例如从一大堆工具里选择用户需要的工具，或者是相关的向量信息，只把这些精心挑选的内容放入Context里，例如RAG动态选择最相关的内容再填充到提示词里。</p>
+<h2 id="压缩Context"><a href="#压缩Context" class="headerlink" title="压缩Context"></a>压缩Context</h2><p>压缩是在模型上下文超过限度后，穿插“总结”，实现上下文压缩，可以根据不同场景设计不同的压缩策略，始终保持重点。</p>
+<p>Agent运行时会在Context里积累大量的历史消息，一般最占空间的是模型的输出文本和工具的执行结果，如果不做处理，这些历史消息会很快占满Context，常见的方法是压缩这些历史消息，可以通过设置阈值，例如达到窗口限制的90%就压缩一下。可以让LLM自己提取摘要信息，也可以自己设置压缩方法。</p>
+<h2 id="隔离Context"><a href="#隔离Context" class="headerlink" title="隔离Context"></a>隔离Context</h2><p>隔离是对复杂任务进行角色职能拆分，以实现各任务提示词与上下文的隔离，提高单一任务的执行质量（trae的角色&#x2F;cursor rules&#x2F;Claude.md 都是在做这个事情）。</p>
+<p>不同模型之间的Context是相互隔离的(多见于Multi-agent之间)，互不干扰。常见的架构是一个Lead Agent分派任务，给其他subagent执行具体任务。subagent是相互隔离互不影响的，Context内容也是相互隔离的。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250820014355723.png" alt="Context实现策略"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250820012918864.png" alt="Context Engineering"></p>
+<h1 id="精品文章"><a href="#精品文章" class="headerlink" title="精品文章"></a>精品文章</h1><p>有关Context Engineering的知名文章，可以细品一下。</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.philschmid.de/context-engineering">The New Skill in AI is Not Prompting, It’s Context Engineering</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.langchain.com/context-engineering-for-agents/">Context Engineering</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.langchain.com/the-rise-of-context-engineering/">The rise of “context engineering”</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>Context Engineering</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://www.liuhengfeng.xyz/posts/35eaa9b4.html">https://www.liuhengfeng.xyz/posts/35eaa9b4.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>LHF</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2025-08-19</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2025-08-19</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div><div class="post_share"><div class="social-share" data-image="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-08-20_00-26-06.jpg" data-sites="twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/157c799b.html" title="个人知识库智能问答系统(细节与难点记录)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/RAG.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">个人知识库智能问答系统(细节与难点记录)</div></div></a></div><div class="next-post pull-right"><a href="/posts/925f735e.html" title="Python数据验证库：Pydantic"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/pydantic.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Python数据验证库：Pydantic</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/796b2fbf.html" title="2025的Agent共识"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-07-11_22-03-45.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-11</div><div class="title">2025的Agent共识</div></div></a></div><div><a href="/posts/2ca90abc.html" title="AI基础知识"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/bc18e18a-2e2d-4378-9c15-f1c678fc5ed1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-19</div><div class="title">AI基础知识</div></div></a></div><div><a href="/posts/1a411b1e.html" title="AutoDL服务器常用命令记录"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-05-18_14-41-41.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-18</div><div class="title">AutoDL服务器常用命令记录</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E9%95%BF%E5%BA%A6%EF%BC%88Context-Length%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">上下文长度（Context Length）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">什么是“上下文”？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E2%80%9C%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E2%80%9D%E5%88%B0%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E2%80%9D"><span class="toc-number">3.</span> <span class="toc-text">从“提示词工程”到“上下文工程”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Agent%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Agent的上下文工程的实现方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98Context"><span class="toc-number">4.1.</span> <span class="toc-text">保存Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9Context"><span class="toc-number">4.2.</span> <span class="toc-text">选择Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9Context"><span class="toc-number">4.3.</span> <span class="toc-text">压缩Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%94%E7%A6%BBContext"><span class="toc-number">4.4.</span> <span class="toc-text">隔离Context</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%BE%E5%93%81%E6%96%87%E7%AB%A0"><span class="toc-number">5.</span> <span class="toc-text">精品文章</span></a></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-wrap" id="footer-wrap"> <div class="copyright">&copy;2024 - 2025 By LHF</div><div class="footer_custom_text"><div id="runtime"></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><canvas id="universe"></canvas><script src="https://statics.liuhengfeng.xyz/js/lunar.min.js"></script><script src="https://statics.liuhengfeng.xyz/js/calendar.min.js"></script><script src="https://statics.liuhengfeng.xyz/js/calendar.boot.js"></script><script src="https://statics.liuhengfeng.xyz/js/jquery-3.6.1.min.js"></script><script async src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script><script async src="https://unpkg.com/element-ui@2.15.6/lib/index.js"></script><script async src="https://statics.liuhengfeng.xyz/js/common.min.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false#  open shake (抖動特效);
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('card-widget card-announcement')[2];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'f89c5a6b949a4345a0d22f0ad5b040ea';
+  var gaud_map_key = 'a36227a8c2b6dcd6b90a98920a06ac89';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '108.230574,22.793414';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://devapi.qweather.com/v7/weather/now?key=f89c5a6b949a4345a0d22f0ad5b040ea"></script><script data-pjax src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/js/electric_clock.min.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="博客主题为Butterfly" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-d021d6?style=flat&amp;logo=buefy&amp;color=purple" alt=""/></a><a class="github-badge" target="_blank" href="https://pages.github.com/" style="margin-inline:5px" data-title="本站项目托管于Github Pages" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github%20Pages-d021d6?style=flat&amp;logo=githubpages&amp;color=brown" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="GitHub万岁" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Thanks-Github-d021d6?style=flat&amp;logo=GitHub&amp;color=indigo" alt=""/></a><a class="github-badge" target="_blank" href="https://www.alibabacloud.com/zh/product/content-delivery-network?_p_lc=1" style="margin-inline:5px" data-title="网站资源使用阿里云CDN加速" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/CDN-%E9%98%BF%E9%87%8C%E4%BA%91CDN-d021d6?style=flat&amp;logo=speedtest&amp;color=blue" alt=""/></a><a class="github-badge" target="_blank" href="https://www.aliyun.com/benefit" style="margin-inline:5px" data-title="本站图床部署于阿里云OSS" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/OSS-%E9%98%BF%E9%87%8C%E4%BA%91OSS-d021d6?style=flat&amp;logo=alibabacloud&amp;color=orange" alt=""/></a><a class="github-badge" target="_blank" href="https://beian.miit.gov.cn" style="margin-inline:5px" data-title="网站备案号" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/ICP-%E6%A1%82ICP%E5%A4%872023012461%E5%8F%B7-d021d6?style=flat&amp;logo=brandfolder&amp;color=yellow" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=creativecommons" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInRight');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('footer-wrap');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInUp');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('show');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInDown');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('is-center');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-data');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-social-icons');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-btn');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body></html>

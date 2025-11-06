@@ -1,0 +1,658 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Linux防止暴力破解工具:fail2ban | Notes  Blog</title><meta name="author" content="LHF"><meta name="copyright" content="LHF"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Fail2ban 是一个在 Linux 上用来防止暴力破解攻击的小工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux防止暴力破解工具:fail2ban">
+<meta property="og:url" content="https://www.liuhengfeng.xyz/posts/3b018df5.html">
+<meta property="og:site_name" content="Notes  Blog">
+<meta property="og:description" content="Fail2ban 是一个在 Linux 上用来防止暴力破解攻击的小工具">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-04-26_23-03-00.png">
+<meta property="article:published_time" content="2025-04-26T15:01:56.000Z">
+<meta property="article:modified_time" content="2025-04-26T15:01:56.000Z">
+<meta property="article:author" content="LHF">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-04-26_23-03-00.png"><link rel="shortcut icon" href="https://statics.liuhengfeng.xyz/Hexo/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240907191402.jpg"><link rel="canonical" href="https://www.liuhengfeng.xyz/posts/3b018df5.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体中文","cht_to_chs":"你已切换为简体中文","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux防止暴力破解工具:fail2ban',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-04-26 23:01:56'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="http://statics.liuhengfeng.xyz/css/custom.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/universe.css"><span id="fps"></span><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/hexo_electric_clock.css"><link rel="stylesheet" href="/css/bottom_runtime.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.15.6/lib/theme-chalk/index.css"><link rel="stylesheet" href="https://statics.liuhengfeng.xyz/css/calendar.css"><style>.article-entry,.post-body,.post-content,#post,article,main,#content{-webkit-user-select:text!important;user-select:text!important}</style><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/u%3D1968668429%2C2104382916%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">81</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-04-26_23-03-00.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Notes  Blog"><img class="site-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/2876f803-ae9a-49ac-bcd9-9d623c5beb03.jpg"/><span class="site-name">Notes  Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux防止暴力破解工具:fail2ban</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-26T15:01:56.000Z" title="发表于 2025-04-26 23:01:56">2025-04-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-26T15:01:56.000Z" title="更新于 2025-04-26 23:01:56">2025-04-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.7k</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>就一晚上的时间，云服务器遭受了1900多条SSH暴力攻击，在网上裸奔还是比较危险和容易遭受网络攻击的，如果用的是弱密码很容易被攻破成为肉鸡，所以还是要用强密码，并且配合上保护软件进行防护，1Panel提示可以使用fail2ban软件进行ssh防护，才知道有这个软件，之前都不知道这个是什么。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250426234451401.png" alt="攻击情况"></p>
+<h1 id="什么是fail2ban"><a href="#什么是fail2ban" class="headerlink" title="什么是fail2ban"></a>什么是fail2ban</h1><p>项目官方地址：<a target="_blank" rel="noopener" href="https://github.com/fail2ban/fail2ban">fail2ban</a></p>
+<p><strong>Fail2Ban</strong> 是一个开源的入侵防御软件，主要用于保护服务器免受暴力破解和其他恶意行为的侵害。它最初是为防止 SSH 暴力破解设计的，但也支持多种服务（如 HTTP、FTP、SMTP 等）。Fail2Ban 通过监控系统日志文件，检测可疑活动，并在发现恶意行为时自动采取防护措施。</p>
+<p>fail2ban 就像服务器的护卫，随时盯着的登录日志，一发现有人爆破，就根据规则<strong>执行封禁</strong>，让 Linux 服务器更安全、压力更小，它轻量、灵活、能防很多种暴力破解场景，是 <strong>Linux 安全必备工具之一</strong>。</p>
+<blockquote>
+<p>Fail2Ban 通常运行在 Linux 系统上，支持大多数主流发行版（如 Ubuntu、CentOS、Debian 等）</p>
+</blockquote>
+<p><strong>官方介绍：</strong></p>
+<p>Fail2Ban 会扫描日志文件<code>/var/log/auth.log</code>并封禁登录失败次数过多的 IP 地址。它会更新系统防火墙规则，拒绝来自这些 IP 地址的新连接，封禁时间可配置。Fail2Ban 开箱即用，可以读取许多标准日志文件，例如 sshd 和 Apache 的日志文件，并且可以轻松配置为读取您选择的任何日志文件，以查找任何您想要的错误。虽然 Fail2Ban 能够降低身份验证尝试失败的概率，但它无法消除弱身份验证带来的风险。如果您确实希望保护服务，请将服务设置为仅使用双因素身份验证或公私身份验证机制。</p>
+<h1 id="fail2ban的功能"><a href="#fail2ban的功能" class="headerlink" title="fail2ban的功能"></a>fail2ban的功能</h1><p>Fail2Ban 的核心功能是<strong>自动化检测和阻止恶意活动</strong>，具体作用包括：</p>
+<ul>
+<li><p>监控日志文件（比如 SSH 登录日志）</p>
+</li>
+<li><p>检测异常登录失败（比如连续输错密码）</p>
+</li>
+<li><p>自动用防火墙（iptables）<strong>封掉攻击 IP</strong>，临时禁止它继续尝试。</p>
+</li>
+<li><p>防止暴力破解，检测多次登录失败的尝试（例如 SSH、Web 服务器、邮件服务器等）</p>
+</li>
+<li><p>动态封禁 IP，通过修改防火墙规则（如 iptables、nftables 或 firewalld），Fail2Ban 可以临时或永久封禁恶意 IP，封禁时间（bantime）可配置，例如 1 小时、1 天，甚至永久</p>
+</li>
+<li><p>减少服务器负载，通过阻止恶意请求，减少服务器因暴力破解而导致的高负载（例如 CPU 和网络资源被占用）</p>
+</li>
+<li><p>通知和日志，Fail2Ban 可以记录封禁事件，并通过邮件或其他方式通知管理员</p>
+</li>
+</ul>
+<h1 id="fail2ban核心概念"><a href="#fail2ban核心概念" class="headerlink" title="fail2ban核心概念"></a>fail2ban核心概念</h1><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>意思</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>jail</strong></td>
+<td>一个防护规则，比如 SSH 的 jail，Nginx 的 jail</td>
+</tr>
+<tr>
+<td><strong>filter</strong></td>
+<td>定义了匹配日志的规则（比如什么算是失败）</td>
+</tr>
+<tr>
+<td><strong>action</strong></td>
+<td>发现异常后做什么动作（封IP、发邮件等）</td>
+</tr>
+<tr>
+<td><strong>ban</strong></td>
+<td>指定失败次数、时间窗口、封禁时长等参数</td>
+</tr>
+</tbody></table>
+<p><strong>jail</strong> 其实就是：过滤规则 + 动作 + 时间策略</p>
+<h1 id="fail2ban工作流程"><a href="#fail2ban工作流程" class="headerlink" title="fail2ban工作流程"></a>fail2ban工作流程</h1><p>Fail2Ban 的运行机制可以分为以下步骤：</p>
+<ol>
+<li><strong>监控日志文件</strong>：Fail2Ban 读取系统日志（如 &#x2F;var&#x2F;log&#x2F;auth.log 或 &#x2F;var&#x2F;log&#x2F;secure），寻找特定的失败模式，例如SSH 登录失败的日志可能包含“Failed password”</li>
+<li><strong>匹配规则（过滤器）</strong>：，Fail2Ban 使用正则表达式（定义在过滤器文件中，如 &#x2F;etc&#x2F;fail2ban&#x2F;filter.d&#x2F;sshd.conf）来匹配日志中的失败事件，如检测到“Failed password for root from 202.103.241.27”。</li>
+<li><strong>计数失败尝试</strong>：Fail2Ban 跟踪每个 IP 的失败次数（maxretry 参数），如果在指定时间窗口（findtime）内失败次数超过阈值，则触发封禁。</li>
+<li><strong>执行封禁（动作）</strong>：Fail2Ban 调用预定义的动作（action），通常是修改防火墙规则（如 iptables）来阻止该 IP，封禁持续时间由 bantime 参数决定。</li>
+<li><strong>解封：</strong>封禁时间结束后，Fail2Ban 自动解除封禁，或者管理员可以手动解封。</li>
+</ol>
+<h1 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h1><ul>
+<li><code>logpath</code>：告诉 fail2ban 要监控哪个日志文件，里面要有“登录失败”之类的记录，fail2ban 会不停扫描这个文件内容，一旦发现异常（比如密码输错），就根据设置处理。不同服务产生日志的位置不一样，要对应你的服务改。如果你自己定义了一个日志文件（比如 <code>auto.log</code>），要保证 SSH 服务有正确写日志进去，不然 fail2ban扫描不到。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>logpath 示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>保护 SSH</td>
+<td><code>/var/log/auth.log</code>（Debian&#x2F;Ubuntu）或 <code>/var/log/secure</code>（CentOS&#x2F;RHEL）</td>
+</tr>
+<tr>
+<td>保护 Nginx 后台</td>
+<td><code>/var/log/nginx/error.log</code></td>
+</tr>
+<tr>
+<td>保护 FTP (vsftpd)</td>
+<td><code>/var/log/vsftpd.log</code></td>
+</tr>
+<tr>
+<td>保护邮件服务器</td>
+<td><code>/var/log/maillog</code>（Postfix&#x2F;Dovecot）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>backend</code>：指定 fail2ban <strong>用什么方式读取日志</strong>，有些系统是传统的”扫文件”，有些新系统（比如Ubuntu18+，CentOS7+）已经用 <code>systemd</code> 管理日志了，所以需要特别指定。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>auto</td>
+<td>自动检测最合适的模式（推荐，不确定时用这个）</td>
+</tr>
+<tr>
+<td>systemd</td>
+<td>直接从 <code>journalctl</code> 读取 systemd 日志（适合现代Linux系统）</td>
+</tr>
+<tr>
+<td>polling</td>
+<td>定时扫描日志文件变化（兼容性最高，但性能稍低）</td>
+</tr>
+<tr>
+<td>gamin</td>
+<td>用 <code>gamin</code> 文件通知机制（很少用了）</td>
+</tr>
+<tr>
+<td>inotify</td>
+<td>用 <code>inotify</code> 实时监听文件变化（效率高，老系统可能不支持）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>action</code>：指定发现异常之后<strong>怎么处理这个攻击IP</strong>。 <code>iptables-multiport</code>，意思是用防火墙 iptables 来封IP，并且可以一口气封多个端口。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>选项名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iptables-multiport</td>
+<td>用 iptables 同时封禁多个端口（最常用）</td>
+</tr>
+<tr>
+<td>iptables-allports</td>
+<td>封掉攻击IP的<strong>所有端口</strong>，更狠</td>
+</tr>
+<tr>
+<td>firewallcmd-multiport</td>
+<td>如果系统用 <code>firewalld</code>（比如CentOS 7+）时用</td>
+</tr>
+<tr>
+<td>nftables-multiport</td>
+<td>如果系统防火墙是 <code>nftables</code> 时用</td>
+</tr>
+<tr>
+<td>route</td>
+<td>直接在路由层丢弃攻击者的数据包（轻量）</td>
+</tr>
+<tr>
+<td>sendmail-whois</td>
+<td>检测到攻击，给管理员发送邮件告警</td>
+</tr>
+<tr>
+<td>dummy</td>
+<td>测试用，不做任何操作</td>
+</tr>
+</tbody></table>
+<h2 id="其他参数和含义"><a href="#其他参数和含义" class="headerlink" title="其他参数和含义"></a>其他参数和含义</h2><table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>enabled</td>
+<td>是否启用这个 jail，<code>true</code> 表示启用，<code>false</code> 表示禁用</td>
+</tr>
+<tr>
+<td>port</td>
+<td>要保护的端口号或服务名（比如 <code>ssh</code>、<code>http</code>，也可以指定端口如 <code>22</code>）</td>
+</tr>
+<tr>
+<td>protocol</td>
+<td>使用的协议，通常是 <code>tcp</code>（也可以是 <code>udp</code>）</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>使用哪个过滤器规则（对应 <code>filter.d/*.conf</code> 文件）</td>
+</tr>
+<tr>
+<td>action</td>
+<td>检测到攻击时采取什么动作，比如 <code>iptables-multiport</code> 封IP</td>
+</tr>
+<tr>
+<td>logpath</td>
+<td>要监控的日志文件路径，比如 <code>/var/log/auth.log</code></td>
+</tr>
+<tr>
+<td>backend</td>
+<td>日志读取方式，常见有 <code>auto</code>、<code>systemd</code>、<code>polling</code></td>
+</tr>
+<tr>
+<td>maxretry</td>
+<td>在 <code>findtime</code> 时间内允许的最大失败次数，超过就封禁</td>
+</tr>
+<tr>
+<td>findtime</td>
+<td>统计失败次数的时间窗口（秒），比如600秒表示10分钟内统计</td>
+</tr>
+<tr>
+<td>bantime</td>
+<td>封禁时长（秒），比如 <code>600</code> 是封禁10分钟，<code>-1</code>表示永久封禁</td>
+</tr>
+<tr>
+<td>bantime.increment</td>
+<td>动态增加封禁时间，每次被封后bantime增长</td>
+</tr>
+<tr>
+<td>bantime.factor</td>
+<td>封禁时间增长的倍数，比如设置2，每次被封时间翻倍</td>
+</tr>
+<tr>
+<td>bantime.formula</td>
+<td>用数学公式自定义封禁时长，比如 <code>bantime * (1 + failures)</code></td>
+</tr>
+<tr>
+<td>ignoreip</td>
+<td>白名单 IP 地址或网段，永远不会被封，可以多个用空格隔开</td>
+</tr>
+<tr>
+<td>banaction</td>
+<td>封禁动作（iptables、firewalld、nftables等，根据系统情况选择）</td>
+</tr>
+<tr>
+<td>banaction_allports</td>
+<td>封禁所有端口的动作，通常用在严重封锁的情况</td>
+</tr>
+<tr>
+<td>destemail</td>
+<td>发生封禁时通知的邮箱地址</td>
+</tr>
+<tr>
+<td>sender</td>
+<td>发封禁通知邮件时使用的发件人邮箱</td>
+</tr>
+<tr>
+<td>mta</td>
+<td>用哪个邮件服务发送邮件（如 <code>sendmail</code>, <code>mail</code>, <code>smtp</code>)</td>
+</tr>
+<tr>
+<td>protocol</td>
+<td>指定协议，常用 <code>tcp</code></td>
+</tr>
+<tr>
+<td>chain</td>
+<td>指定防火墙链（通常是 <code>INPUT</code>）</td>
+</tr>
+</tbody></table>
+<p>fail2ban 自带很多现成的 jail，可以保护多种服务：</p>
+<ul>
+<li>sshd（远程登录保护）</li>
+<li>nginx-http-auth（网站后台登录保护）</li>
+<li>vsftpd（FTP服务器保护）</li>
+<li>postfix、dovecot（邮件服务器保护）</li>
+<li>apache-auth（网站后台登录保护）</li>
+</ul>
+<p>可以根据需要打开或自定义。</p>
+<h1 id="配置文件位置"><a href="#配置文件位置" class="headerlink" title="配置文件位置"></a>配置文件位置</h1><p>默认安装后，fail2ban 的配置通常在 <code>/etc/fail2ban/</code>，主要是下面这些：</p>
+<table>
+<thead>
+<tr>
+<th>文件&#x2F;目录</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fail2ban.conf</td>
+<td>主配置文件（很少动）</td>
+</tr>
+<tr>
+<td>jail.conf</td>
+<td>默认规则模板（一般不要直接改）</td>
+</tr>
+<tr>
+<td>jail.local</td>
+<td><strong>自定义配置，写配置就在上面写，如果默认没有这个文件就复制jail.conf然后改名为jail.local并写入相关配置（主用）</strong></td>
+</tr>
+<tr>
+<td>jail.d&#x2F;</td>
+<td>存放分散的小配置文件</td>
+</tr>
+<tr>
+<td>filter.d&#x2F;</td>
+<td>存放过滤规则文件（比如 sshd.conf）</td>
+</tr>
+<tr>
+<td>action.d&#x2F;</td>
+<td>存放动作文件（比如封 IP 的操作）</td>
+</tr>
+</tbody></table>
+<h1 id="云服务器fail2ban配置"><a href="#云服务器fail2ban配置" class="headerlink" title="云服务器fail2ban配置"></a>云服务器fail2ban配置</h1><p>需要注意的是<code>[sshd]</code> 原本是注释掉的形式<code># [sshd]</code> ，需要把标题的注释符号<code>#</code>也删掉，然后复制下面的各项规则在<code>[sshd]</code> 后面</p>
+<p><code>jail.local</code>文件夹本身是有两个<code>[sshd]</code> 的，取消注释第一个<code>[sshd]</code> 并在后面写入规则之后，要把下面默认打开的<code>[sshd]</code> 相关内容注释掉</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[sshd]  # 定义一个 jail，名字叫 sshd，保护SSH服务</span><br><span class="line"></span><br><span class="line">enabled = true  # 启用这个 jail，让 fail2ban 开始保护 SSH</span><br><span class="line"></span><br><span class="line">port = ssh  # 监控的端口是 ssh（通常是22端口，如果换了要对应改）</span><br><span class="line"></span><br><span class="line">logpath = /var/log/auto.log  # 指定要监控的日志文件路径（你的SSH登录日志需要写到这里）</span><br><span class="line"></span><br><span class="line">backend = systemd  # 使用 systemd 作为日志后台，直接从 systemd 日志中拉取数据（更稳定）</span><br><span class="line"></span><br><span class="line">maxretry = 10  # 在 findtime 时间段内，允许失败10次，超过就封禁</span><br><span class="line"></span><br><span class="line">findtime = 600  # 观察时间窗口是600秒（10分钟内连续失败超过maxretry次数就触发封禁）</span><br><span class="line"></span><br><span class="line">bantime = 86400  # 封禁时长86400秒（24小时），被封IP一天后才能自动解封</span><br><span class="line"></span><br><span class="line">ignoreip = 127.0.0.1 202.103.241.27  # 本地和你的公网IP白名单，不会被封禁</span><br><span class="line"></span><br><span class="line">action = iptables-multiport  # 封禁动作，使用iptables同时封禁多个端口（这里主要是封ssh端口）</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250426233037245.png" alt="fail2ban配置"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250426233453994.png" alt="注释原本的sshd配置"></p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>systemctl start fail2ban</td>
+<td>启动 fail2ban 服务</td>
+</tr>
+<tr>
+<td>systemctl stop fail2ban</td>
+<td>停止 fail2ban 服务</td>
+</tr>
+<tr>
+<td>systemctl restart fail2ban</td>
+<td>重启 fail2ban 服务（修改配置后需要重启）</td>
+</tr>
+<tr>
+<td>systemctl status fail2ban</td>
+<td>查看 fail2ban 当前运行状态</td>
+</tr>
+<tr>
+<td>fail2ban-client status</td>
+<td>查看 fail2ban 总体状态和受保护的 jail 列表</td>
+</tr>
+<tr>
+<td>fail2ban-client status &lt;jail名&gt;</td>
+<td>查看某个具体 jail（比如 sshd）的详细封禁情况</td>
+</tr>
+<tr>
+<td>fail2ban-client reload</td>
+<td>重新加载配置文件，不重启服务；应用新的配置文件（如 jail.local）而不停止服务</td>
+</tr>
+<tr>
+<td>fail2ban-client set &lt;jail名&gt; banip &lt;IP地址&gt;</td>
+<td>手动封禁某个 IP 地址</td>
+</tr>
+<tr>
+<td>fail2ban-client set &lt;jail名&gt; unbanip &lt;IP地址&gt;</td>
+<td>手动解封某个 IP 地址</td>
+</tr>
+<tr>
+<td>fail2ban-client add &lt;jail名&gt;</td>
+<td>手动添加一个 jail（很少用，通常配置文件定义）</td>
+</tr>
+<tr>
+<td>fail2ban-client del &lt;jail名&gt;</td>
+<td>手动删除一个 jail（很少用）</td>
+</tr>
+<tr>
+<td>fail2ban-client ping</td>
+<td>检查 fail2ban 服务是否在正常响应，返回 Server replied: pong 表示服务正常运行</td>
+</tr>
+</tbody></table>
+<p><code>fail2ban-client status</code></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250426234427049.png" alt="被封禁的IP"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/image-20250427001806753.png" alt="服务运行状态"></p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>Linux防止暴力破解工具:fail2ban</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://www.liuhengfeng.xyz/posts/3b018df5.html">https://www.liuhengfeng.xyz/posts/3b018df5.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>LHF</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2025-04-26</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2025-04-26</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"><div class="social-share" data-image="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-04-26_23-03-00.png" data-sites="twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/4f1e37cf.html" title="Docker镜像源站与单次加速对比"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/docker.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Docker镜像源站与单次加速对比</div></div></a></div><div class="next-post pull-right"><a href="/posts/da287ccb.html" title="网站字体文件CORS跨域问题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-04-25_14-24-44.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">网站字体文件CORS跨域问题</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/796b2fbf.html" title="2025的Agent共识"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-07-11_22-03-45.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-11</div><div class="title">2025的Agent共识</div></div></a></div><div><a href="/posts/2ca90abc.html" title="AI基础知识"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/bc18e18a-2e2d-4378-9c15-f1c678fc5ed1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-19</div><div class="title">AI基础知识</div></div></a></div><div><a href="/posts/1a411b1e.html" title="AutoDL服务器常用命令记录"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://statics.liuhengfeng.xyz/Hexo/PixPin_2025-05-18_14-41-41.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-18</div><div class="title">AutoDL服务器常用命令记录</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFfail2ban"><span class="toc-number">2.</span> <span class="toc-text">什么是fail2ban</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#fail2ban%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">3.</span> <span class="toc-text">fail2ban的功能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#fail2ban%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">4.</span> <span class="toc-text">fail2ban核心概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#fail2ban%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">5.</span> <span class="toc-text">fail2ban工作流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-number">6.</span> <span class="toc-text">常用参数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E6%95%B0%E5%92%8C%E5%90%AB%E4%B9%89"><span class="toc-number">6.1.</span> <span class="toc-text">其他参数和含义</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="toc-number">7.</span> <span class="toc-text">配置文件位置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8fail2ban%E9%85%8D%E7%BD%AE"><span class="toc-number">8.</span> <span class="toc-text">云服务器fail2ban配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">9.</span> <span class="toc-text">常用命令</span></a></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-wrap" id="footer-wrap"> <div class="copyright">&copy;2024 - 2025 By LHF</div><div class="footer_custom_text"><div id="runtime"></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><canvas id="universe"></canvas><script src="https://statics.liuhengfeng.xyz/js/lunar.min.js"></script><script src="https://statics.liuhengfeng.xyz/js/calendar.min.js"></script><script src="https://statics.liuhengfeng.xyz/js/calendar.boot.js"></script><script src="https://statics.liuhengfeng.xyz/js/jquery-3.6.1.min.js"></script><script async src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script><script async src="https://unpkg.com/element-ui@2.15.6/lib/index.js"></script><script async src="https://statics.liuhengfeng.xyz/js/common.min.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false#  open shake (抖動特效);
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('card-widget card-announcement')[2];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'f89c5a6b949a4345a0d22f0ad5b040ea';
+  var gaud_map_key = 'a36227a8c2b6dcd6b90a98920a06ac89';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '108.230574,22.793414';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://devapi.qweather.com/v7/weather/now?key=f89c5a6b949a4345a0d22f0ad5b040ea"></script><script data-pjax src="https://liu-hexo.oss-cn-guangzhou.aliyuncs.com/js/electric_clock.min.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="博客主题为Butterfly" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-d021d6?style=flat&amp;logo=buefy&amp;color=purple" alt=""/></a><a class="github-badge" target="_blank" href="https://pages.github.com/" style="margin-inline:5px" data-title="本站项目托管于Github Pages" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github%20Pages-d021d6?style=flat&amp;logo=githubpages&amp;color=brown" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="GitHub万岁" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Thanks-Github-d021d6?style=flat&amp;logo=GitHub&amp;color=indigo" alt=""/></a><a class="github-badge" target="_blank" href="https://www.alibabacloud.com/zh/product/content-delivery-network?_p_lc=1" style="margin-inline:5px" data-title="网站资源使用阿里云CDN加速" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/CDN-%E9%98%BF%E9%87%8C%E4%BA%91CDN-d021d6?style=flat&amp;logo=speedtest&amp;color=blue" alt=""/></a><a class="github-badge" target="_blank" href="https://www.aliyun.com/benefit" style="margin-inline:5px" data-title="本站图床部署于阿里云OSS" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/OSS-%E9%98%BF%E9%87%8C%E4%BA%91OSS-d021d6?style=flat&amp;logo=alibabacloud&amp;color=orange" alt=""/></a><a class="github-badge" target="_blank" href="https://beian.miit.gov.cn" style="margin-inline:5px" data-title="网站备案号" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/ICP-%E6%A1%82ICP%E5%A4%872023012461%E5%8F%B7-d021d6?style=flat&amp;logo=brandfolder&amp;color=yellow" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=creativecommons" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInRight');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('footer-wrap');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__backInUp');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('show');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInDown');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('is-center');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-data');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-social-icons');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-info-btn');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__fadeInLeft');
+    arr[i].setAttribute('data-wow-duration', '500ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '180');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body></html>
