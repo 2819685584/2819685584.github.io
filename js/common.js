@@ -1,96 +1,109 @@
 /* 1.--------------------------------universe.js --------------------------------- */
 function dark() {
+  // 如果没有 #universe，直接跳过，不报错
+  var s = document.getElementById("universe");
+  if (!s) return;
+
   window.requestAnimationFrame =
     window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
+
   var n,
     e,
     i,
     h,
     t = 0.05,
-    s = document.getElementById("universe"),
     o = !0,
     a = "180,184,240",
     r = "226,225,142",
     d = "226,225,224",
     c = [];
+
   function f() {
-    (n = window.innerWidth),
-      (e = window.innerHeight),
-      (i = 0.216 * n),
-      s.setAttribute("width", n),
-      s.setAttribute("height", e);
+    n = window.innerWidth;
+    e = window.innerHeight;
+    i = 0.216 * n;
+    s.setAttribute("width", n);
+    s.setAttribute("height", e);
   }
   function u() {
     h.clearRect(0, 0, n, e);
     for (var t = c.length, i = 0; i < t; i++) {
       var s = c[i];
-      s.move(), s.fadeIn(), s.fadeOut(), s.draw();
+      s.move();
+      s.fadeIn();
+      s.fadeOut();
+      s.draw();
     }
   }
   function y() {
-    (this.reset = function () {
-      (this.giant = m(3)),
-        (this.comet = !this.giant && !o && m(10)),
-        (this.x = l(0, n - 10)),
-        (this.y = l(0, e)),
-        (this.r = l(1.1, 2.6)),
-        (this.dx = l(t, 6 * t) + (this.comet + 1 - 1) * t * l(50, 120) + 2 * t),
-        (this.dy = -l(t, 6 * t) - (this.comet + 1 - 1) * t * l(50, 120)),
-        (this.fadingOut = null),
-        (this.fadingIn = !0),
-        (this.opacity = 0),
-        (this.opacityTresh = l(0.2, 1 - 0.4 * (this.comet + 1 - 1))),
-        (this.do = l(5e-4, 0.002) + 0.001 * (this.comet + 1 - 1));
-    }),
-      (this.fadeIn = function () {
-        this.fadingIn &&
-          ((this.fadingIn = !(this.opacity > this.opacityTresh)),
-          (this.opacity += this.do));
-      }),
-      (this.fadeOut = function () {
-        this.fadingOut &&
-          ((this.fadingOut = !(this.opacity < 0)),
-          (this.opacity -= this.do / 2),
-          (this.x > n || this.y < 0) && ((this.fadingOut = !1), this.reset()));
-      }),
-      (this.draw = function () {
-        if ((h.beginPath(), this.giant))
-          (h.fillStyle = "rgba(" + a + "," + this.opacity + ")"),
-            h.arc(this.x, this.y, 2, 0, 2 * Math.PI, !1);
-        else if (this.comet) {
-          (h.fillStyle = "rgba(" + d + "," + this.opacity + ")"),
-            h.arc(this.x, this.y, 1.5, 0, 2 * Math.PI, !1);
-          for (var t = 0; t < 30; t++)
-            (h.fillStyle =
-              "rgba(" +
-              d +
-              "," +
-              (this.opacity - (this.opacity / 20) * t) +
-              ")"),
-              h.rect(
-                this.x - (this.dx / 4) * t,
-                this.y - (this.dy / 4) * t - 2,
-                2,
-                2
-              ),
-              h.fill();
-        } else
-          (h.fillStyle = "rgba(" + r + "," + this.opacity + ")"),
-            h.rect(this.x, this.y, this.r, this.r);
-        h.closePath(), h.fill();
-      }),
-      (this.move = function () {
-        (this.x += this.dx),
-          (this.y += this.dy),
-          !1 === this.fadingOut && this.reset(),
-          (this.x > n - n / 4 || this.y < 0) && (this.fadingOut = !0);
-      }),
-      setTimeout(function () {
-        o = !1;
-      }, 50);
+    this.reset = function () {
+      this.giant = m(3);
+      this.comet = !this.giant && !o && m(10);
+      this.x = l(0, n - 10);
+      this.y = l(0, e);
+      this.r = l(1.1, 2.6);
+      this.dx = l(t, 6 * t) + (this.comet ? t * l(50, 120) : 0) + 2 * t;
+      this.dy = -l(t, 6 * t) - (this.comet ? t * l(50, 120) : 0);
+      this.fadingOut = null;
+      this.fadingIn = !0;
+      this.opacity = 0;
+      this.opacityTresh = l(0.2, 1 - 0.4 * (this.comet ? 1 : 0));
+      this.do = l(5e-4, 0.002) + 0.001 * (this.comet ? 1 : 0);
+    };
+    this.fadeIn = function () {
+      if (this.fadingIn) {
+        this.fadingIn = !(this.opacity > this.opacityTresh);
+        this.opacity += this.do;
+      }
+    };
+    this.fadeOut = function () {
+      if (this.fadingOut) {
+        this.fadingOut = !(this.opacity < 0);
+        this.opacity -= this.do / 2;
+        if (this.x > n || this.y < 0) {
+          this.fadingOut = !1;
+          this.reset();
+        }
+      }
+    };
+    this.draw = function () {
+      h.beginPath();
+      if (this.giant) {
+        h.fillStyle = "rgba(" + a + "," + this.opacity + ")";
+        h.arc(this.x, this.y, 2, 0, 2 * Math.PI, !1);
+      } else if (this.comet) {
+        h.fillStyle = "rgba(" + d + "," + this.opacity + ")";
+        h.arc(this.x, this.y, 1.5, 0, 2 * Math.PI, !1);
+        for (var t = 0; t < 30; t++) {
+          h.fillStyle =
+            "rgba(" + d + "," + (this.opacity - (this.opacity / 20) * t) + ")";
+          h.rect(
+            this.x - (this.dx / 4) * t,
+            this.y - (this.dy / 4) * t - 2,
+            2,
+            2
+          );
+          h.fill();
+        }
+      } else {
+        h.fillStyle = "rgba(" + r + "," + this.opacity + ")";
+        h.rect(this.x, this.y, this.r, this.r);
+      }
+      h.closePath();
+      h.fill();
+    };
+    this.move = function () {
+      this.x += this.dx;
+      this.y += this.dy;
+      if (!1 === this.fadingOut) this.reset();
+      if (this.x > n - n / 4 || this.y < 0) this.fadingOut = !0;
+    };
+    setTimeout(function () {
+      o = !1;
+    }, 50);
   }
   function m(t) {
     return Math.floor(1e3 * Math.random()) + 1 < 10 * t;
@@ -98,80 +111,79 @@ function dark() {
   function l(t, i) {
     return Math.random() * (i - t) + t;
   }
-  f(),
-    window.addEventListener("resize", f, !1),
-    (function () {
-      h = s.getContext("2d");
-      for (var t = 0; t < i; t++) (c[t] = new y()), c[t].reset();
-      u();
-    })(),
-    (function t() {
-      document.getElementsByTagName("html")[0].getAttribute("data-theme") ==
-        "dark" && u(),
-        window.requestAnimationFrame(t);
-    })();
+
+  f();
+  window.addEventListener("resize", f, !1);
+  (function () {
+    h = s.getContext("2d");
+    for (var t = 0; t < i; t++) {
+      c[t] = new y();
+      c[t].reset();
+    }
+    u();
+  })();
+  (function t() {
+    if (document.documentElement.getAttribute("data-theme") === "dark") u();
+    window.requestAnimationFrame(t);
+  })();
 }
 dark();
 /* 1.--------------------------------universe.js --------------------------------- */
 
-
 /* 2.--------------------------------fps.js --------------------------------- */
-if (
-  window.localStorage.getItem("fpson") == undefined ||
-  window.localStorage.getItem("fpson") == "1"
-) {
-  var rAF = (function () {
-    return (
-      window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      function (callback) {
-        window.setTimeout(callback, 1000 / 60);
+(function () {
+  const fpsEl = document.getElementById("fps");
+  if (!fpsEl) return; // 没有 fps 节点就直接退出
+
+  if (
+    window.localStorage.getItem("fpson") == null ||
+    window.localStorage.getItem("fpson") == "1"
+  ) {
+    var rAF = (function () {
+      return (
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        function (cb) {
+          window.setTimeout(cb, 1000 / 60);
+        }
+      );
+    })();
+    var frame = 0;
+    var lastTime = Date.now();
+    var lastFameTime = Date.now();
+
+    var loop = function () {
+      var now = Date.now();
+      var fs = now - lastFameTime;
+      var fps = Math.round(1000 / fs);
+      lastFameTime = now;
+      frame++;
+      if (now > 1000 + lastTime) {
+        fps = Math.round((frame * 1000) / (now - lastTime));
+        var kd =
+          fps <= 15
+            ? `<span style="color:#39c5bb">卡成ppt😭</span>`
+            : fps <= 30
+            ? `<span style="color:#39c5bb">电竞级帧率😓</span>`
+            : fps <= 60
+            ? `<span style="color:#39c5bb">有点难受😨</span>`
+            : fps < 90
+            ? `<span style="color:#39c5bb">不太流畅😥</span>`
+            : fps <= 144
+            ? `<span style="color:#39c5bb">还不错哦😀</span>`
+            : `<span style="color:#39c5bb">十分流畅😆</span>`;
+        fpsEl.innerHTML = `FPS:${fps} ${kd}`;
+        frame = 0;
+        lastTime = now;
       }
-    );
-  })();
-  var frame = 0;
-  var allFrameCount = 0;
-  var lastTime = Date.now();
-  var lastFameTime = Date.now();
-  var loop = function () {
-    var now = Date.now();
-    var fs = now - lastFameTime;
-    var fps = Math.round(1000 / fs);
-
-    lastFameTime = now;
-    // 不置 0，在动画的开头及结尾记录此值的差值算出 FPS
-    allFrameCount++;
-    frame++;
-
-    if (now > 1000 + lastTime) {
-      var fps = Math.round((frame * 1000) / (now - lastTime));
-      if (fps <= 15) {
-        var kd = `<span style="color:#39c5bb">卡成ppt😭</span>`;
-      } else if (fps <= 30) {
-        var kd = `<span style="color:#39c5bb">电竞级帧率😓</span>`;
-      } else if (fps <= 60) {
-        var kd = `<span style="color:#39c5bb">有点难受😨</span>`;
-      } else if (fps < 90) {
-        var kd = `<span style="color:#39c5bb">不太流畅😥</span>`;
-      } else if (fps <= 144) {
-        var kd = `<span style="color:#39c5bb">还不错哦😀</span>`;
-      } else {
-        var kd = `<span style="color:#39c5bb">十分流畅😆</span>`;
-      }
-      document.getElementById("fps").innerHTML = `FPS:${fps} ${kd}`;
-      frame = 0;
-      lastTime = now;
-    }
-
-    rAF(loop);
-  };
-
-  loop();
-} else {
-  document.getElementById("fps").style = "display:none!important";
-}
+      rAF(loop);
+    };
+    loop();
+  } else {
+    fpsEl.style = "display:none!important";
+  }
+})();
 /* 2.--------------------------------fps.js --------------------------------- */
-
 
 /* 3.--------------------------------txmap.js --------------------------------- */
 function getDistance(a, e, s, c) {
@@ -185,16 +197,21 @@ function getDistance(a, e, s, c) {
   return Math.round(u);
 }
 function showWelcome() {
-  let a,
-    e,
-    s,
-    c = getDistance(
-      108.367, // 设置自己所在地的经度
-      22.8163, // 设置自己所在地的纬度
-      ipLoacation.result.location.lng,
-      ipLoacation.result.location.lat
-    ),
-    t = ipLoacation.result.ad_info.nation;
+  // 依赖数据就绪与容器存在检查
+  if (!window.ipLoacation || !ipLoacation.result || !ipLoacation.result.ad_info)
+    return;
+  const host = document.getElementById("welcome-info");
+  if (!host) return;
+
+  let a, e, s;
+  const c = getDistance(
+    108.367,
+    22.8163,
+    ipLoacation.result.location.lng,
+    ipLoacation.result.location.lat
+  );
+  let t = ipLoacation.result.ad_info.nation;
+
   switch (ipLoacation.result.ad_info.nation) {
     case "日本":
       e = "よろしく，一起去看樱花吗";
@@ -221,16 +238,14 @@ function showWelcome() {
       e = "拾起一片枫叶赠予你";
       break;
     case "中国":
-      switch (
-        ((t =
-          ipLoacation.result.ad_info.province +
-          " " +
-          ipLoacation.result.ad_info.city +
-          " " +
-          ipLoacation.result.ad_info.district),
-        (a = ipLoacation.result.ip),
-        ipLoacation.result.ad_info.province)
-      ) {
+      t =
+        ipLoacation.result.ad_info.province +
+        " " +
+        ipLoacation.result.ad_info.city +
+        " " +
+        ipLoacation.result.ad_info.district;
+      a = ipLoacation.result.ip;
+      switch (ipLoacation.result.ad_info.province) {
         case "北京市":
           e = "京爷，带我走吧😭";
           break;
@@ -259,7 +274,7 @@ function showWelcome() {
           e = "十里洋场烟花地,风云际会上海滩。";
           break;
         case "江苏省":
-          e = "上有天堂，下有苏杭。";
+          e = "上有天堂，下有苏杭。"; /* fallthrough */
         case "浙江省":
           e = "东风渐绿西湖柳，雁已还人未南归。";
           break;
@@ -336,8 +351,9 @@ function showWelcome() {
     default:
       e = "带我去你的国家逛逛吧。";
   }
-  let r = new Date();
-  (s =
+
+  const r = new Date();
+  s =
     r.getHours() >= 6 && r.getHours() < 11
       ? "<span>上午好，</span>一日之计在于晨!"
       : r.getHours() >= 11 && r.getHours() < 13
@@ -348,72 +364,83 @@ function showWelcome() {
       ? "<span>夕阳无限好！</span>"
       : r.getHours() >= 19 && r.getHours() < 24
       ? "<span>晚上好！</span>"
-      : "夜深了，早点休息，晚安！"),
-    (document.getElementById(
-      "welcome-info"
-    ).innerHTML = `<b><center>🎉 欢迎 🎉</center>&emsp;&emsp; 欢迎来自&nbsp;<span style="color: #f9a681;">${t}</span>&nbsp;的小伙伴。${s}<br>&nbsp; &nbsp; &nbsp; &nbsp; \n我们之间相距<span style="color: #f9a681;">&nbsp;${c}&nbsp;</span>公里，您的IP地址为：<span style="color: #f9a681;">${a}&nbsp;</span><br>&emsp;&emsp;${e}`);
-}
-$.ajax({
-  type: "get",
-  url: "https://apis.map.qq.com/ws/location/v1/ip",
-  data: { key: "N7JBZ-6U4EG-ZKSQW-Q3IRQ-XZFTO-34BNZ", output: "jsonp" }, // 这里放置自己的key
-  dataType: "jsonp",
-  success: function (a) {
-    ipLoacation = a;
-  },
-}),
-  (window.onload = showWelcome);
-document.addEventListener("pjax:complete", showWelcome);
-/* 3.--------------------------------txmap.js--------------------------------- */
+      : "夜深了，早点休息，晚安！";
 
+  host.innerHTML = `<b><center>🎉 欢迎 🎉</center>&emsp;&emsp; 欢迎来自&nbsp;<span style="color: #f9a681;">${t}</span>&nbsp;的小伙伴。${s}<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;我们之间相距<span style="color: #f9a681;">&nbsp;${c}&nbsp;</span>公里，
+      您的IP地址为：<span style="color: #f9a681;">${
+        a || ipLoacation.result.ip
+      }&nbsp;</span><br>&emsp;&emsp;${e}`;
+}
+// 先拿到 IP，再渲染欢迎语
+(function () {
+  $.ajax({
+    type: "get",
+    url: "https://apis.map.qq.com/ws/location/v1/ip",
+    data: { key: "N7JBZ-6U4EG-ZKSQW-Q3IRQ-XZFTO-34BNZ", output: "jsonp" },
+    dataType: "jsonp",
+    success: function (a) {
+      window.ipLoacation = a;
+      showWelcome();
+    },
+  });
+})();
+document.addEventListener("DOMContentLoaded", showWelcome);
+window.addEventListener("pjax:complete", showWelcome);
+/* 3.--------------------------------txmap.js--------------------------------- */
 
 /* 4.--------------------------------copyPrompt.js--------------------------------- */
 document.addEventListener("copy", function () {
+  // 需要 ElementUI + Vue 已加载；否则直接跳过
+  if (typeof Vue === "undefined") return;
   new Vue({
     data: function () {
-      this.$notify({
-        title: "复制成功",
-        message: "转载请遵守CC协议",
-        position: "top-left",
-        offset: 50,
-        showClose: true,
-        type: "success",
-        duration: 4000,
-      });
+      this.$notify &&
+        this.$notify({
+          title: "复制成功",
+          message: "转载请遵守CC协议",
+          position: "top-left",
+          offset: 50,
+          showClose: true,
+          type: "success",
+          duration: 4000,
+        });
     },
   });
 });
 
 document.addEventListener("keydown", function (event) {
   if (event.key === "F12") {
+    if (typeof Vue === "undefined") return;
     new Vue({
       data: function () {
-        this.$notify({
-          title: "逮住😜",
-          message: "小兄弟，扒源请遵循GPL协议！",
-          position: "top-left",
-          offset: 50,
-          showClose: true,
-          type: "warning",
-          duration: 4000,
-        });
+        this.$notify &&
+          this.$notify({
+            title: "逮住😜",
+            message: "小兄弟，扒源请遵循GPL协议！",
+            position: "top-left",
+            offset: 50,
+            showClose: true,
+            type: "warning",
+            duration: 4000,
+          });
       },
     });
   }
 });
 /* 4.--------------------------------copyPrompt.js--------------------------------- */
 
-
 /* 5.--------------------------------bottom_runtime.js--------------------------------- */
 setInterval(() => {
-  let create_time = Math.round(new Date("2024/9/5 00:00:00").getTime() / 1000); // 在此行修改建站时间
-  let timestamp = Math.round(new Date().getTime() / 1000);
-  let second = timestamp - create_time;
-  let time = new Array(0, 0, 0, 0, 0);
+  const rt = document.getElementById("runtime");
+  if (!rt) return; // 没有容器就不更新，避免报错
 
-  var nol = function (h) {
-    return h > 9 ? h : "0" + h;
-  };
+  let create_time = Math.round(new Date("2024/9/5 00:00:00").getTime() / 1000);
+  let timestamp = Math.round(Date.now() / 1000);
+  let second = timestamp - create_time;
+  let time = [0, 0, 0, 0, 0];
+
+  const nol = (h) => (h > 9 ? h : "0" + h);
 
   if (second >= 365 * 24 * 3600) {
     time[0] = parseInt(second / (365 * 24 * 3600));
@@ -436,12 +463,10 @@ setInterval(() => {
   }
 
   let currentTimeHtml = "本站已正常运行：";
-  if (time[0] != 0) {
-    currentTimeHtml += time[0] + "年 ";
-  }
+  if (time[0] != 0) currentTimeHtml += time[0] + "年 ";
   currentTimeHtml +=
     time[1] + "天 " + time[2] + "时 " + time[3] + "分 " + time[4] + "秒";
-  document.getElementById("runtime").innerHTML = currentTimeHtml;
+
+  rt.innerHTML = currentTimeHtml;
 }, 1000);
 /* 5.--------------------------------bottom_runtime.js--------------------------------- */
-

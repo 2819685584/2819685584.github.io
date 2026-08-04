@@ -24,20 +24,20 @@ function cardRefreshTimes() {
       ((asideDay / 365) * 100).toFixed(2) + "%";
     cardWidgetSchedule.querySelector(
       ".schedule-r0 .schedule-d1 .aside-span2"
-    ).innerHTML = "还剩<a> " + (365 - asideDay).toFixed(0) + " </a>天";
+    ).innerHTML = "剩余<a> " + (365 - asideDay).toFixed(0) + " </a>天";
     cardWidgetSchedule.querySelector("#pBar_month").value = date;
     cardWidgetSchedule.querySelector("#pBar_month").max = dates;
     cardWidgetSchedule.querySelector("#p_span_month").innerHTML =
       ((date / dates) * 100).toFixed(2) + "%";
     cardWidgetSchedule.querySelector(
       ".schedule-r1 .schedule-d1 .aside-span2"
-    ).innerHTML = "还剩<a> " + (dates - date) + " </a>天";
+    ).innerHTML = "剩余<a> " + (dates - date) + " </a>天";
     cardWidgetSchedule.querySelector("#pBar_week").value = week == 0 ? 7 : week;
     cardWidgetSchedule.querySelector("#p_span_week").innerHTML =
       (((week == 0 ? 7 : week) / 7) * 100).toFixed(2) + "%";
     cardWidgetSchedule.querySelector(
       ".schedule-r2 .schedule-d1 .aside-span2"
-    ).innerHTML = "还剩<a> " + (7 - (week == 0 ? 7 : week)) + " </a>天";
+    ).innerHTML = "剩余<a> " + (7 - (week == 0 ? 7 : week)) + " </a>天";
   }
 }
 // 侧边栏日历卡片
@@ -192,8 +192,9 @@ function cardTimes() {
     ganzhiYear = chineseLunar.format(lunar, "T").slice(0, -1); //天干地支
     lunarMon = chineseLunar.format(lunar, "M"); //月份
     lunarDay = chineseLunar.format(lunar, "d"); //日期
-    var anniversary = new Date("2026/07/01 00:00:00");
-    var countDown = Math.floor((anniversary - now) / 1e3 / 60 / 60 / 24);
+    var workStart = new Date("2026/07/06 00:00:00");
+    var workDays = Math.floor((now - workStart) / 1e3 / 60 / 60 / 24);
+    if (workDays < 0) workDays = 0;
     asideTime = new Date(new Date().getFullYear() + "/01/01 00:00:00"); // 侧边栏倒计时
     asideDay = (now - asideTime) / 1e3 / 60 / 60 / 24;
     asideDayNum = Math.floor(asideDay);
@@ -210,6 +211,6 @@ function cardTimes() {
       year + "年" + monthStr + "&nbsp;第" + asideDay.toFixed(0) + "天"; //年份
     cardWidgetCalendar.querySelector("#calendar-lunar").innerHTML =
       ganzhiYear + animalYear + "年&nbsp;" + lunarMon + lunarDay; //农历
-    document.getElementById("schedule-days").innerHTML = countDown; //农历
+    document.getElementById("schedule-days").innerHTML = workDays; //已上班天数
   }
 }
